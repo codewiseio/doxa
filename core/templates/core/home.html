@@ -1,0 +1,26 @@
+{% extends "base_layout.html" %}
+{% block content %}
+
+<div ui-view="main" class="main-view ng-scope"><div ng-controller="HomeCtrl as ctrl" class="ng-scope">
+<div class="home-ctrl" disable-tap="">
+<div class="hero-content">
+<!--<img id="hero-icon" src="/img/mapmarkers/fm-map-marker-pink.svg">-->
+<h1 class="animated fadeInDown" id="main-title">
+    Soul Winner
+</h1>
+<h1 id="home-search-title">
+   Catchy tagline goes here
+</h1>
+ 
+<button class="md-warn md-raised md-hue-2 md-button md-ink-ripple" type="button" ng-transclude="" ng-click="performSearch()" id="explore-button">
+    <span class="search-text ng-scope">Learn More</span>
+</button>
+</div>
+</div>
+
+
+</div>
+
+
+{% endblock %}
+

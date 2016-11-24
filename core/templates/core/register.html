@@ -1,0 +1,20 @@
+{% extends "base_layout.html" %}
+{% block content %}
+
+<div class="bg-banner">
+    
+</div>
+
+
+<div class="register">
+    <form method="post" action="{% url 'register'}">
+        {% csrf_token %}
+        {{ organization_form }}
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </form>
+</div>
+
+
+
+{% endblock %}
+

@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 
 # Create your models here.
@@ -7,9 +8,9 @@ from django.db import models
 
 class CreatedModifiedMixin():
     created = models.DateTimeField(auto_now_add=True,blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     modified = models.DateTimeField(auto_now=True,blank=True)
-    modified_by = models.ForeignKey(User, on_delete=models.PROTECT, blank=True)
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True)
 
 class Organization(models.Model, CreatedModifiedMixin):
     SIZE_NONE = 0
@@ -35,11 +36,12 @@ class Organization(models.Model, CreatedModifiedMixin):
     size = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True)
     telephone =  models.CharField(max_length=24,blank=True)
     email = models.EmailField(max_length=64,blank=True)
-    address_line1 =  models.CharField(max_length=128, verbose_name="Street Address",blank=True)
-    address_line2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True)
-    address_municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True)
-    address_region = models.CharField(max_length=128, verbose_name="Region",blank=True)
-    address_postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True)
+    address =  models.CharField(max_length=128, verbose_name="Street Address",blank=True)
+    address2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True)
+    municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True)
+    region = models.CharField(max_length=128, verbose_name="Region",blank=True)
+    postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True)
+    country =  models.CharField(max_length=64,verbose_name="Country",blank=True,null=True)
     
     banner_photo = models.ImageField(blank=True)
     profile_photo = models.ImageField(blank=True)
@@ -94,19 +96,21 @@ class Contact(models.Model,CreatedModifiedMixin):
     
     marital_status = models.PositiveSmallIntegerField(choices=MARITAL_STATUS_CHOICES,blank=True)
     number_of_children = models.PositiveSmallIntegerField(choices=NUMBER_OF_CHILDREN_CHOICES,blank=True)
-    spouse = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    spouse = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
     
     telephone =  models.CharField(max_length=24,blank=True)
     email = models.EmailField(max_length=64,blank=True)
-    address_line1 =  models.CharField(max_length=128, verbose_name="Street Address",blank=True)
-    address_line2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True)
-    address_municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True)
-    address_region = models.CharField(max_length=128, verbose_name="Region",blank=True)
-    address_postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True)
+    address1 =  models.CharField(max_length=128, verbose_name="Street Address",blank=True)
+    line2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True)
+    municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True)
+    region = models.CharField(max_length=128, verbose_name="Region",blank=True)
+    postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True)
+    country = models.CharField(max_length=32,verbose_name="Country",blank=True)
     
     banner_photo = models.ImageField(blank=True)
     profile_photo = models.ImageField(blank=True)
-    
+
+
     
     
     
