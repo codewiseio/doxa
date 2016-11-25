@@ -3,9 +3,10 @@
 
     angular
       .module('doxa', [
+        'doxa.config',
         'doxa.routes',
         'doxa.authentication',
-        'doxa.config'
+        'doxa.layout'
       ]);
     
     angular

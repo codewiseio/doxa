@@ -1,0 +1,25 @@
+
+<div ui-view="main" class="main-view">
+    <div class="home-splash">
+        <div class="hero-content">
+
+        <h1 class="animated fadeInDown home-title" id="main-title">
+            Soul Winner
+        </h1>
+        <h1 class="home-tagline">
+           Catchy tagline goes here
+        </h1>
+ 
+        <button class="md-warn md-raised md-hue-2 md-button md-ink-ripple" type="button" id="explore-button">
+            <span>Learn More</span>
+        </button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ( function($) {
+        $('#explore-button').on('click', function() {
+            alert('This button will bring the user to the features section.');
+        });
+    })(jQuery);
+</script>

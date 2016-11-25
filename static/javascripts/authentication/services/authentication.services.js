@@ -25,6 +25,7 @@
             getAuthenticatedAccount: getAuthenticatedAccount,
             isAuthenticated: isAuthenticated,
             login: login,
+            logout: logout,
             register: register,
             setAuthenticatedAccount: setAuthenticatedAccount,
             unauthenticate: unauthenticate
@@ -100,6 +101,28 @@
                console.log(data);
             }
          }
+         
+         function logout() {
+            return $http.post('/api/v1/auth/logout/')
+               .then(logoutSuccessFn,logoutErrorFn);
+            
+            /**
+             * @name logoutSuccessFn
+             * @desc Unauthenticate and redirect to index with page reload
+             */
+            function logoutSuccessFn(data,status,headers,config) {
+               Authentication.unauthenticate();
+               window.location = '/';
+            }
+            
+            /**
+             * @name logoutErrorFn
+             * @desc Log "Epic failure!" to the console
+             */
+            function logoutErrorFn(data,status,headers,config) {
+               console.error('Could not log out.');
+            }
+         }
         
         /**
          * @name getAuthenticatedAccount
@@ -121,7 +144,8 @@
          * @memberOf doxa.authentication.services.Authentication
          */
         function isAuthenticated() {
-            return !!$cookies.authenticatedAccount;
+            return !!$cookies.get('authenticatedAccount');
+         
         }
         
         /**
@@ -132,7 +156,8 @@
          * @memberOf doxa.authentication.services.Authentication
          */
         function setAuthenticatedAccount(account) {
-         $cookies.authenticatedAccount = JSON.stringify(account);
+         $cookies.put('authenticatedAccount',JSON.stringify(account));
+         //$cookies.authenticatedAccount = JSON.stringify(account);
         }
         
         /**
@@ -142,7 +167,7 @@
          * @memberOf doxa.authentication.services.Authentication
          */
         function unauthenticate() {
-            delete $cookies.authenticatedAccount;
+            $cookies.remove('authenticatedAccount');
         }
     }
 })();

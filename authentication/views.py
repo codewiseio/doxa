@@ -1,7 +1,7 @@
 from rest_framework import permissions,status,views,viewsets
 from rest_framework.response import Response
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -50,10 +50,6 @@ class LoginView(views.APIView):
 
         user = authenticate(email=email, password=password)
         
-        print('Email {}'.format(email))
-        print('Password {}'.format(password))
-        print('User {}'.format(user))
-
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -71,6 +67,12 @@ class LoginView(views.APIView):
                 'message': 'Email/password combination invalid.'
             }, status=status.HTTP_401_UNAUTHORIZED)
     
+class LogoutView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     
+    def post(self, request, format=None):
+        logout(request)
+        
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
     
     
