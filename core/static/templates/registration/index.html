@@ -1,0 +1,35 @@
+<!-- form.html -->
+<div class="row">
+<div class="col-sm-8 col-sm-offset-2">
+
+    <div class="form-container">
+
+        <div class="page-header text-center">
+            <h2>SoulWinner Registration</h2>
+            
+            <!-- the links to our nested states using relative paths -->
+            <!-- add the active class if the state matches our ui-sref -->
+            <div class="text-center multi-step-buttons">
+                <a ui-sref-active="active" ui-sref=".organization"><span>1</span></a>
+                <a ui-sref-active="active" ui-sref=".account"><span>2</span></a>
+                <a ui-sref-active="active" ui-sref=".tier"><span>3</span></a>
+            </div>
+        </div>
+        
+        <!-- use ng-submit to catch the form submission and use our Angular function -->
+        <form id="signup-form" ng-submit="vm.registerUserAndOrganization()">
+            <!-- our nested state views will be injected here -->
+            <div id="register-views" ui-view=""></div>
+        </form>
+
+    </div>
+
+    <!-- show our formData as it is being typed -->
+    <pre>
+        vm.user = {{ vm.user | json }}
+        vm.organization = {{ vm.organization | json }}
+    </pre>
+
+
+</div>
+</div>

@@ -6,14 +6,18 @@
         'doxa.config',
         'doxa.routes',
         'doxa.authentication',
+        'doxa.registration',
         'doxa.layout'
       ]);
     
     angular
         .module('doxa.authentication', []);
+        
+    angular
+        .module('doxa.registration',[]);
   
     angular
-        .module('doxa.routes', ['ngRoute']);
+        .module('doxa.routes', ['ui-route']);
       
     angular
         .module('doxa.config', [] );

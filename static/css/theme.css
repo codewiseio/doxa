@@ -115,3 +115,41 @@ nav.navbar div.navbar-header a.navbar-brand-small {
   border-radius: 5px;
   transition: all 0.2s ease;
 }
+/**
+ * Form Styling
+ */
+/* multi-step form status buttons */
+/* numbered buttons */
+.multi-step-buttons a {
+  color: #FFF;
+  display: inline-block;
+  font-size: 12px;
+  margin-right: 10px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+.multi-step-buttons a:hover,
+.multi-step-buttons a:active {
+  text-decoration: none;
+}
+/* we will style the span as the circled number */
+.multi-step-buttons span {
+  background: #039BE5;
+  display: block;
+  height: 30px;
+  margin: 0 auto 10px;
+  padding-top: 5px;
+  width: 30px;
+  border-radius: 50%;
+}
+/* active buttons turn light green-blue*/
+.multi-step-buttons a.active span {
+  background: #8BC34A;
+}
+.btn-fat {
+  font-size: 1.7rem;
+  padding: 15px 25px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
