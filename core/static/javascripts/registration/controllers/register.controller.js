@@ -1,3 +1,4 @@
+
 ( function() {
     'use strict';
     angular
@@ -52,9 +53,3 @@
         }
     
 })();
-
-
-
-
-
-

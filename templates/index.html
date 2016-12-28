@@ -20,9 +20,10 @@
     
 </head>
 
-<body>
+<body layout="column">
 
-    {% include 'navbar.html' %}
+    
+    <div class="navbar-container" ui-view="appbar"></div>
     
     <div class="main-content" ui-view>
 

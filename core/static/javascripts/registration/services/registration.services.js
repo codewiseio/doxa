@@ -96,7 +96,7 @@
              * @desc Log "Epic Failure!" to the console
              */
             function registerUserErrorFn(data,status,headers,config) {
-                console.error('Epic failure!');
+                console.error('Register user error');
                 console.log(data);
             }
          

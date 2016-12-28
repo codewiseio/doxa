@@ -12,19 +12,6 @@
      * @desc Define valid application routes
      */
     function config($stateProvider,$urlRouterProvider) {
-        //$urlRouterProvider.when('/register/', {
-        //   controller: 'RegisterController',
-        //   controllerAs: 'vm',
-        //   templateUrl: '/static/templates/authentication/register.html'
-        //}).when('/login/', {
-        //    controller: 'LoginController',
-        //    controllerAs: 'vm',
-        //    templateUrl: '/static/templates/authentication/login.html'
-        //}).when('/', {
-        //    controller: 'IndexController',
-        //    controllerAs: 'vm',
-        //    templateUrl: '/static/templates/layout/index.html'
-        
       $stateProvider
         .state('home', {
           url: '/',
@@ -32,8 +19,11 @@
             '': {
                 controller: 'IndexController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/layout/index.html'
+                templateUrl: '/static/templates/layout/landing-page/index.html'
             },
+            //'appbar': {
+            //    templateUrl: '/static/templates/layout/landing-page/navbar.html'
+            //}
          }
         }).state('register', {
             url: '/register',
@@ -58,6 +48,30 @@
                     templateUrl: '/static/templates/authentication/login.html',
                     controller: 'LoginController',
                     controllerAs: 'vm',
+                }
+            }
+        })
+        .state('dashboard', {
+            url: '/dashboard',
+            views: {
+                '': {
+                    templateUrl: '/static/templates/layout/dashboard.html?v=4',
+                    //controller: 'OrganizationController',
+                    //controllerAs: 'vm'
+                },
+                'appbar': {
+                    templateUrl: '/static/templates/layout/dashboard/appbar.html'
+                },
+                'sidebar': {
+                    templateUrl: '/static/templates/layout/dashboard/nav-sidebar.html'
+                }
+            }
+        })
+        .state('dashboard.editOrganization', {
+            url: '/organization/edit',
+            views: {
+                '': {
+                    templateUrl: '/static/templates/organization/edit.html?v=3'
                 }
             }
         });

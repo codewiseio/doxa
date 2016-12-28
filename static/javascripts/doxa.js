@@ -7,7 +7,9 @@
         'doxa.routes',
         'doxa.authentication',
         'doxa.registration',
-        'doxa.layout'
+        //'doxa.organizations',
+        'doxa.layout',
+        'ngMaterial'
       ]);
     
     angular
