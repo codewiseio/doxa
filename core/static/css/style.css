@@ -1,7 +1,0 @@
-div.home-ctrl {
-    height: 750px;
-    min-height: 750px;
-    position: relative;
-    background: linear-gradient(rgba(0,0,0,0.35),rgba(121,121,121,0.35)),url(../images/home-banner.jpg);
-    background-size: cover;
-}

@@ -44,9 +44,10 @@ class LoginView(views.APIView):
     def post(self, request, format=None):
         
         data = request.data
-
         email = data.get('email', None)
         password = data.get('password', None)
+        
+        print('Received {}:{}'.format(email, password) )
 
         user = authenticate(email=email, password=password)
         
@@ -57,11 +58,13 @@ class LoginView(views.APIView):
 
                 return Response(serialized.data)
             else:
+                print ('User is disabled')
                 return Response({
                     'status': 'Unauthorized',
                     'message': 'This user has been disabled.'
                 }, status=status.HTTP_401_UNAUTHORIZED)
         else:
+            print ('Email/password combination invalid')
             return Response({
                 'status': 'Unauthorized',
                 'message': 'Email/password combination invalid.'
@@ -71,6 +74,7 @@ class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request, format=None):
+        print('Logout')
         logout(request)
         
         return Response({}, status=status.HTTP_204_NO_CONTENT)
