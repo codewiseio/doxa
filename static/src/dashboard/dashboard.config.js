@@ -1,20 +1,37 @@
-//import dashboardTemplate from './index.html';
-//require('./nav-sidebar.html');
+//@require "./html/*.html"
+require('../assets/css/dashboard.less');
 
-// @ require ".//.html"*
-
-export default function DashboardConfig($stateProvider) {
+export default function DashboardConfig($stateProvider, $mdThemingProvider) {
   'ngInject';
   
-  //console.log(dashboardTemplate);
+    // Define the routes
+    $stateProvider
+      .state('dashboard', {
+        url: '/dashboard',
+        controller: 'DashboardController as $ctrl',
+        templateUrl: 'dashboard-layout.html',
+        abstract: true,
+      })
+      .state('dashboard.home', {
+        url: '',
+        templateUrl: 'index.html',
+      });
 
-  // Define the routes
-  $stateProvider
-    .state('dashboard', {
-      url: '/dashboard',
-      controller: 'DashboardController as $ctrl',
-      template: 'index.html',
-      title: 'Dashboard'
-    });
-
+    /**
+     *  Set the dashboard them colors
+     * */
+    $mdThemingProvider.theme('default')
+      .primaryPalette('light-blue')
+      .accentPalette('pink');
+      
+   // /* Configure icons */
+   // TODO: CONFIGURE ICONS
+   //$mdIconProvider
+   //   .defaultIconSet("./assets/svg/avatars.svg", 128)
+   //   .icon("menu", "./assets/svg/menu.svg", 24)
+   //   .icon("share", "./assets/svg/share.svg", 24)
+   //   .icon("google_plus", "./assets/svg/google_plus.svg", 24)
+   //   .icon("hangouts", "./assets/svg/hangouts.svg", 24)
+   //   .icon("twitter", "./assets/svg/twitter.svg", 24)
+   //   .icon("phone", "./assets/svg/phone.svg", 24);
 }

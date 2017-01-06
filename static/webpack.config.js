@@ -45,45 +45,40 @@ module.exports = function makeWebpackConfig () {
     }
 
   config.module = {
-    preLoaders: [],
-
-    loaders: [{
-      test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015','stage-0']
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loaders: ['babel-loader?presets[]=es2015&presets[]=stage-0','required']
+        //query: {
+        //  presets: ['es2015','stage-0']
+        //},
+      }, 
+      {
+        test: /\.css$/,
+        loader: isTest ? 'null' : ExtractTextPlugin.extract('style-loader', 'css-loader')
       },
-    }, 
-    {
-      test: /\.css$/,
-      loader: isTest ? 'null' : ExtractTextPlugin.extract('style-loader', 'css-loader')
-    },
-    {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
-    },
-    {
-      test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
-      loader: 'file'
-    },
-    {
-      test: /\.html$/,
-      loader: 'raw'
-    },
-    //{
-    //  test: /\.html$/,
-    //  loader: 'ngtemplate!raw',
-    //  exclude: /node_modules/
-    //},
-    //{
-    //  test: /\.html$/,
-    //  loader: 'ng-cache' + '!html'
-    //},
-    /** Import Bootstrap/jQuery **/
-    { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
-    { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-    { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
+      {
+          test: /\.less$/,
+          loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'file'
+      },
+      {
+        test: /\.html$/,
+        loader: 'ng-cache'
+      },
+      /** Import Bootstrap/jQuery **/
+      { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
+      { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
+      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
+      
+      //{
+      //  test: /\.less$/,
+      //  loader: "css-loader!less-loader"
+      //}
     ]
   };
 

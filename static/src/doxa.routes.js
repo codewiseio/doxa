@@ -11,7 +11,7 @@ function config($stateProvider, $urlRouterProvider ) {
     $stateProvider
         .state('index', {
             url: '/',
-            template: require('./landing-page.html')
+            template: require('raw!./landing-page.html')
         });
     
     $urlRouterProvider.otherwise('/');

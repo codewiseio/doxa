@@ -11,14 +11,12 @@ import 'angular-material';
 import 'angular-material/angular-material.css';
 import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
 
+import 'jquery';
+import 'bootstrap-loader';
 
 import './doxa.routes';
 import './authentication';
 import './dashboard';
-
-import 'jquery';
-import 'bootstrap-loader';
-
 
 /* App Dependencies */
 angular.module("doxa", [

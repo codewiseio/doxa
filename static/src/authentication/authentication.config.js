@@ -6,7 +6,7 @@ function AuthenticationConfig($stateProvider, $httpProvider) {
     .state('login', {
       url: '/login',
       controller: 'AuthenticationController as $ctrl',
-      template: require('./login.html'),
+      template: require('raw!./login.html'),
       title: 'Sign in'
     });
     
