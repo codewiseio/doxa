@@ -18,13 +18,12 @@ class AuthenticationService {
     * @param {string} email The email entered by the user
     * @param {string} password The password entered by the user
     * @returns {Promise}
-    * @memberOf doxa.authentication.services.Authentication
+    * @memberOf doxa.authentication
     */
     login(email,password) {
       return this.$http.post('/api/v1/auth/login/', {
          email: email, password: password
       })
-      
       .then(
         // Callback for success
         (res) => {
@@ -34,29 +33,25 @@ class AuthenticationService {
          }
       );
    }
-    
-    //logout() {
-    //   return $this.$http.post('/api/v1/auth/logout/')
-    //      .then(logoutSuccessFn,logoutErrorFn);
-    //   
-    //   /**
-    //    * @name logoutSuccessFn
-    //    * @desc Unauthenticate and redirect to index with page reload
-    //    */
-    //   logoutSuccessFn(data,status,headers,config) {
-    //      Authentication.unauthenticate();
-    //      window.location = '/';
-    //   }
-    //   
-    //   /**
-    //    * @name logoutErrorFn
-    //    * @desc Log "Epic failure!" to the console
-    //    */
-    //   logoutErrorFn(data,status,headers,config) {
-    //      console.error('Could not log out.');
-    //   }
-    //}
    
+   /**
+    * @name logout
+    * @desc Try to log out the current user
+    * @returns {Promise}
+    * @memberOf doxa.authentication
+    */
+   logout() {
+      return this.$http.post('/api/v1/auth/logout/')
+      .then(
+         // Callback on success
+        () => {
+            console.log('Logged out.');
+            this.unauthenticate();
+         }
+      );
+   }
+    
+
    /**
     * @name getAuthenticatedAccount
     * @desc Return the currently authenticated account
@@ -78,7 +73,6 @@ class AuthenticationService {
     */
    isAuthenticated() {
       return !! this.$cookies.get('authenticatedAccount');
-      return false;
    }
    
    /**
@@ -90,8 +84,7 @@ class AuthenticationService {
     */
    setAuthenticatedAccount(account) {
       this.$cookies.put('authenticatedAccount',JSON.stringify(account));
-      this.$cookies.authenticatedAccount = JSON.stringify(account);
-    return true;
+      return true;
    }
    
    /**

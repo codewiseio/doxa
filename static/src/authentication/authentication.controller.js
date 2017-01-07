@@ -5,16 +5,22 @@ class AuthenticationController {
     'ngInject';
     
     this.AuthenticationService = AuthenticationService;
+    this.$location = $location;
+    
     this.title = $state.current.title;
     this.authType = $state.current.name.replace('app.', '');
     this.username = null;
-    this.passowrd = null;
-    
+    this.passowrd = null;    
     this.errors = [];
     
     // If the user is authenticated, they should not be here.
-    if (AuthenticationService.isAuthenticated()) {
+    if ($state.current.name != "logout" && AuthenticationService.isAuthenticated()) {
         $location.url('/dashboard');
+    }
+    
+    // Process logout request
+    if ( $state.current.name == "logout" ) {
+      this.AuthenticationService.logout();
     }
   }
 
@@ -25,7 +31,7 @@ class AuthenticationController {
           (res) => {
             console.log('Succes');
             console.log(res);
-            $location.url('/');
+            this.$location.url('/dashboard');
           },
           (err) => {
             console.log('Fail');

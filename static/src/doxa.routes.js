@@ -1,4 +1,5 @@
 'use strict';
+//@require "./*.html"
 
 angular
     .module('doxa.routes', ['ui.router'])
@@ -11,7 +12,7 @@ function config($stateProvider, $urlRouterProvider ) {
     $stateProvider
         .state('index', {
             url: '/',
-            template: require('raw!./landing-page.html')
+            templateUrl: 'landing-page.html'
         });
     
     $urlRouterProvider.otherwise('/');

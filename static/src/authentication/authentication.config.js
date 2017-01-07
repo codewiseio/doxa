@@ -1,4 +1,6 @@
-function AuthenticationConfig($stateProvider, $httpProvider) {
+//@require "./html/*.html"
+
+function AuthenticationConfig($stateProvider) {
   'ngInject';
 
   // Define the routes
@@ -6,8 +8,13 @@ function AuthenticationConfig($stateProvider, $httpProvider) {
     .state('login', {
       url: '/login',
       controller: 'AuthenticationController as $ctrl',
-      template: require('raw!./login.html'),
+      templateUrl: 'login.html',
       title: 'Sign in'
+    })
+    .state('logout', {
+      url: '/logout',
+      controller: 'AuthenticationController as $ctrl',
+      templateUrl: 'logout.html',
     });
     
 }

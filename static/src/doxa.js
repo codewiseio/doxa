@@ -17,6 +17,7 @@ import 'bootstrap-loader';
 import './doxa.routes';
 import './authentication';
 import './dashboard';
+import './registration';
 
 /* App Dependencies */
 angular.module("doxa", [
@@ -25,6 +26,7 @@ angular.module("doxa", [
     'doxa.routes',
     'doxa.authentication',
     'doxa.dashboard',
+    'doxa.registration',
     ngCookies
 ]).config(routing);
 

@@ -1,0 +1,14 @@
+<md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="dashboard-sidenav" class="md-whiteframe-4dp" >
+     <md-list ng-controller="SidenavController as $ctrl">
+        
+        <!-- List item #1 -->
+        <md-list-item ng-repeat="item in $ctrl.menuItems">
+            <md-button ui-sref="{{item.sref}}">
+               <md-icon>{{item.icon}}</md-icon>
+               {{item.label}}
+            </md-button>
+        </md-list-item>
+
+
+      </md-list>
+</md-sidenav>
