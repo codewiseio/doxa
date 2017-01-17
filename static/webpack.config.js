@@ -31,7 +31,7 @@ module.exports = function makeWebpackConfig () {
     config.watch = true;
     config.output = isTest ? {} : {
         path: __dirname + '/dist',
-        publicPath: isProd ? '/' : 'http://localhost:8080/',
+        publicPath: isProd ? '/static/dist/' : 'http://localhost:8000/static/dist/',
         filename: isProd ? '[name].[hash].js' : '[name].bundle.js',
         chunkFilename: isProd ? '[name].[hash].js' : '[name].bundle.js'
     };
@@ -69,6 +69,10 @@ module.exports = function makeWebpackConfig () {
       {
         test: /\.html$/,
         loader: 'ng-cache'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
       },
       /** Import Bootstrap/jQuery **/
       { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },

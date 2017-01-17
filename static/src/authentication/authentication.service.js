@@ -5,9 +5,6 @@ class AuthenticationService {
       this.$http = $http;
       this.$cookies = $cookies;
       
-      console.log('Constructed Authentication Service.');
-      console.log($cookies);
-      
       // Object to store our user properties
       this.current = null;
    }
@@ -27,8 +24,6 @@ class AuthenticationService {
       .then(
         // Callback for success
         (res) => {
-            console.log('Logged in: ');
-            console.log(res);
             this.setAuthenticatedAccount(res.data);
          }
       );

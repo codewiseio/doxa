@@ -1,0 +1,105 @@
+<div flex-fill class="fixed-appbar">
+    <div class="clearfix"></div>
+    <form external-submit id="signup-form" name="signupForm" ng-submit="$ctrl.registerOrganization(signupForm.$valid)" method="post">
+    <ng-include src="'register.appbar.html'" ></ng-include>
+    
+    <div flex layout="row" class="dashboard">
+    
+        <!-- Container #4 -->
+        <md-content flex id="dashboard-content" class="md-padding" layout="column">
+           
+    
+            <md-card style="max-width: 800px">
+                <md-card-content>
+                
+                <div layout="column">
+                      
+                    <div layout="column" layout-gt-xs="row">
+                        <md-input-container flex-gt-xs="66">
+                          <label>Church or Organization Name</label>
+                          <input required name="name" ng-model="$ctrl.formData.name" type="name" />
+                        </md-input-container>
+                        
+                        <md-input-container flex-gt-xs="auto">
+                            <label>Size</label>
+                            <md-select required name="size" ng-model="$ctrl.formData.size">
+                            <md-option ng-repeat="item in $ctrl.organizationSizeOptions" value="{{item.value}}">
+                              {{item.display}}
+                            </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    
+                    <div layout="column" layout-gt-xs="row">
+                        <md-autocomplete flex-gt-xs="66" required 
+                            md-input-name="country"
+                            md-selected-item="$ctrl.formData.country"
+                            md-search-text="$ctrl.countrySearchText"
+                            md-items="item in $ctrl.querySearch($ctrl.countrySearchText)"
+                            md-item-text="item.display"
+                            md-min-length="0"
+                            md-floating-label="Country">
+                            <md-item-template>
+                              <span md-highlight-text="$ctrl.countrySearchText" md-highlight-flags="^i">{{item.display}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                              No countries matching "{{$ctrl.countrySearchText}}" were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                    
+                        <md-input-container class="md-block" flex-gt-xs="auto">
+                              <label>Telephone</label>
+                              <input required name="telephone" ng-model="$ctrl.formData.telephone" type="telephone" />
+                        </md-input-container>
+                        
+                    </div>
+                        
+                    
+                    <div layout="column">
+                      
+                        <md-input-container class="md-block">
+                          <label>Email</label>
+                          <input required name="email" ng-model="$ctrl.user.email" type="email" />
+                        </md-input-container>
+                
+                
+                        <md-input-container class="md-block">
+                          <label>Password</label>
+                          <input required name="password" ng-model="$ctrl.user.password" type="password" />
+                        </md-input-container>
+                        
+                        <md-input-container class="md-block" >
+                          <label>Confirm Password</label>
+                          <input compare-to="$ctrl.user.password" required name="confirmPassword" ng-model="$ctrl.user.confirmPassword" type="password" />
+                            <div ng-messages="signupForm.confirmPassword.$error" role="alert">
+                                <div ng-message="errorCompareTo">Passwords do not match.</div>
+                            </div>
+                        </md-input-container>
+
+                    </div>
+                </div>
+                
+                <pre>{{$ctrl.user}}</pre><pre>{{signupForm}} </pre>
+                
+                </md-card-content>
+            </md-card>
+            
+        </md-content>
+        </form>
+    </div>
+    
+    <style>
+        md-input-container {
+            margin-bottom: 0px;
+        }
+        md-select .md-select-value.md-select-placeholder {
+            font-weight: bold;
+        }
+        @media screen and (max-width: 600px) {
+            md-autocomplete {
+                margin-top: 18px;
+            } 
+        }
+        body.md-toast-animating { overflow: auto !important; }
+    </style>
+</div>

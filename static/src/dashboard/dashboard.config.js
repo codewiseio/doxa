@@ -9,12 +9,12 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
       .state('dashboard', {
         url: '/dashboard',
         controller: 'DashboardController as $ctrl',
-        templateUrl: 'dashboard.html',
+        templateUrl: 'dashboard.index.html',
         abstract: true,
       })
-      .state('dashboard.home', {
+      .state('dashboard.home',  {
         url: '',
-        templateUrl: 'index.html',
+        templateUrl: 'dashboard.home.html',
       });
 
     /**

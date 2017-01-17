@@ -10,11 +10,5 @@ let authenticationModule = angular.module('doxa.authentication', [])
     .config(AuthenticationConfig)
     .controller('AuthenticationController', AuthenticationController)
     .service('AuthenticationService', AuthenticationService );
-    
-// Create the module where our functionality can attach to
-//let servicesModule = angular.module('app.services', []);
-//servicesModule.service('User', UserService);
-
-
 
 export default authenticationModule;

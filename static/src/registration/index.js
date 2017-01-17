@@ -1,16 +1,18 @@
 import angular from 'angular';
 
+/* compare-to directive for password confirmation fields */
+import 'angularjs-compare-to-directive';
 
 // Create the home module where our functionality can attach to
-let registrationModule = angular.module('doxa.registration', []);
+import RegistrationConfig from './registration.config';
+import RegistrationController from './registration.controller';
+import RegistrationService from './registration.service';
 
 // Attach UI-Router states
-import RegistrationConfig from './registration.config';
-registrationModule.config(RegistrationConfig);
-
-// Attach controllers
-import RegistrationController from './registration.controller';
-registrationModule.controller('RegistrationController', RegistrationController);
+let registrationModule = angular.module('doxa.registration', ['compareField'])
+    .config(RegistrationConfig)
+    .controller('RegistrationController', RegistrationController)
+    .service('RegistrationService', RegistrationService );
 
 
 export default registrationModule;

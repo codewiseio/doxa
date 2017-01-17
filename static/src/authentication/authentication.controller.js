@@ -9,7 +9,7 @@ class AuthenticationController {
     
     this.title = $state.current.title;
     this.authType = $state.current.name.replace('app.', '');
-    this.username = null;
+    this.email = null;
     this.passowrd = null;    
     this.errors = [];
     
@@ -26,7 +26,7 @@ class AuthenticationController {
 
   login () {
       this.isSubmitting = true;
-      this.AuthenticationService.login(this.username, this.password)
+      this.AuthenticationService.login(this.email, this.password)
         .then(
           (res) => {
             console.log('Succes');
@@ -39,7 +39,7 @@ class AuthenticationController {
             this.errors.push(err.data.detail);
           }
         );
-      console.log(this.username);
+      console.log(this.email);
       console.log(this.password);
   }
 }

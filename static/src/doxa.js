@@ -10,25 +10,32 @@ import 'angular-aria';
 import 'angular-material';
 import 'angular-material/angular-material.css';
 import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
+import ngMessages from 'angular-messages';
 
 import 'jquery';
 import 'bootstrap-loader';
 
-import './doxa.routes';
 import './authentication';
 import './dashboard';
+import './landing-page';
 import './registration';
 
+import './directives/index';
+
 /* App Dependencies */
-angular.module("doxa", [
-    'ui.router',
-    'ngMaterial',
-    'doxa.routes',
-    'doxa.authentication',
-    'doxa.dashboard',
-    'doxa.registration',
-    ngCookies
-]).config(routing);
+angular.module( "doxa", [
+                'ui.router',
+                'ngMaterial',
+                'doxa.authentication',
+                'doxa.dashboard',
+                'doxa.landing-page',
+                'doxa.registration',
+                'doxa.directives',
+                ngMessages,
+                ngCookies,
+                //externalSubmit
+    ])
+    .config(routing);
 
 angular.module('doxa').run();
 

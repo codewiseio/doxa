@@ -8,13 +8,13 @@ function AuthenticationConfig($stateProvider) {
     .state('login', {
       url: '/login',
       controller: 'AuthenticationController as $ctrl',
-      templateUrl: 'login.html',
+      templateUrl: 'authentication.login.html',
       title: 'Sign in'
     })
     .state('logout', {
       url: '/logout',
       controller: 'AuthenticationController as $ctrl',
-      templateUrl: 'logout.html',
+      templateUrl: 'authentication.logout.html',
     });
     
 }
