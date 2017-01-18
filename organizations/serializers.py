@@ -9,9 +9,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
 
-        fields = ('title','slug','description','size','telephone','email','address',
-                  'address2','municipality','region','postal_code','country',
-                  'banner_photo','profile_photo')
+        fields = ['title','description','size','owner']
         
         read_only_fields = ('id', 'created', 'created_by', 'modified','modified_by')
 

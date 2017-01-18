@@ -6,6 +6,7 @@ from organizations.views import OrganizationViewSet
 
 from rest_framework_nested import routers
 from authentication.views import LoginView,LogoutView,UserViewSet
+from registration.views import RegisterView
 
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet )
@@ -16,5 +17,6 @@ urlpatterns = [
     url(r'^api/v1/',include(router.urls)),
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
     url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^api/v1/register/$', RegisterView.as_view(), name='register'),
     url(r'^.*$',IndexView.as_view(), name='index')
 ]

@@ -14,12 +14,12 @@ export default class RegistrationService {
     * @memberOf doxa.registration.service
     */
     registerOrganization(organization, user){
-        console.log('Registering new organization');
+        console.log('Registeration Service');
+        console.log(organization);
+        console.log(user);
         
-        // create user account
-        return this.$http.post('/api/v1/users/', {'email': user.email, 'password': user.password} );
-        
-        // create new organization
-        //$http.post('/api/v1/organizations/', {'email': user.email, 'password': user.password} );
+        // create new user and organization
+        return this.$http.post('/api/v1/register/', {'user': user, 'organization': organization} );
+
     }
 }

@@ -27,23 +27,28 @@ class Organization(models.Model, CreatedModifiedMixin):
     
     title = models.CharField(max_length=255,null=False)
     slug = models.SlugField(max_length=255,allow_unicode=True,blank=True)
-    description = models.TextField(blank=True)
-    size = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True)
-    telephone =  models.CharField(max_length=24,blank=True)
-    email = models.EmailField(max_length=64,blank=True)
-    address =  models.CharField(max_length=128, verbose_name="Street Address",blank=True)
-    address2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True)
-    municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True)
-    region = models.CharField(max_length=128, verbose_name="Region",blank=True)
-    postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True)
-    country =  models.CharField(max_length=64,verbose_name="Country",blank=True,null=True)
-    
+    description = models.TextField(blank=True,null=True)
+    size = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True,null=True)
+    # telephone =  models.CharField(max_length=24,blank=True,null=True)
+    # email = models.EmailField(max_length=64,blank=True,null=True)
+    # address =  models.CharField(max_length=128, verbose_name="Street Address",blank=True,null=True)
+    # address2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True,null=True)
+    # municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True,null=True)
+    # region = models.CharField(max_length=128, verbose_name="Region",blank=True,null=True)
+    # postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True,null=True)
+    # country =  models.CharField(max_length=64,verbose_name="Country",blank=True,null=True)
+    # 
     banner_photo = models.ImageField(blank=True)
     profile_photo = models.ImageField(blank=True)
     
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    
+    
+    
     def save(self, *args, **kwargs):
-           self.s = slugify(self.q)
-           super(test, self).save(*args, **kwargs)
+           self.slug = slugify(self.title)
+           super().save(*args, **kwargs)
+           
     def __unicode__(self):
         return self.title
     

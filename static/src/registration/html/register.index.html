@@ -17,12 +17,12 @@
                     <div layout="column" layout-gt-xs="row">
                         <md-input-container flex-gt-xs="66">
                           <label>Church or Organization Name</label>
-                          <input required name="name" ng-model="$ctrl.formData.name" type="name" />
+                          <input required name="title" ng-model="$ctrl.organization.title" type="text" />
                         </md-input-container>
                         
                         <md-input-container flex-gt-xs="auto">
                             <label>Size</label>
-                            <md-select required name="size" ng-model="$ctrl.formData.size">
+                            <md-select required name="size" ng-model="$ctrl.organization.size">
                             <md-option ng-repeat="item in $ctrl.organizationSizeOptions" value="{{item.value}}">
                               {{item.display}}
                             </md-option>
@@ -33,7 +33,7 @@
                     <div layout="column" layout-gt-xs="row">
                         <md-autocomplete flex-gt-xs="66" required 
                             md-input-name="country"
-                            md-selected-item="$ctrl.formData.country"
+                            md-selected-item="$ctrl.organization.country"
                             md-search-text="$ctrl.countrySearchText"
                             md-items="item in $ctrl.querySearch($ctrl.countrySearchText)"
                             md-item-text="item.display"
@@ -49,7 +49,7 @@
                     
                         <md-input-container class="md-block" flex-gt-xs="auto">
                               <label>Telephone</label>
-                              <input required name="telephone" ng-model="$ctrl.formData.telephone" type="telephone" />
+                              <input required name="telephone" ng-model="$ctrl.organization.telephone" type="telephone" />
                         </md-input-container>
                         
                     </div>
@@ -78,9 +78,7 @@
 
                     </div>
                 </div>
-                
-                <pre>{{$ctrl.user}}</pre><pre>{{signupForm}} </pre>
-                
+
                 </md-card-content>
             </md-card>
             
