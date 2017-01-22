@@ -17,9 +17,9 @@ class AuthenticationService {
     * @returns {Promise}
     * @memberOf doxa.authentication
     */
-    login(email,password) {
+    login(email,password,area) {
       return this.$http.post('/api/v1/auth/login/', {
-         email: email, password: password
+         email: email, password: password, entry_point: 'dashboard'
       })
       .then(
         // Callback for success
@@ -77,8 +77,12 @@ class AuthenticationService {
     * @returns {undefined}
     * @memberOf doxa.authentication.services.Authentication
     */
-   setAuthenticatedAccount(account) {
-      this.$cookies.put('authenticatedAccount',JSON.stringify(account));
+   setAuthenticatedAccount(data) {
+      
+      console.log( data );
+      
+      this.$cookies.put('authenticatedAccount',JSON.stringify(data.user));
+      this.$cookies.put('organization',JSON.stringify(data.organization));
       return true;
    }
    

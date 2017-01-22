@@ -20,7 +20,7 @@ class SidenavController {
                 label: 'Contacts',
                 type: 'link',
                 icon: 'people',
-                state: ''
+                state: 'dashboard.home()'
             },
         ];
 

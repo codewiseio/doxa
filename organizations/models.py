@@ -4,9 +4,6 @@ from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from core.models import CreatedModifiedMixin
 
-# Create your models here.
-from django.db import models
-
 class Organization(models.Model, CreatedModifiedMixin):
     SIZE_NONE = 0
     SIZE_2TO10 = 1
@@ -29,15 +26,6 @@ class Organization(models.Model, CreatedModifiedMixin):
     slug = models.SlugField(max_length=255,allow_unicode=True,blank=True)
     description = models.TextField(blank=True,null=True)
     size = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True,null=True)
-    # telephone =  models.CharField(max_length=24,blank=True,null=True)
-    # email = models.EmailField(max_length=64,blank=True,null=True)
-    # address =  models.CharField(max_length=128, verbose_name="Street Address",blank=True,null=True)
-    # address2 =  models.CharField(max_length=128, verbose_name="Street Address 2",blank=True,null=True)
-    # municipality =  models.CharField(max_length=128, verbose_name="Municipality",blank=True,null=True)
-    # region = models.CharField(max_length=128, verbose_name="Region",blank=True,null=True)
-    # postal_code =  models.CharField(max_length=16,verbose_name="Postal Code",blank=True,null=True)
-    # country =  models.CharField(max_length=64,verbose_name="Country",blank=True,null=True)
-    # 
     banner_photo = models.ImageField(blank=True)
     profile_photo = models.ImageField(blank=True)
     

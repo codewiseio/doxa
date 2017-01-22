@@ -1,11 +1,12 @@
 import AuthenticationService from './authentication.service';
 
 class AuthenticationController {
-  constructor(AuthenticationService, $state, $location) {
+  constructor(AuthenticationService, $state, $location, $mdDialog) {
     'ngInject';
     
     this.AuthenticationService = AuthenticationService;
     this.$location = $location;
+    this.$mdDialog = $mdDialog;
     
     this.title = $state.current.title;
     this.authType = $state.current.name.replace('app.', '');
@@ -22,6 +23,7 @@ class AuthenticationController {
     if ( $state.current.name == "logout" ) {
       this.AuthenticationService.logout();
     }
+    
   }
 
   login () {
@@ -36,11 +38,39 @@ class AuthenticationController {
           (err) => {
             console.log('Fail');
             console.log(err);
-            this.errors.push(err.data.detail);
+            this.errors.push(err);
+            this.displayError(err);
           }
         );
       console.log(this.email);
       console.log(this.password);
+  }
+  
+  displayError(error) {
+    console.log("Displaying Error");
+    var title;
+    var message;
+    if ( typeof error.data == "string" ) {
+      title = "Error";
+      message = error.data;
+    }
+    else {
+      title = error.data.title;
+      message = error.data.message;
+    }
+    
+    
+    this.$mdDialog.show(
+        this.$mdDialog.alert()
+          .clickOutsideToClose(true)
+          .title(title)
+          .textContent(message)
+          .ariaLabel('Error')
+          .ok('Ok')
+          // Or you can specify the rect to do the transition from
+          .openFrom('#left')
+          .closeTo('#right')
+      );
   }
 }
 

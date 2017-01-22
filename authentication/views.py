@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+from organizations.models import Organization
+from organizations.serializers import OrganizationSerializer
+
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
 from django.shortcuts import render
@@ -58,17 +61,37 @@ class LoginView(views.APIView):
         data = request.data
         email = data.get('email', None)
         password = data.get('password', None)
+        entry_point = data.get('entry_point','dashboard')           
+        
         
         print('Received {}:{}'.format(email, password) )
 
         user = authenticate(email=email, password=password)
         
+        if entry_point == "dashboard":
+            # discover organizations that user is owner of
+            organization = Organization.objects.filter(owner=user.id)[:1][0]
+            
+            
+            # if not owner of any organizations throw an error
+            if organization == None:
+                return Response({
+                    'status': 'Unauthorized',
+                    'message': 'You are not an authorized organization owner.'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # if owner of an organization, set session data
+            # request.session['user'] = user
+            # request.session['organization'] = organization
+            
+        
         if user is not None:
             if user.is_active:
                 login(request, user)
-                serialized = UserSerializer(user)
-
-                return Response(serialized.data)
+                return Response({
+                    'user': UserSerializer(user).data,
+                    'organization': OrganizationSerializer(organization).data
+                });
             else:
                 print ('User is disabled')
                 return Response({
