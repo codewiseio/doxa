@@ -9,7 +9,7 @@ import RegistrationController from './registration.controller';
 import RegistrationService from './registration.service';
 
 // Attach UI-Router states
-let registrationModule = angular.module('doxa.registration', ['compareField'])
+let registrationModule = angular.module('doxa.registration', ['compareField','doxa.directives'])
     .config(RegistrationConfig)
     .controller('RegistrationController', RegistrationController)
     .service('RegistrationService', RegistrationService );

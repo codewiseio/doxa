@@ -7,6 +7,7 @@ User = get_user_model()
 
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
+from contacts.models import Contact, ContactManager
 from organizations.models import Organization
 from organizations.serializers import OrganizationSerializer
 from django.shortcuts import render
@@ -17,7 +18,38 @@ from doxa.exceptions import HttpException
 
 # Create your views here.
 class RegisterView(views.APIView):
-    
+
+
+    @transaction.atomic
+    def post(self, request, format=None):
+        # """ Handle post data to register user and organization."""
+        
+        data = request.data
+        
+        print( 'registering' )
+        print( data )
+        
+        # create database entries inside a transaction
+        try:
+            with transaction.atomic():
+                user = self._create_user_account(data)
+                organization = self._create_organization(data, user)
+                organization_contacts = self._create_organization_contacts(data, organization)
+        
+        except HttpException as e:
+            return Response(e.response, e.status)
+        
+        except Exception as e:
+            print ( e )
+            return Response({
+                    'status': 'Unknown Error',
+                    'message': 'Oops. Something bad happened.. {}'.format(e.args[1]),
+                    'details': e.args[1]
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # if we have reached this point everything completed successfully
+        return Response({'status':'Created'}, status=status.HTTP_201_CREATED)
+        
     def _create_user_account(self, data):
         """ Create a user account from given form data """
         
@@ -49,6 +81,8 @@ class RegisterView(views.APIView):
         return user
     
     def _create_organization(self,data,user):
+        """ Create an Organization based on user input and save to the database."""
+        
         data['owner'] = user.id
         serializer = OrganizationSerializer(data=data)
                 
@@ -65,31 +99,44 @@ class RegisterView(views.APIView):
                 'message': 'Account could not be created with received data.',
                 'details': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
-    
-    @transaction.atomic
-    def post(self, request, format=None):
-        data = request.data
         
-        print( 'registering' )
-        print( data )
+        return organization
         
-        # create database entries inside a transaction
-        try:
-            with transaction.atomic():
-                user = self._create_user_account(data.get('user'))
-                organization = self._create_organization(data.get('organization'), user)
+    def _create_organization_contacts(self, data, organization):
+        """ Create Contact entries for an organization and save to the database."""
         
-        except HttpException as e:
-            return Response(e.response, e.status)
+        contacts = {}
+        moniker='organization.{}'.format(organization.id)
         
-        except Exception as e:
-            print ( e )
-            return Response({
-                    'status': 'Unknown Error',
-                    'message': 'Oops. Something bad happened.. {}'.format(e.args[1]),
-                    'details': e.args[1]
-                }, status=status.HTTP_400_BAD_REQUEST)
+        # create email contact
+        email = ContactManager.email(
+            label="Primary Email",
+            address=data.get('email'),
+            primary=True,
+            moniker=moniker
+        )
         
-        # if we have reached this point everything completed successfully
-        return Response({'status':'Created'}, status=status.HTTP_201_CREATED)
+        contacts['email'] = Contact.objects.create( **email )
+        print('Created email contact for organization')
+        
+        # create telephone contact
+        telephone = ContactManager.telephone(
+            label="Primary Telephone",
+            address=data.get('telephone'),
+            primary=True,
+            moniker=moniker
+        );
+        contact = Contact.objects.create( **telephone )
+        print('Created telephone contact for organization')
+        
+        # create address contact
+        address = ContactManager.postaddress(
+            label="Primary Address",
+            country=data['country'],
+            primary=True,
+            moniker=moniker
+        );
+        contact = Contact.objects.create( **address )
+        print('Created postal address contact for organization')
+        
     

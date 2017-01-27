@@ -1,21 +1,20 @@
 import angular from 'angular';
 
-
-// Create the home module where our functionality can attach to
-let dashboardModule = angular.module('doxa.dashboard', []);
-
-// Attach UI-Router states
 import DashboardConfig from './dashboard.config';
-dashboardModule.config(DashboardConfig);
 
-// Attach controllers
 import DashboardController from './dashboard.controller';
-dashboardModule.controller('DashboardController', DashboardController);
-
-import AppbarController from './controllers/appbar.controller';
-dashboardModule.controller('AppbarController',AppbarController);
-
+import DashboardAppbarController from './controllers/appbar.controller';
+import DashboardOrganizationController from './controllers/organization.controller';
 import SidenavController from './controllers/sidenav.controller';
-dashboardModule.controller('SidenavController', SidenavController );
+
+import DashboardOrganizationService from './services/organization.service';
+
+let dashboardModule = angular.module('doxa.dashboard', [])
+    .config(DashboardConfig)
+    .controller('DashboardController', DashboardController)
+    .controller('DashboardAppbarController',DashboardAppbarController)
+    .controller('DashboardOrganizationController',DashboardOrganizationController)
+    .controller('SidenavController', SidenavController )
+    .service('DashboardOrganizationService',DashboardOrganizationService);
 
 export default dashboardModule;

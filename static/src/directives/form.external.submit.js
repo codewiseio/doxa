@@ -13,7 +13,7 @@ export default class externalSubmit {
                 $element.triggerHandler('submit'); 
               }, 0);   
             }
-        })
+        });
     }
     
     // Create an instance so that we can access this inside link

@@ -9,7 +9,7 @@ from django.db import models
 
 class ContactManager():
     
-    def address(moniker,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
+    def postaddress(moniker=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
         return {
             'kind':'postal-address',
             
@@ -17,7 +17,7 @@ class ContactManager():
             'label':label,
             'type':type,
             'subtype':subtype,
-            'primary':primary
+            'primary':primary,
             
             'data1':street,
             'data2':municipality,
@@ -26,7 +26,7 @@ class ContactManager():
             'data5':country
         }
     
-    def email(moniker,address,label=None,type=None,subtype=None,primary=False)':
+    def email(moniker,address,label=None,type=None,subtype=None,primary=False):
         return {
             'kind': 'email',
             'moniker':moniker,
@@ -40,7 +40,7 @@ class ContactManager():
     
     def telephone(moniker,address,label=None,type=None,subtype=None,primary=False):
         return {
-            'kind' : 'telephone'
+            'kind' : 'telephone',
             'moniker':moniker,
             'label':label,
             'type':type,
@@ -57,7 +57,7 @@ class Contact(models.Model, CreatedModifiedMixin):
     label = models.CharField(max_length=64,null=True,blank=True)
     type = models.CharField(max_length=32,null=True,blank=True)
     subtype = models.CharField(max_length=32,null=True,blank=True)
-    primary = models.BooleanField(null=True,blank=True)
+    primary = models.BooleanField(blank=True,default=False)
     
     data1 = models.CharField(max_length=64,null=True,blank=True)
     data2 = models.CharField(max_length=64,null=True,blank=True)

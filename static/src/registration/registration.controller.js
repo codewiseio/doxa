@@ -20,8 +20,9 @@ class RegistrationController {
     
     this.errors = [];
     
-    this.user = {};
-    this.organization = {};
+    //this.user = {};
+    //this.organization = {};
+    this.formData = {};
     
     // If the user is authenticated they should not be here
     if (AuthenticationService.isAuthenticated()) {
@@ -49,6 +50,10 @@ class RegistrationController {
     });
   }
 
+  countrySelectedItemChange(item) {
+    this.formData.country = item.value;
+  }
+
   /**
   * @name registerOrganiationAndAccountOwner
   * @desc Register a new organization and account owner
@@ -59,7 +64,7 @@ class RegistrationController {
     if ( isValid )
     {
       console.log('Registering...')
-      this.RegistrationService.registerOrganization(this.organization, this.user)
+      this.RegistrationService.registerOrganization(this.formData)
         .then(
             (response) => {
                 console.log('Successfully registered user.');
@@ -107,16 +112,7 @@ class RegistrationController {
     }
   }
   
-  /**
-  * @name submitForm
-  * @desc Submits a given form using the form id
-  * @param {object} id The user data entered by the user
-  * @returns {Promise}
-  * @memberOf doxa.registration.controller
-  */
-  submitForm(id="signup-form") {
-    this.$rootScope.$broadcast('submit-form',{'id':'signup-form'} );
-  }
+
   
 }
 

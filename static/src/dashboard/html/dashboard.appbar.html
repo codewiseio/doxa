@@ -1,4 +1,4 @@
-<md-toolbar class="appbar" class="md-hue-2" ng-controller="AppbarController as $ctrl">
+<md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
     <md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.toggleSidebar()">
         <md-icon>menu</md-icon>
@@ -15,7 +15,7 @@
           <md-menu-content width="4">
             
             <md-menu-item>
-              <md-button ng-click="$ctrl.logout()">
+              <md-button ui-sref="dashboard.organization">
                   <div layout="row" flex="">
                     <p flex="">My account</p>
                   </div>

@@ -32,8 +32,7 @@ angular.module( "doxa", [
                 'doxa.registration',
                 'doxa.directives',
                 ngMessages,
-                ngCookies,
-                //externalSubmit
+                ngCookies
     ])
     .config(routing);
 

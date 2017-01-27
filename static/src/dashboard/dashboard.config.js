@@ -1,5 +1,6 @@
 //@require "./html/*.html"
 require('../assets/css/dashboard.less');
+require('../common/html/form.appbar.html');
 
 export default function DashboardConfig($stateProvider, $mdThemingProvider) {
   'ngInject';
@@ -14,7 +15,29 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
       })
       .state('dashboard.home',  {
         url: '',
-        templateUrl: 'dashboard.home.html',
+        //templateUrl: 'dashboard.home.html',
+        views : {
+          'appbar': {
+            controller: 'DashboardAppbarController as $ctrl',
+            templateUrl: 'dashboard.appbar.html'
+          },
+          '': { templateUrl: 'dashboard.home.html' }
+        }
+      })
+      .state('dashboard.organization', {
+        url: '/organization',
+        //templateUrl: 'dashboard.organization.html',
+        //controller: 'DashboardOrganizationController',
+        views : {
+          'appbar': {
+            templateUrl: 'form.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.organization.html',
+            controller: 'DashboardOrganizationController as $ctrl',
+          }
+        }
       });
 
     /**

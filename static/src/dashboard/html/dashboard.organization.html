@@ -1,0 +1,117 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="edit-organization">
+  <main class="card-collection">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Church Details</span>
+      </md-card-title-text> 
+    </md-card-title>
+    <md-card-content>
+    
+    <div layout="column">
+          
+        <div layout="column" layout-gt-xs="row">
+            <md-input-container flex-gt-xs="66">
+              <label>Church or Organization Name</label>
+              <input required name="title" ng-model="$ctrl.organization.title" type="text" />
+            </md-input-container>
+            
+            <md-input-container flex-gt-xs="auto">
+                <label>Size</label>
+                <md-select required name="size" ng-model="$ctrl.organization.size">
+                <md-option ng-repeat="item in $ctrl.organizationSizeOptions" value="{{item.value}}">
+                  {{item.display}}
+                </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        
+        <md-input-container flex>
+          <label>Description</label>
+            <label for="name">Description</label>
+            <textarea name="description" ng-model="$ctrl.item.description" rows="3" md-select-on-focus></textarea>
+        </md-input-container>
+      </div>
+    </md-card-content>
+    </md-card>
+    
+    
+    <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Contact Information</span>
+      </md-card-title-text> 
+    </md-card-title>
+    <md-card-content>
+        <md-input-container class="md-block">
+          <label>Email</label>
+          <input required name="email" ng-model="$ctrl.user.email" type="email" />
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-xs="auto">
+              <label>Telephone</label>
+              <input required name="telephone" ng-model="$ctrl.organization.telephone" type="telephone" />
+        </md-input-container>
+    </md-card-content>
+    
+    </md-card>
+    
+    
+    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Location</span>
+      </md-card-title-text> 
+    </md-card-title>
+    <md-card-content>
+
+      <div layout="column" layout-gt-xs="row">
+          <md-autocomplete flex-gt-xs="40" required 
+              md-input-name="country"
+              md-selected-item="$ctrl.organization.country"
+              md-search-text="$ctrl.countrySearchText"
+              md-items="item in $ctrl.querySearch($ctrl.countrySearchText)"
+              md-item-text="item.display"
+              md-min-length="0"
+              md-floating-label="Country">
+              <md-item-template>
+                <span md-highlight-text="$ctrl.countrySearchText" md-highlight-flags="^i">{{item.display}}</span>
+              </md-item-template>
+              <md-not-found>
+                No countries matching "{{$ctrl.countrySearchText}}" were found.
+              </md-not-found>
+          </md-autocomplete>
+
+          <md-input-container flex-gt-xs="auto" class="md-block">
+            <label>Address</label>
+            <input required name="address" ng-model="$ctrl.organization.address"/>
+          </md-input-container>
+      </div>
+          
+      <div layout="column" layout-gt-xs="row">
+          <md-input-container flex-gt-xs="50" class="md-block">
+            <label>Municipality</label>
+            <input required name="municipality" ng-model="$ctrl.organization.municipality"/>
+          </md-input-container>
+          
+         <md-input-container flex-gt-xs="25" class="md-block">
+            <label>Region</label>
+            <input required name="region" ng-model="$ctrl.organization.region"/>
+          </md-input-container>
+            
+          <md-input-container flex-gt-xs="25" class="md-block">
+            <label>Postalcode</label>
+            <input required name="postalcode" ng-model="$ctrl.organization.postalcode"/>
+          </md-input-container>
+      </div>
+    </md-card-content>
+    
+    </md-card>
+  </main
+</form>
+       
+<!--<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="save">
+  <md-icon>save</md-icon>
+</md-button>-->

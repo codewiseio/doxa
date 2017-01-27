@@ -1,4 +1,4 @@
-class AuthenticationService {
+export default class AuthenticationService {
    constructor($http, $cookies) {
       'ngInject';
       
@@ -97,5 +97,3 @@ class AuthenticationService {
    }
 }
 
-//AuthenticationService.$inject['$http','$cookies'];
-export default AuthenticationService;

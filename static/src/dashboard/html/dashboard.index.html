@@ -1,12 +1,20 @@
 <div class="clearfix"></div>
 
-<ng-include src="'dashboard.appbar.html'" ></ng-include>
+<div class="dashboard">
 
-<div flex layout="row" class="dashboard">
+<div flex class="appbar" ui-view="appbar" layout="column" flex>
+    
+</div>
+     
 
+
+<div flex layout="row" id="dashboard-content">
+       
     <ng-include src="'dashboard.sidenav.html'"></ng-include>
 
     <!-- Container #4 -->
-    <md-content flex id="dashboard-content" ui-view="" class="md-padding" layout="column"></md-content>
+    <md-content flex ui-view="" class="md-padding" layout="column"></md-content>
+
+</div>
 
 </div>

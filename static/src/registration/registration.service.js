@@ -13,13 +13,9 @@ export default class RegistrationService {
     * @returns {Promise}
     * @memberOf doxa.registration.service
     */
-    registerOrganization(organization, user){
-        console.log('Registeration Service');
-        console.log(organization);
-        console.log(user);
-        
+    registerOrganization(data){
         // create new user and organization
-        return this.$http.post('/api/v1/register/', {'user': user, 'organization': organization} );
+        return this.$http.post('/api/v1/register/', data );
 
     }
 }
