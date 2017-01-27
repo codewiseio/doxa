@@ -4,10 +4,14 @@ from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from core.models import CreatedModifiedMixin
 
+
 # Create your models here.# Create your models here.
 from django.db import models
+import inspect
 
 class ContactManager():
+    
+
     
     def postaddress(moniker=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
         return {
@@ -34,7 +38,6 @@ class ContactManager():
             'type':type,
             'subtype':subtype,
             'primary':primary,
-            
             'data1':address
         }
     
@@ -69,7 +72,29 @@ class Contact(models.Model, CreatedModifiedMixin):
     data8 = models.CharField(max_length=64,null=True,blank=True)
     data9 = models.CharField(max_length=64,null=True,blank=True)
     data10 = models.TextField(blank=True,null=True)
+    
+    def serialize(self):
+        data = {
+            'moniker':self.moniker,
+            'label':self.label,
+            'type':self.type,
+            'subtype':self.subtype,
+            'primary':self.primary
+        }
+        
+        if self.kind == 'postaddress':
+            data['street'] = self.data1
+            data['municipality'] = self.data2
+            data['region'] = self.data3
+            data['postcode'] = self.data4
+            data['country'] = self.data5
+        elif self.kind == 'telephone':
+            data['address'] = self.data1
+        elif self.kind == 'email':
+            data['address'] = self.data1
+            
+        return data
                
-    def __unicode__(self):
-        return self.kind
+    def __str__(self):
+        return "<Contact: {} {}>".format(self.moniker, self.kind)
     

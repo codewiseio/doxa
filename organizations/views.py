@@ -2,6 +2,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
+from contacts.models import Contact, ContactManager
 from organizations.models import Organization
 from organizations.permissions import IsAdministratorOfOrganization
 from organizations.serializers import OrganizationSerializer
@@ -21,11 +22,22 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         organization = get_object_or_404(queryset, pk=pk)
         serializer = OrganizationSerializer(organization)
         
-        context = request.data.get('context',None)
+        context = request.GET.get('context',None)
         
-        print (serializer.data)
+        serialized_organization = serializer.data
+        serialized_organization['contacts'] = {}
         
-        return Response(serializer.data)
+        if context == 'dashboard.organization.edit':
+            # get primary contact details
+            moniker = 'organization.{}'.format(organization.id)
+            contacts = Contact.objects.filter(moniker=moniker, primary=True)
+            for contact in contacts:
+                serialized_contact = contact.serialize()
+                serialized_organization['contacts'][contact.kind] = serialized_contact
+
+        print (serialized_organization)
+        
+        return Response(serialized_organization)
     
 
 def perform_create(self, serializer):

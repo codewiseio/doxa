@@ -10,10 +10,7 @@ export default class DashboardOrganizationController {
     this.$mdToast = $mdToast;
     
     this.title = $state.current.title;
-    this.countryOptions = countryOptions;
-    this.countrySelectedItem  = null;
-    this.countrySearchText    = null;
-    
+
     this.organizationSizeOptions = organizationSizeOptions;
     
     this.errors = [];
@@ -27,6 +24,7 @@ export default class DashboardOrganizationController {
     this.DashboardOrganizationService.get(id).then(
         (response) => {
           this.organization = response.data;
+          console.log(this.organization);
         },
         (err) => {
           console.log('Error fetching organization data.');
@@ -34,28 +32,6 @@ export default class DashboardOrganizationController {
         }
     );
   }
-
-  
-  /*
-   * Search through list of countries
-   * */
-  querySearch(query) {
-    console.log(query);
-    // create filter
-    var lowercaseQuery = angular.lowercase(query);
-    console.log(query);
-    console.log(lowercaseQuery);
-    var filter = function filterFn(item) {
-      return item.display.toLowerCase().indexOf(lowercaseQuery) >= 0;
-    };
-    var results = query ? this.countryOptions.filter( filter ) : this.countryOptions;
-
-    return new Promise ( function(resolve,reject) {
-      resolve(results);
-      console.log(results);
-    });
-  }
-  
 
   
 }

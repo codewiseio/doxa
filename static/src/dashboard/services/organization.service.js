@@ -19,7 +19,9 @@ export default class DashboardOrganizationService {
     */
     get(id) {
       return this.$http.get(`/api/v1/organizations/${id}/`,{
-         'context':'dashboard.edit'
+         params: {
+           context: 'dashboard.organization.edit',
+         }
       });
    }
    

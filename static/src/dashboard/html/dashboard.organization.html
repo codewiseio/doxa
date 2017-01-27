@@ -48,11 +48,11 @@
     <md-card-content>
         <md-input-container class="md-block">
           <label>Email</label>
-          <input required name="email" ng-model="$ctrl.user.email" type="email" />
+          <input required name="email" ng-model="$ctrl.organization.contacts.email.address" type="email" />
         </md-input-container>
         <md-input-container class="md-block" flex-gt-xs="auto">
               <label>Telephone</label>
-              <input required name="telephone" ng-model="$ctrl.organization.telephone" type="telephone" />
+              <input required name="telephone" ng-model="$ctrl.organization.contacts.telephone.address" type="telephone" />
         </md-input-container>
     </md-card-content>
     
@@ -68,42 +68,30 @@
     <md-card-content>
 
       <div layout="column" layout-gt-xs="row">
-          <md-autocomplete flex-gt-xs="40" required 
-              md-input-name="country"
-              md-selected-item="$ctrl.organization.country"
-              md-search-text="$ctrl.countrySearchText"
-              md-items="item in $ctrl.querySearch($ctrl.countrySearchText)"
-              md-item-text="item.display"
-              md-min-length="0"
-              md-floating-label="Country">
-              <md-item-template>
-                <span md-highlight-text="$ctrl.countrySearchText" md-highlight-flags="^i">{{item.display}}</span>
-              </md-item-template>
-              <md-not-found>
-                No countries matching "{{$ctrl.countrySearchText}}" were found.
-              </md-not-found>
-          </md-autocomplete>
+          <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts.postaddress.country">
+          </select-country>
+         
 
           <md-input-container flex-gt-xs="auto" class="md-block">
             <label>Address</label>
-            <input required name="address" ng-model="$ctrl.organization.address"/>
+            <input required name="address" ng-model="$ctrl.organization.contacts.postaddress.street"/>
           </md-input-container>
       </div>
           
       <div layout="column" layout-gt-xs="row">
           <md-input-container flex-gt-xs="50" class="md-block">
             <label>Municipality</label>
-            <input required name="municipality" ng-model="$ctrl.organization.municipality"/>
+            <input required name="municipality" ng-model="$ctrl.organization.contacts.postaddress.municipality"/>
           </md-input-container>
           
          <md-input-container flex-gt-xs="25" class="md-block">
             <label>Region</label>
-            <input required name="region" ng-model="$ctrl.organization.region"/>
+            <input required name="region" ng-model="$ctrl.organization.contacts.postaddress.region"/>
           </md-input-container>
             
           <md-input-container flex-gt-xs="25" class="md-block">
             <label>Postalcode</label>
-            <input required name="postalcode" ng-model="$ctrl.organization.postalcode"/>
+            <input required name="postalcode" ng-model="$ctrl.organization.contacts.postaddress.postcode"/>
           </md-input-container>
       </div>
     </md-card-content>
