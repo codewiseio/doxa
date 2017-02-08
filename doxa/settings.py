@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'authentication',
     'organizations',
-    'contacts'
+    'contacts',
+    'foo'
 ]
 
 AUTH_USER_MODEL = 'authentication.User'

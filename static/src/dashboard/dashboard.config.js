@@ -38,6 +38,36 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
             controller: 'DashboardOrganizationController as $ctrl',
           }
         }
+      })
+      .state('dashboard.members', {
+        url: '/members',
+        //templateUrl: 'dashboard.organization.html',
+        //controller: 'DashboardOrganizationController',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.members.html',
+            //controller: 'DashboardOrganizationController as $ctrl',
+          }
+        }
+      })
+      .state('dashboard.member', {
+        url: '/member/:id',
+        //templateUrl: 'dashboard.organization.html',
+        //controller: 'DashboardOrganizationController',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.member.html',
+            //controller: 'DashboardOrganizationController as $ctrl',
+          }
+        }
       });
 
     /**

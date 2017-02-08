@@ -1,0 +1,46 @@
+.fixed-appbar .appbar {
+  position: fixed;
+}
+.fixed-appbar md-content {
+  margin-top: 48px;
+}
+.date-picker {
+  padding-right: 18px;
+  height: 58px !important;
+  margin-top: 18px !important;
+}
+.date-picker label {
+  left: 33px !important;
+  right: 0 !important;
+  width: calc(67%) !important;
+}
+.date-picker md-datepicker {
+  display: inline-block;
+  width: 100%;
+  margin-left: 26px;
+  height: 0;
+}
+.date-picker md-datepicker .md-datepicker-button {
+  float: left;
+  margin-top: -12.5px;
+  margin-left: -33px;
+}
+.date-picker md-datepicker .md-datepicker-input-container {
+  width: 100%;
+  top: -14px;
+  right: 17px;
+}
+.date-picker md-datepicker .md-datepicker-input-container .md-datepicker-input {
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+.date-picker md-datepicker .md-datepicker-input-container .md-datepicker-expand-triangle {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid;
+}
+.date-picker .md-input-messages-animation .md-input-message-animation {
+  opacity: 1;
+  margin-top: 6px !important;
+  margin-left: 34px !important;
+}

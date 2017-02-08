@@ -1,7 +1,7 @@
 <!-- form-profile.html -->
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-<form external-submit id="edit-organization">
+<form external-submit id="edit-organization" ng-submit="$ctrl.save()" go-back="dashboard.home()">
   <main class="card-collection">
     <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
     <md-card-title>
@@ -14,6 +14,7 @@
     <div layout="column">
           
         <div layout="column" layout-gt-xs="row">
+          <input type="hidden" ng-model="$ctrl.organization.id">
             <md-input-container flex-gt-xs="66">
               <label>Church or Organization Name</label>
               <input required name="title" ng-model="$ctrl.organization.title" type="text" />
@@ -46,13 +47,24 @@
       </md-card-title-text> 
     </md-card-title>
     <md-card-content>
+      
+      
         <md-input-container class="md-block">
           <label>Email</label>
-          <input required name="email" ng-model="$ctrl.organization.contacts.email.address" type="email" />
+          <input required name="email" ng-model="$ctrl.organization.contacts[0].address" type="email" />
         </md-input-container>
+        <md-input-container class="md-block">
+          <label>Type</label>
+          <md-select name="type" ng-model="$ctrl.organization.contacts[0].type">
+          <md-option ng-repeat="item in $ctrl.contactTypeOptions.email" value="{{item.value}}">
+            {{item.display}}
+          </md-option>
+          </md-select>
+        </md-input-container>
+        
         <md-input-container class="md-block" flex-gt-xs="auto">
               <label>Telephone</label>
-              <input required name="telephone" ng-model="$ctrl.organization.contacts.telephone.address" type="telephone" />
+              <input required name="telephone" ng-model="$ctrl.organization.contacts[1].address" type="telephone" />
         </md-input-container>
     </md-card-content>
     
@@ -68,36 +80,39 @@
     <md-card-content>
 
       <div layout="column" layout-gt-xs="row">
-          <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts.postaddress.country">
+          <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts[2].country">
           </select-country>
          
 
           <md-input-container flex-gt-xs="auto" class="md-block">
             <label>Address</label>
-            <input required name="address" ng-model="$ctrl.organization.contacts.postaddress.street"/>
+            <input required name="address" ng-model="$ctrl.organization.contacts[2].street"/>
           </md-input-container>
       </div>
           
       <div layout="column" layout-gt-xs="row">
           <md-input-container flex-gt-xs="50" class="md-block">
             <label>Municipality</label>
-            <input required name="municipality" ng-model="$ctrl.organization.contacts.postaddress.municipality"/>
+            <input required name="municipality" ng-model="$ctrl.organization.contacts[2].municipality"/>
           </md-input-container>
           
          <md-input-container flex-gt-xs="25" class="md-block">
             <label>Region</label>
-            <input required name="region" ng-model="$ctrl.organization.contacts.postaddress.region"/>
+            <input required name="region" ng-model="$ctrl.organization.contacts[2].region"/>
           </md-input-container>
             
           <md-input-container flex-gt-xs="25" class="md-block">
             <label>Postalcode</label>
-            <input required name="postalcode" ng-model="$ctrl.organization.contacts.postaddress.postcode"/>
+            <input required name="postalcode" ng-model="$ctrl.organization.contacts[2].postcode"/>
           </md-input-container>
       </div>
     </md-card-content>
     
     </md-card>
-  </main
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+  
 </form>
        
 <!--<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="save">

@@ -1,0 +1,7 @@
+<form external-submit id="edit-organization" ng-submit="$ctrl.save()" go-back="dashboard.home()">
+    <input type="hidden" ng-model="$ctrl.item.id"/>
+    <input required name="title" ng-model="$ctrl.item.title" type="text" />
+    <button type="submit">Submit</button>
+</form>
+
+{{$ctrl.item}}

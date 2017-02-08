@@ -20,7 +20,11 @@ import './dashboard';
 import './landing-page';
 import './registration';
 
+import './foo';
+
 import './directives/index';
+
+require('./assets/css/default.less');
 
 /* App Dependencies */
 angular.module( "doxa", [
@@ -31,6 +35,7 @@ angular.module( "doxa", [
                 'doxa.landing-page',
                 'doxa.registration',
                 'doxa.directives',
+                'doxa.foo',
                 ngMessages,
                 ngCookies
     ])

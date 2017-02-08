@@ -3,54 +3,15 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from core.models import CreatedModifiedMixin
+from doxa.exceptions import StorageException
+
+
 
 
 # Create your models here.# Create your models here.
 from django.db import models
 import inspect
 
-class ContactManager():
-    
-
-    
-    def postaddress(moniker=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
-        return {
-            'kind':'postal-address',
-            
-            'moniker':moniker,
-            'label':label,
-            'type':type,
-            'subtype':subtype,
-            'primary':primary,
-            
-            'data1':street,
-            'data2':municipality,
-            'data3':region,
-            'data4':postcode,
-            'data5':country
-        }
-    
-    def email(moniker,address,label=None,type=None,subtype=None,primary=False):
-        return {
-            'kind': 'email',
-            'moniker':moniker,
-            'label':label,
-            'type':type,
-            'subtype':subtype,
-            'primary':primary,
-            'data1':address
-        }
-    
-    def telephone(moniker,address,label=None,type=None,subtype=None,primary=False):
-        return {
-            'kind' : 'telephone',
-            'moniker':moniker,
-            'label':label,
-            'type':type,
-            'subtype':subtype,
-            'primary':primary,
-            'data1':address
-        }
 
 class Contact(models.Model, CreatedModifiedMixin):    
     
@@ -75,11 +36,13 @@ class Contact(models.Model, CreatedModifiedMixin):
     
     def serialize(self):
         data = {
+            'id':self.id,
             'moniker':self.moniker,
             'label':self.label,
             'type':self.type,
             'subtype':self.subtype,
-            'primary':self.primary
+            'primary':self.primary,
+            'kind':self.kind
         }
         
         if self.kind == 'postaddress':
@@ -94,6 +57,9 @@ class Contact(models.Model, CreatedModifiedMixin):
             data['address'] = self.data1
             
         return data
+    
+    
+            
                
     def __str__(self):
         return "<Contact: {} {}>".format(self.moniker, self.kind)

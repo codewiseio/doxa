@@ -3,6 +3,7 @@ from django.contrib import admin
 from core import views
 from .views import IndexView
 from organizations.views import OrganizationViewSet
+from foo.views import FooViewSet
 
 from rest_framework_nested import routers
 from authentication.views import LoginView,LogoutView,UserViewSet
@@ -11,6 +12,7 @@ from registration.views import RegisterView
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet )
 router.register(r'organizations', OrganizationViewSet )
+router.register(r'foo', FooViewSet )
 
 urlpatterns = [
     url(r'^kubernesis/', admin.site.urls),

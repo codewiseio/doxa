@@ -1,0 +1,42 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="edit-organization" ng-submit="$ctrl.save()">
+  <main class="card-collection">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">365 Members</span>
+      </md-card-title-text> 
+    </md-card-title>
+    <md-card-content>
+    
+    <md-list class="member-list">
+        <!-- List item #1 -->
+        <md-list-item>
+          <md-button>
+            Lia Luogo
+          </md-button>
+        </md-list-item>
+
+        <!-- List item #2 -->
+        <md-list-item>
+          <md-button>
+            Lawrence Ray
+          </md-button>
+        </md-list-item>
+
+      </md-list>
+   
+    </md-card-content>
+    
+    </md-card>
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+  
+</form>
+       
+<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add" ui-sref="dashboard.member()">
+  <md-icon>add</md-icon>
+</md-button>

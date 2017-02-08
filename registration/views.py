@@ -7,7 +7,8 @@ User = get_user_model()
 
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
-from contacts.models import Contact, ContactManager
+from contacts.models import Contact
+from contacts.managers import ContactManager
 from organizations.models import Organization
 from organizations.serializers import OrganizationSerializer
 from django.shortcuts import render

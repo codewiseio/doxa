@@ -46,8 +46,6 @@ export default class DashboardAppbarController {
     * @memberOf doxa.registration.controller
     */
     submitForm(id) {
-        console.log( $('form') );
-        
         // if no form id given, use the first form in the content area
         if ( ! id ) {
             id = $('form')[0].id;
@@ -55,5 +53,23 @@ export default class DashboardAppbarController {
         
         console.log('submitting-form ' + id);
         this.$rootScope.$broadcast('submit-form',{'id':id} );
+    }
+    
+    /**
+     * @name goBack
+     * @desc Return to previous page
+     * @memberOf doxa.dashboard.controllers.appbar
+     **/
+    goBack() {
+        //var destination = $('form').attr('go-back');
+        //if ( destination ) {
+        //    console.log('Going to '+destination);
+        //    this.$state.go(destination);
+        //    
+        //}
+        //else {
+            window.history.back();
+        //}
+        
     }
 }

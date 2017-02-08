@@ -25,5 +25,24 @@ export default class DashboardOrganizationService {
       });
    }
    
+   /**
+    * @name save
+    * @description Save data for an organization
+    * @param {object} Organization object
+    * @returns {Promise}
+    * @memberOf doxa.dashboard.services.organization
+    */
+   save(data) {
+      console.log('Saving');
+      console.log(data);
+      
+      if ( data.id ) {
+         return this.$http.patch(`/api/v1/organizations/${data.id}/`, data );
+      }
+      else {
+         return this.$http.post(`/api/v1/organizations/`, data );
+      }
+   }
+   
 }
 

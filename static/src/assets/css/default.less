@@ -7,3 +7,53 @@
         margin-top: 48px;
     }
 }
+
+.date-picker {
+    padding-right : 18px;
+    height        : 58px !important;
+    margin-top    : 18px !important;
+
+    label {
+        left  : 33px !important;
+        right : 0 !important;
+        width : calc(100% - 33px) !important;
+    }
+
+    md-datepicker {
+        display     : inline-block;
+        width       : 100%;
+        margin-left : 26px;
+        height      : 0;
+
+        .md-datepicker-button {
+            float       : left;
+            margin-top  : -12.5px;
+            margin-left : -33px;
+        }
+
+        .md-datepicker-input-container {
+            width : 100%;
+            top   : -14px;
+            right : 17px;
+
+            .md-datepicker-input {
+                max-width : 100% !important;
+                min-width : 100% !important;
+            }
+
+            .md-datepicker-expand-triangle {
+                border-left  : 4px solid transparent;
+                border-right : 4px solid transparent;
+                border-top   : 4px solid;
+            }
+        }
+    }
+
+    .md-input-messages-animation {
+        .md-input-message-animation {
+            opacity     : 1;
+            margin-top  : 6px !important;
+            margin-left : 34px !important;
+        }
+    }
+}

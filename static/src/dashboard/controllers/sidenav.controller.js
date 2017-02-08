@@ -17,10 +17,10 @@ class SidenavController {
                 state:"dashboard.organization()"
             },
             {
-                label: 'Contacts',
+                label: 'Members',
                 type: 'link',
                 icon: 'people',
-                state: 'dashboard.home()'
+                state: 'dashboard.members()'
             },
         ];
 
