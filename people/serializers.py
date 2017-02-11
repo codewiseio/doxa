@@ -1,19 +1,17 @@
 from rest_framework import serializers
 
-from authentication.serializers import UserSerializer
-from organizations.models import Organization
+from people.models import Person
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
 
     class Meta:
-        model = Organization
+        model = Person
 
-        fields = ('id','title','description','size','owner')
+        fields = (
+            'id','first_name','middle_name','last_name',
+            'gender','marital_status','number_of_children','birthday')
+        
         read_only_fields = ['id']
 
-    def get_validation_exclusions(self, *args, **kwargs):
-        exclusions = super(OrganizationSerializer, self).get_validation_exclusions()
-
-        return exclusions + ['author']

@@ -15,7 +15,7 @@ import inspect
 
 class Contact(models.Model, CreatedModifiedMixin):    
     
-    moniker = models.CharField(max_length=64,null=True,blank=True) 
+    owner = models.CharField(max_length=64,null=True,blank=True) 
     
     kind = models.CharField(max_length=32,null=True,blank=True) 
     label = models.CharField(max_length=64,null=True,blank=True)
@@ -37,7 +37,7 @@ class Contact(models.Model, CreatedModifiedMixin):
     def serialize(self):
         data = {
             'id':self.id,
-            'moniker':self.moniker,
+            'owner':self.owner,
             'label':self.label,
             'type':self.type,
             'subtype':self.subtype,
@@ -62,5 +62,5 @@ class Contact(models.Model, CreatedModifiedMixin):
             
                
     def __str__(self):
-        return "<Contact: {} {}>".format(self.moniker, self.kind)
+        return "<Contact: {} {}>".format(self.owner, self.kind)
     

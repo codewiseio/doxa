@@ -107,14 +107,14 @@ class RegisterView(views.APIView):
         """ Create Contact entries for an organization and save to the database."""
         
         contacts = {}
-        moniker='organization.{}'.format(organization.id)
+        slug ='organization.{}'.format(organization.id)
         
         # create email contact
         email = ContactManager.email(
             label="Primary Email",
             address=data.get('email'),
             primary=True,
-            moniker=moniker
+            owner=slug
         )
         
         contacts['email'] = Contact.objects.create( **email )
@@ -125,7 +125,7 @@ class RegisterView(views.APIView):
             label="Primary Telephone",
             address=data.get('telephone'),
             primary=True,
-            moniker=moniker
+            owner=slug
         );
         contact = Contact.objects.create( **telephone )
         print('Created telephone contact for organization')
@@ -135,7 +135,7 @@ class RegisterView(views.APIView):
             label="Primary Address",
             country=data['country'],
             primary=True,
-            moniker=moniker
+            owner=slug
         );
         contact = Contact.objects.create( **address )
         print('Created postal address contact for organization')

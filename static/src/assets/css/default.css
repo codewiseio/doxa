@@ -44,3 +44,6 @@
   margin-top: 6px !important;
   margin-left: 34px !important;
 }
+.md-select-placeholder {
+  font-weight: bold;
+}

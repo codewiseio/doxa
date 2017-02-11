@@ -1,39 +1,22 @@
 class FooController {
-  constructor( FooService, $stateParams ) {
-    'ngInject';
+    constructor( FooService, $rootScope ) {
+      'ngInject';
+      
+      this.FooService = FooService;
+      this.$rootScope = $rootScope;
+      this.item = {};   
     
-    this.FooService = FooService;
-    this.$stateParams = $stateParams;
-    
-    console.log( $stateParams );
-    
-    if ( this.$stateParams.id ) {
-      this.FooService.get(this.$stateParams.id)
-        .then(
-           (response) => {
-            this.item = response.data;
-           }
-          );
-                                                                ;
     }
-    else {
-      this.item = {};
-    }
-    
-
-  }
   
-  save() {
-      this.FooService.save(this.item).then(
-          (response) => {
-            console.log('Saved data');
-            console.log(response);
-          },
-          (err) => {
-            console.log('Error saving data.');
-            console.log(err);
-          }
-      );
+    save() {
+      console.log('Save triggered');
+      alert('Save triggered');
+    }
+    
+    submitForm(id) {
+        // if no form id given, use the first form in the content area
+        if ( ! id ) id = $('form')[0].id;
+        this.$rootScope.$broadcast('submit-form',{'id':id} );
     }
   
 }

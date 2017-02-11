@@ -56,16 +56,15 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
       })
       .state('dashboard.member', {
         url: '/member/:id',
-        //templateUrl: 'dashboard.organization.html',
-        //controller: 'DashboardOrganizationController',
+        title: 'Member',
         views : {
           'appbar': {
-            templateUrl: 'dashboard.appbar.html',
+            templateUrl: 'form.appbar.html',
             controller: 'DashboardAppbarController as $ctrl',
           },
           '': {
             templateUrl: 'dashboard.member.html',
-            //controller: 'DashboardOrganizationController as $ctrl',
+            controller: 'DashboardMemberController as $ctrl',
           }
         }
       });

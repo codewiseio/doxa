@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from core import views
 from .views import IndexView
+from members.views import MemberViewSet
 from organizations.views import OrganizationViewSet
 from foo.views import FooViewSet
 
@@ -11,6 +12,7 @@ from registration.views import RegisterView
 
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet )
+router.register(r'members', MemberViewSet )
 router.register(r'organizations', OrganizationViewSet )
 router.register(r'foo', FooViewSet )
 

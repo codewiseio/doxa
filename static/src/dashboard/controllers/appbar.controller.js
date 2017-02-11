@@ -2,10 +2,12 @@ export default class DashboardAppbarController {
     constructor(AuthenticationService, $state, $location, $mdSidenav, $rootScope) {
       'ngInject';
       
-      this.title = 'Doxa Dashboard';
+
       this.$state = $state;
       this.$location = $location;
       this.$rootScope = $rootScope;
+
+      this.title = $state.current.title;
       
       this.AuthenticationService = AuthenticationService;
       this.$mdSidenav = $mdSidenav;
@@ -52,6 +54,7 @@ export default class DashboardAppbarController {
         }
         
         console.log('submitting-form ' + id);
+        
         this.$rootScope.$broadcast('submit-form',{'id':id} );
     }
     

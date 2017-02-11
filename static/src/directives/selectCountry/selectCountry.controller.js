@@ -1,4 +1,4 @@
-import options from '../../assets/json/countries.json';
+import options from './countries.json';
 
 export default class SelectCountryController {
   constructor($parse, $attrs, $scope) {

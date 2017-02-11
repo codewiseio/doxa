@@ -1,5 +1,5 @@
-import countryOptions from '../../assets/json/countries.json';
-import organizationSizeOptions from '../../assets/json/organization.size.json';
+//import countryOptions from '../../assets/json/formOptions/countries.json';
+import organizationSizeOptions from '../../assets/json/formOptions/organization.size.json';
 
 export default class DashboardOrganizationController {
   constructor(DashboardOrganizationService, $cookies, $state, $mdToast) {

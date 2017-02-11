@@ -1,5 +1,5 @@
-import countryOptions from '../assets/json/countries.json';
-import organizationSizeOptions from '../assets/json/organization.size.json';
+//import countryOptions from '../assets/json/formOptions/countries.json';
+import organizationSizeOptions from '../assets/json/formOptions/organization.size.json';
 
 class RegistrationController {
   constructor(AuthenticationService, RegistrationService, $state, $timeout, $location, $q, $rootScope, $mdToast) {
@@ -12,7 +12,7 @@ class RegistrationController {
     this.$mdToast = $mdToast;
     
     this.title = $state.current.title;
-    this.countryOptions = countryOptions;
+    //this.countryOptions = countryOptions;
     this.countrySelectedItem  = null;
     this.countrySearchText    = null;
     

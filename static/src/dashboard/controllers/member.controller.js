@@ -1,36 +1,62 @@
+import personTitleOptions from '../../assets/json/formOptions/person.title.json';
+
 export default class DashboardMemberController {
-  constructor(DashboardMemberService, $state, $stateParams, $mdToast) {
+  constructor(DashboardMemberService, $cookies, $state, $stateParams, $mdToast) {
     'ngInject';
     
     this.DashboardMemberService = DashboardMemberService;
     this.$mdToast = $mdToast;
     this.$state = $state;
+    this.$stateParams = $stateParams;
+    this.$cookies = $cookies;
+    
+    this.personTitleOptions = personTitleOptions;
+    console.log('dashboardMemberController');
+    console.log(personTitleOptions);
     
     this.context = "dashboard.member.edit";
-    this.title = $state.current.title;
-    
-    this.item = {};
-
     this.errors = [];
     
     this.initPage();    
   }
   
   initPage() {
-    // Get the organization ID from the user's cookie
-    let id = JSON.parse(this.$cookies.get('organization')).id;
+    this.organization = JSON.parse(this.$cookies.get('organization'));
+
+    let id = this.$stateParams.id;
     
-    // Retrieve organization data
-    //this.DashboardMemberService.get(id).then(
-    //    (response) => {
-    //      this.organization = response.data;
-    //      console.log(this.organization);
-    //    },
-    //    (err) => {
-    //      console.log('Error fetching organization data.');
-    //      console.log(err);
-    //    }
-    //);
+    if ( id && id != "new" ) {
+      // Retrieve record data
+      this.DashboardMemberService.get(id).then(
+          (response) => {
+            this.data = response.data;
+            console.log(this.data);
+          },
+          (err) => {
+            console.log('Error fetching data.');
+            console.log(err);
+            var toast = this.$mdToast.simple()
+              .textContent(error.data.message)
+              .position('top right')
+              .parent();
+            this.$mdToast.show(toast);
+          }
+      );
+    }
+    else {
+      this.title = "Editing member"
+      this.data = {
+        "member": {
+          "join_date": new Date(),
+        },
+        "contacts": [
+          { "primary":true,"kind":"email"},
+          { "primary":true,"kind":"telephone"},
+          { "primary":true,"kind":"postaddress"},
+        ]
+      };
+    }
+
     
   }
   
@@ -41,18 +67,17 @@ export default class DashboardMemberController {
     * @memberOf doxa.dashboard.services.organization
     */
   save() {
-    this.DashboardMemberService.save(this.organization).then(
-        (response) => {
-          console.log( response.data );
-          
-          this.organization = response.data;
-          
-          // update user's cookie with current organization data
-          this.$cookies.put('organization',JSON.stringify(this.organization));
-          this.$state.go('dashboard.home');
+
+    this.data.owner = this.organization;
+    console.log(this.data);
+
+    this.DashboardMemberService.save(this.data).then(
+        (response) => {          
+          this.item = response.data;
+          this.$state.go('dashboard.members');
         },
         (err) => {
-          console.log('Error fetching organization data.');
+          console.log('Error saving member data.');
           console.log(err);
         }
     );

@@ -3,11 +3,11 @@ from .models import Contact
 
 class ContactManager():
     
-    def postaddress(moniker=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
+    def postaddress(owner=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
         return {
             'kind':'postal-address',
             
-            'moniker':moniker,
+            'owner':owner,
             'label':label,
             'type':type,
             'subtype':subtype,
@@ -20,10 +20,10 @@ class ContactManager():
             'data5':country
         }
     
-    def email(moniker,address,label=None,type=None,subtype=None,primary=False):
+    def email(owner,address,label=None,type=None,subtype=None,primary=False):
         return {
             'kind': 'email',
-            'moniker':moniker,
+            'owner':owner,
             'label':label,
             'type':type,
             'subtype':subtype,
@@ -31,10 +31,10 @@ class ContactManager():
             'data1':address
         }
     
-    def telephone(moniker,address,label=None,type=None,subtype=None,primary=False):
+    def telephone(owner,address,label=None,type=None,subtype=None,primary=False):
         return {
             'kind' : 'telephone',
-            'moniker':moniker,
+            'owner':owner,
             'label':label,
             'type':type,
             'subtype':subtype,
@@ -46,7 +46,7 @@ class ContactManager():
         
         output = {
             'id':data.get('id'),
-            'moniker':data.get('moniker'),
+            'owner':data.get('owner'),
             'label':data.get('label'),
             'type':data.get('type'),
             'subtype':data.get('subtype'),
@@ -63,6 +63,8 @@ class ContactManager():
             output['data1'] = data.get('address');
         elif data.get('kind') == 'email':
             output['data1'] = data.get('address');
+        else:
+            raise StorageException("Invalid kind of contact ({})".format(data.get('kind')));
         
         return output;
     

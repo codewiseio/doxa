@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'authentication',
     'organizations',
     'contacts',
+    'people',
+    'members',
     'foo'
 ]
 

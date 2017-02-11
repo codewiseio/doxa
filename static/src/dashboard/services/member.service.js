@@ -46,7 +46,13 @@ export default class DashboardMemberService {
     * @memberOf doxa.dashboard.services.organization
     */
    save(data) {
-      return this.$http.post(`/api/v1/organization/members/`, data );
+      if ( data.id ) {
+         return this.$http.patch(`/api/v1/members/${data.id}/`, data );
+      }
+      else {
+         return this.$http.post(`/api/v1/members/`, data );
+      }
+      
    }
    
 }

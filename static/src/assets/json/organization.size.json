@@ -1,7 +1,0 @@
-[
-    {"display": "2-10 people", "value":1},
-    {"display": "11-50 people", "value":2},
-    {"display": "51-100 people", "value":3},
-    {"display": "101-250 people", "value":4},
-    {"display": "251 people or more", "value":5}
-]

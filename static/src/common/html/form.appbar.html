@@ -1,16 +1,15 @@
-<md-toolbar class="md-hue-2 fixed">
+<md-toolbar class="md-hue-2 fixed form-appbar">
     <div class="md-toolbar-tools">
-
-        <h2>
-          <span>{{ page_title }}</span>
-        </h2>
-        <span flex=""></span>
-        <md-button type="submit" ng-click="$ctrl.goBack()">
-            Cancel
-            <md-icon>cancel</md-icon>
+        <md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.goBack()">
+            <md-icon>arrow_back</md-icon>
         </md-button>
-        <md-button style="color: greenyellow;" ng-click="$ctrl.submitForm()">
-            Save
+        <span flex  hide-gt-sm></span>
+        <h2>
+          <span>{{$ctrl.title}}</span>
+        </h2>
+        <span flex></span>
+
+        <md-button class="menu md-icon-button save-button" style="color: greenyellow;" ng-click="$ctrl.submitForm()">
             <md-icon style="color: greenyellow;">save</md-icon>
         </md-button>
       

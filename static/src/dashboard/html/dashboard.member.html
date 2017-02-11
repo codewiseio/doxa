@@ -1,7 +1,7 @@
 <!-- form-profile.html -->
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-<form external-submit id="edit-organization" ng-submit="$ctrl.save()" go-back="dashboard.members">
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()">
   <main class="card-collection">
     <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
     <md-card-content>
@@ -11,7 +11,14 @@
         <div  layout="column" layout-gt-xs="row" >
           <md-input-container  flex-gt-xs="33">
             <label>Title</label>
-            <input required name="title" ng-model="$ctrl.organization.title" type="text" />
+            
+              <md-select name="type" ng-model="$ctrl.data.person.title">
+                <md-option value=""></md-option>
+                <md-option ng-repeat="item in $ctrl.personTitleOptions" value="{{item}}">
+                  {{item}}
+                </md-option>
+              </md-select>
+    
           </md-input-container>
           
           <div flex="66" hide-xs></div>
@@ -24,36 +31,38 @@
             
             <md-input-container flex-gt-xs="33">
               <label>First</label>
-              <input required name="first_name" ng-model="$ctrl.member.first_name" type="text" />
+              <input required name="first_name" ng-model="$ctrl.data.person.first_name" type="text" />
             </md-input-container>
             <md-input-container flex-gt-xs="33">
               <label>Middle</label>
-              <input required name="middle_name" ng-model="$ctrl.member.middle_name" type="text" />
+              <input name="middle_name" ng-model="$ctrl.data.person.middle_name" type="text" />
             </md-input-container>
             <md-input-container flex-gt-xs="33">
               <label>Last</label>
-              <input required name="title" ng-model="$ctrl.member.last_name" type="text" />
+              <input required name="title" ng-model="$ctrl.data.person.last_name" type="text" />
             </md-input-container>
 
         </div>
         
       <div layout="column" layout-gt-xs="row" layout-align="end" >
-            <md-input-container flex-gt-xs="33">
+            <md-input-container  flex-gt-xs="33">
               <label>Gender</label>
-               <md-select ng-model="$ctrl.member.gender" placeholder="Gender">
-                <md-option ng-value="m">Male</md-option>
-                <md-option ng-value="f">Female</md-option>
+               <md-select ng-model="$ctrl.data.person.gender" placeholder="Gender">
+                <md-option value=""></md-option>
+                <md-option value="f">Female</md-option>
+                <md-option value="m">Male</md-option>
               </md-select>
+               
             </md-input-container>
             
             <md-input-container flex-gt-xs="33" class="date-picker">
               <label>Birthday</label>
-              <md-datepicker ng-model="$ctrl.member.birthday"></md-datepicker>
+              <md-datepicker ng-model="$ctrl.data.person.birthday"></md-datepicker>
             </md-input-container>
             
             <md-input-container  flex-gt-xs="33" class="date-picker">
               <label>Member since</label>
-              <md-datepicker ng-model="$ctrl.member.join_date"></md-datepicker>
+              <md-datepicker ng-model="$ctrl.data.member.join_date"></md-datepicker>
             </md-input-container>
         </div>
       </div>
@@ -69,13 +78,17 @@
       </md-card-title-text> 
     </md-card-title>
     <md-card-content>
+      
+      
         <md-input-container class="md-block">
           <label>Email</label>
-          <input required name="email" ng-model="$ctrl.organization.contacts.email.address" type="email" />
+          <input name="email" ng-model="$ctrl.data.contacts[0].address" type="email" />
         </md-input-container>
+
+        
         <md-input-container class="md-block" flex-gt-xs="auto">
               <label>Telephone</label>
-              <input required name="telephone" ng-model="$ctrl.organization.contacts.telephone.address" type="telephone" />
+              <input name="telephone" ng-model="$ctrl.data.contacts[1].address" type="telephone" />
         </md-input-container>
     </md-card-content>
     
@@ -91,32 +104,33 @@
     <md-card-content>
 
       <div layout="column" layout-gt-xs="row">
-          <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts.postaddress.country">
+          <select-country flex-gt-xs="40" ng-model="$ctrl.data.contacts[2].country">
           </select-country>
          
 
           <md-input-container flex-gt-xs="auto" class="md-block">
             <label>Address</label>
-            <input required name="address" ng-model="$ctrl.organization.contacts.postaddress.street"/>
+            <input  name="address" ng-model="$ctrl.data.contacts[2].street"/>
           </md-input-container>
       </div>
           
       <div layout="column" layout-gt-xs="row">
           <md-input-container flex-gt-xs="50" class="md-block">
             <label>Municipality</label>
-            <input required name="municipality" ng-model="$ctrl.organization.contacts.postaddress.municipality"/>
+            <input name="municipality" ng-model="$ctrl.data.contacts[2].municipality"/>
           </md-input-container>
           
          <md-input-container flex-gt-xs="25" class="md-block">
             <label>Region</label>
-            <input required name="region" ng-model="$ctrl.organization.contacts.postaddress.region"/>
+            <input name="region" ng-model="$ctrl.data.contacts[2].region"/>
           </md-input-container>
             
           <md-input-container flex-gt-xs="25" class="md-block">
             <label>Postalcode</label>
-            <input required name="postalcode" ng-model="$ctrl.organization.contacts.postaddress.postcode"/>
+            <input name="postalcode" ng-model="$ctrl.data.contacts[2].postcode"/>
           </md-input-container>
       </div>
+      
     </md-card-content>
     
     </md-card>

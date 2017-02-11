@@ -1,7 +1,21 @@
-<form external-submit id="edit-organization" ng-submit="$ctrl.save()" go-back="dashboard.home()">
-    <input type="hidden" ng-model="$ctrl.item.id"/>
-    <input required name="title" ng-model="$ctrl.item.title" type="text" />
-    <button type="submit">Submit</button>
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()">
+    <md-input-container flex>
+      <label>Title</label>
+      <input required name="title" ng-model="$ctrl.item.title" type="text" />
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Author</label>
+      <input required name="author" ng-model="$ctrl.item.author" type="text" />
+    </md-input-container>
+
+
+    <button type="submit">Internal Submit</button>
 </form>
+
+<button type="submit" ng-click="$ctrl.submitForm()">External Submit</button>
+
+
+<!--vm.homeForm.$setSubmitted();-->
 
 {{$ctrl.item}}
