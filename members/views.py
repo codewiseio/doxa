@@ -97,7 +97,7 @@ class MembersCreateView(generics.CreateAPIView):
         
         try:
             with transaction.atomic():
-                person = self._create_person(data['person'])
+                person = self._create_person(data['entity'])
 
                 owner = 'organization:{}'.format(data['owner']['id'])
                 entity = 'person:{}'.format(person.id)
