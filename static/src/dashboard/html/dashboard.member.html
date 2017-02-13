@@ -12,7 +12,7 @@
           <md-input-container  flex-gt-xs="33">
             <label>Title</label>
             
-              <md-select name="type" ng-model="$ctrl.data.person.title">
+              <md-select name="type" ng-model="$ctrl.data.entity.title">
                 <md-option value=""></md-option>
                 <md-option ng-repeat="item in $ctrl.personTitleOptions" value="{{item}}">
                   {{item}}
@@ -31,15 +31,15 @@
             
             <md-input-container flex-gt-xs="33">
               <label>First</label>
-              <input required name="first_name" ng-model="$ctrl.data.person.first_name" type="text" />
+              <input required name="first_name" ng-model="$ctrl.data.entity.first_name" type="text" />
             </md-input-container>
             <md-input-container flex-gt-xs="33">
               <label>Middle</label>
-              <input name="middle_name" ng-model="$ctrl.data.person.middle_name" type="text" />
+              <input name="middle_name" ng-model="$ctrl.data.entity.middle_name" type="text" />
             </md-input-container>
             <md-input-container flex-gt-xs="33">
               <label>Last</label>
-              <input required name="title" ng-model="$ctrl.data.person.last_name" type="text" />
+              <input required name="title" ng-model="$ctrl.data.entity.last_name" type="text" />
             </md-input-container>
 
         </div>
@@ -47,7 +47,7 @@
       <div layout="column" layout-gt-xs="row" layout-align="end" >
             <md-input-container  flex-gt-xs="33">
               <label>Gender</label>
-               <md-select ng-model="$ctrl.data.person.gender" placeholder="Gender">
+               <md-select ng-model="$ctrl.data.entity.gender" placeholder="Gender">
                 <md-option value=""></md-option>
                 <md-option value="f">Female</md-option>
                 <md-option value="m">Male</md-option>
@@ -57,12 +57,12 @@
             
             <md-input-container flex-gt-xs="33" class="date-picker">
               <label>Birthday</label>
-              <md-datepicker ng-model="$ctrl.data.person.birthday"></md-datepicker>
+              <md-datepicker ng-model="$ctrl.data.entity.birthday" utc-parser></md-datepicker>
             </md-input-container>
             
             <md-input-container  flex-gt-xs="33" class="date-picker">
               <label>Member since</label>
-              <md-datepicker ng-model="$ctrl.data.member.join_date"></md-datepicker>
+              <md-datepicker ng-model="$ctrl.data.join_date" utc-parser></md-datepicker>
             </md-input-container>
         </div>
       </div>

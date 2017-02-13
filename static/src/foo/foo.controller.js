@@ -1,11 +1,12 @@
 class FooController {
-    constructor( FooService, $rootScope ) {
+    constructor( FooService, $rootScope, $timeout ) {
       'ngInject';
       
       this.FooService = FooService;
       this.$rootScope = $rootScope;
       this.item = {};   
-    
+      this.$timeout = $timeout;
+
     }
   
     save() {

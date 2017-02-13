@@ -107,7 +107,7 @@ class RegisterView(views.APIView):
         """ Create Contact entries for an organization and save to the database."""
         
         contacts = {}
-        slug ='organization.{}'.format(organization.id)
+        slug ='organization:{}'.format(organization.id)
         
         # create email contact
         email = ContactManager.email(

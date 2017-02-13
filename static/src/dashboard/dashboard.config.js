@@ -28,6 +28,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
         url: '/organization',
         //templateUrl: 'dashboard.organization.html',
         //controller: 'DashboardOrganizationController',
+        title: 'Edit organization',
         views : {
           'appbar': {
             templateUrl: 'form.appbar.html',
@@ -43,6 +44,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
         url: '/members',
         //templateUrl: 'dashboard.organization.html',
         //controller: 'DashboardOrganizationController',
+        title: 'Members',
         views : {
           'appbar': {
             templateUrl: 'dashboard.appbar.html',
@@ -50,13 +52,13 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           },
           '': {
             templateUrl: 'dashboard.members.html',
-            //controller: 'DashboardOrganizationController as $ctrl',
+            controller: 'DashboardMembersController as $ctrl',
           }
         }
       })
       .state('dashboard.member', {
         url: '/member/:id',
-        title: 'Member',
+        title: 'Edit Member',
         views : {
           'appbar': {
             templateUrl: 'form.appbar.html',

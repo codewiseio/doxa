@@ -5,11 +5,13 @@ class RegistrationController {
   constructor(AuthenticationService, RegistrationService, $state, $timeout, $location, $q, $rootScope, $mdToast) {
     'ngInject';
     
+    this.AuthenticationService = AuthenticationService
     this.RegistrationService = RegistrationService;
     this.$timeout = $timeout;
     this.$rootScope = $rootScope;
     this.$q = $q;
     this.$mdToast = $mdToast;
+    this.$state = $state;
     
     this.title = $state.current.title;
     //this.countryOptions = countryOptions;
@@ -66,16 +68,29 @@ class RegistrationController {
       console.log('Registering...')
       this.RegistrationService.registerOrganization(this.formData)
         .then(
-            (response) => {
-                console.log('Successfully registered user.');
-                console.log(response);
-                
-                  var toast = this.$mdToast.simple()
-                    .textContent('Registration successful.')
-                    .position('top right')
-                    .parent();
-                  
-                  this.$mdToast.show(toast);
+            (response) => {    
+                this.AuthenticationService.login(this.formData.email,this.formData.password)
+                .then(
+                    (response) => {
+                      this.$state.go('dashboard.home');
+
+                      var toast = this.$mdToast.simple()
+                        .textContent('Registration successful.')
+                        .position('top right')
+                        .parent();
+                      
+                      this.$mdToast.show(toast);
+                    },
+                    (error) => {
+                      console.log(error);
+                      var toast = this.$mdToast.simple()
+                        .textContent(error.data.message)
+                        .position('top right')
+                        .parent();
+                      
+                      this.$mdToast.show(toast);
+                    }
+                ); 
             },
             (error) => {
                 console.log('Registration error:'  );
@@ -87,31 +102,28 @@ class RegistrationController {
                     .position('top right')
                     .parent();
                     
-                  if ( error.data['message-token'] == 'conflict-email' ) {
-                    toast.action('RESET YOUR PASSWORD?')
-                    .highlightAction(true)
-                    .highlightClass('md-accent');
-                  }
+                  // TODO: ADD IN PASSWORD RESET LINK
+                  // if ( error.data['message-token'] == 'conflict-email' ) {
+                  //   toast.action('RESET YOUR PASSWORD?')
+                  //   .highlightAction(true)
+                  //   .highlightClass('md-accent');
+                  // }
                   this.$mdToast.show(toast);
                 }
                 else {
                   var toast = this.$mdToast.simple()
-                    .textContent('Could not connect to server. (Fix me)')
+                    .textContent('Could not connect to server.')
                     .position('top right')
                     .parent();
                   
                   this.$mdToast.show(toast);
                 }
-                
-                
-
-                  
-                
             }
         );
     }
   }
-  
+
+
 
   
 }

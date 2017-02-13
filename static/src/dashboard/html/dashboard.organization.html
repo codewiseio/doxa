@@ -53,14 +53,6 @@
           <label>Email</label>
           <input required name="email" ng-model="$ctrl.organization.contacts[0].address" type="email" />
         </md-input-container>
-        <md-input-container class="md-block">
-          <label>Type</label>
-          <md-select name="type" ng-model="$ctrl.organization.contacts[0].type">
-          <md-option ng-repeat="item in $ctrl.contactTypeOptions.email" value="{{item.value}}">
-            {{item.display}}
-          </md-option>
-          </md-select>
-        </md-input-container>
         
         <md-input-container class="md-block" flex-gt-xs="auto">
               <label>Telephone</label>
@@ -71,42 +63,42 @@
     </md-card>
     
     
-    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Location</span>
-      </md-card-title-text> 
-    </md-card-title>
-    <md-card-content>
+    <md-card>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Location</span>
+        </md-card-title-text> 
+      </md-card-title>
+      <md-card-content>
 
-      <div layout="column" layout-gt-xs="row">
-          <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts[2].country">
-          </select-country>
-         
+        <div layout="column" layout-gt-xs="row">
+            <select-country flex-gt-xs="40" required ng-model="$ctrl.organization.contacts[2].country">
+            </select-country>
+           
 
-          <md-input-container flex-gt-xs="auto" class="md-block">
-            <label>Address</label>
-            <input required name="address" ng-model="$ctrl.organization.contacts[2].street"/>
-          </md-input-container>
-      </div>
-          
-      <div layout="column" layout-gt-xs="row">
-          <md-input-container flex-gt-xs="50" class="md-block">
-            <label>Municipality</label>
-            <input required name="municipality" ng-model="$ctrl.organization.contacts[2].municipality"/>
-          </md-input-container>
-          
-         <md-input-container flex-gt-xs="25" class="md-block">
-            <label>Region</label>
-            <input required name="region" ng-model="$ctrl.organization.contacts[2].region"/>
-          </md-input-container>
+            <md-input-container flex-gt-xs="auto" class="md-block">
+              <label>Address</label>
+              <input  name="address" ng-model="$ctrl.organization.contacts[2].street"/>
+            </md-input-container>
+        </div>
             
-          <md-input-container flex-gt-xs="25" class="md-block">
-            <label>Postalcode</label>
-            <input required name="postalcode" ng-model="$ctrl.organization.contacts[2].postcode"/>
-          </md-input-container>
-      </div>
-    </md-card-content>
+        <div layout="column" layout-gt-xs="row">
+            <md-input-container flex-gt-xs="50" class="md-block">
+              <label>Municipality</label>
+              <input  name="municipality" ng-model="$ctrl.organization.contacts[2].municipality"/>
+            </md-input-container>
+            
+           <md-input-container flex-gt-xs="25" class="md-block">
+              <label>Region</label>
+              <input  name="region" ng-model="$ctrl.organization.contacts[2].region"/>
+            </md-input-container>
+              
+            <md-input-container flex-gt-xs="25" class="md-block">
+              <label>Postalcode</label>
+              <input  name="postalcode" ng-model="$ctrl.organization.contacts[2].postcode"/>
+            </md-input-container>
+        </div>
+      </md-card-content>
     
     </md-card>
   </main>

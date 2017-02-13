@@ -1,32 +1,34 @@
 <!-- form-profile.html -->
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-<form external-submit id="edit-organization" ng-submit="$ctrl.save()">
-  <main class="card-collection">
-    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()">
+  <main class="card-collection member-list">
+
+<!--     <md-card class="member">
+        <md-card-title>
+          <md-card-title-text>{{item.person.first_name}} {{item.person.last_name}}</md-card-title-text>
+        </md-card-title>
+    </md-card> -->
+
+
+
+
+    <md-card>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">365 Members</span>
+        <span class="md-headline">{{ $ctrl.items.length }} Members</span>
       </md-card-title-text> 
     </md-card-title>
     <md-card-content>
     
-    <md-list class="member-list">
-        <!-- List item #1 -->
-        <md-list-item>
-          <md-button>
-            Lia Luogo
-          </md-button>
-        </md-list-item>
 
-        <!-- List item #2 -->
-        <md-list-item>
-          <md-button>
-            Lawrence Ray
+    <md-grid-list md-cols-xs="2" md-cols-sm="3" md-cols-gt-sm="3" md-cols-lg="4" md-cols-gt-lg="4" md-gutter="1em" md-row-height="2em">
+      <md-grid-tile ng-repeat="item in $ctrl.items" style="text-align: left;">
+          <md-button flex style="text-align: left;" ui-sref="dashboard.member({id:item.id})">
+            {{item.entity.first_name}} {{item.entity.last_name}}
           </md-button>
-        </md-list-item>
-
-      </md-list>
+      </md-grid-tile>
+    </md-grid-list>
    
     </md-card-content>
     
@@ -37,6 +39,6 @@
   
 </form>
        
-<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add" ui-sref="dashboard.member()">
+<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add" ui-sref="dashboard.member({id:'new'})">
   <md-icon>add</md-icon>
 </md-button>

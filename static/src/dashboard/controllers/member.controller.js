@@ -11,8 +11,8 @@ export default class DashboardMemberController {
     this.$cookies = $cookies;
     
     this.personTitleOptions = personTitleOptions;
-    console.log('dashboardMemberController');
-    console.log(personTitleOptions);
+    // console.log('dashboardMemberController');
+    // console.log(personTitleOptions);
     
     this.context = "dashboard.member.edit";
     this.errors = [];
@@ -24,12 +24,16 @@ export default class DashboardMemberController {
     this.organization = JSON.parse(this.$cookies.get('organization'));
 
     let id = this.$stateParams.id;
+    // console.log('Member id');
+    // console.log(id);
     
     if ( id && id != "new" ) {
+
       // Retrieve record data
       this.DashboardMemberService.get(id).then(
           (response) => {
             this.data = response.data;
+            console.log('Dashboard controller');
             console.log(this.data);
           },
           (err) => {
@@ -44,7 +48,7 @@ export default class DashboardMemberController {
       );
     }
     else {
-      this.title = "Editing member"
+      this.title = "New member"
       this.data = {
         "member": {
           "join_date": new Date(),

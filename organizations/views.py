@@ -38,8 +38,10 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         
         if context == 'dashboard.organization.edit':
             # get primary contact details
-            moniker = 'organization.{}'.format(organization.id)
-            contacts = Contact.objects.filter(moniker=moniker, primary=True)
+            moniker = 'organization:{}'.format(organization.id)
+            # contacts = ContactManager.get_primary_contacts(moniker);
+
+            contacts = Contact.objects.filter(owner=moniker, primary=True)
             
             serialized_organization['contacts'] = [ {}, {}, {}]
             

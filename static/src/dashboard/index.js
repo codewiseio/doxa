@@ -5,6 +5,7 @@ import DashboardConfig from './dashboard.config';
 import DashboardController from './dashboard.controller';
 import DashboardAppbarController from './controllers/appbar.controller';
 import DashboardMemberController from './controllers/member.controller';
+import DashboardMembersController from './controllers/members.controller';
 import DashboardOrganizationController from './controllers/organization.controller';
 import SidenavController from './controllers/sidenav.controller';
 
@@ -16,6 +17,7 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('DashboardController', DashboardController)
     .controller('DashboardAppbarController',DashboardAppbarController)
     .controller('DashboardMemberController',DashboardMemberController)
+    .controller('DashboardMembersController',DashboardMembersController)
     .controller('DashboardOrganizationController',DashboardOrganizationController)
     .controller('SidenavController', SidenavController )
     .service('DashboardMemberService',DashboardMemberService)

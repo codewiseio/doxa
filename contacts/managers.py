@@ -5,7 +5,7 @@ class ContactManager():
     
     def postaddress(owner=None,street=None,municipality=None,region=None,postcode=None,country=None,label=None,type=None,subtype=None,primary=False):
         return {
-            'kind':'postal-address',
+            'kind':'postaddress',
             
             'owner':owner,
             'label':label,
@@ -82,3 +82,19 @@ class ContactManager():
             return object.serialize();
         else:
             raise StorageException( 'Error saving item to database', serializer.errors )
+
+    def get_contacts(moniker):
+        pass
+
+    def get_primary_contacts(moniker):
+        contacts = Contact.objects.filter(owner=moniker, primary=True)
+        
+        data = [ {}, {}, {} ]
+        
+        contact_map = {'email':0, 'telephone':1, 'postaddress':2}
+        
+        for contact in contacts:
+           index = contact_map.get(contact.kind)
+           data[index] = contact.serialize()
+
+        return data

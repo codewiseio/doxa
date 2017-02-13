@@ -4,7 +4,7 @@
         md-selected-item="$ctrl.selectedItem"
         md-selected-item-change="$ctrl.selectedItemChange(item)"
         md-search-text="$ctrl.searchText"
-        md-items="item in $ctrl.querySearch($ctrl.countrySearchText)"
+        md-items="item in $ctrl.querySearch($ctrl.searchText)"
         md-item-text="item.display"
         md-min-length="0"
         md-floating-label="Country">

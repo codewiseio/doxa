@@ -8,3 +8,5 @@ class Member(models.Model, CreatedModifiedMixin):
     entity = models.CharField(max_length=64,null=False,blank=False)
     role   = models.CharField(max_length=64,null=True,blank=True)
     join_date = models.DateTimeField(auto_now=True,blank=True,null=True)
+
+

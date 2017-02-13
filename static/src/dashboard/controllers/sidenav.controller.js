@@ -1,6 +1,8 @@
 class SidenavController {
-    constructor() {
+    constructor($mdSidenav) {
       'ngInject';
+
+        this.$mdSidenav = $mdSidenav;
       
         this.menuItems = [
             {
@@ -24,6 +26,10 @@ class SidenavController {
             },
         ];
 
+    }
+
+    closeSidenav() {
+        this.$mdSidenav('dashboard-sidenav').close();
     }
   
     

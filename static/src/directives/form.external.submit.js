@@ -5,8 +5,11 @@ export default class externalSubmit {
         this.scope = {};
         this.$timeout = $timeout;
 
-        console.log('Timeout');
-        console.log( $timeout );
+        // console.log('Timeout');
+        // console.log( $timeout );
+        // $timeout( function() {
+        //     alert('timeout');
+        // }, 0 );
     }
   
     link($scope, $element, $attrs, $ctrl ) {      

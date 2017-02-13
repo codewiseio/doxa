@@ -10,7 +10,7 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
 
-        fields = ('id','owner','entity','role')
+        fields = ('id','owner','entity','role','join_date')
         read_only_fields = ['id']
 
     def get_validation_exclusions(self, *args, **kwargs):

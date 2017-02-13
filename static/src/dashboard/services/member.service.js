@@ -17,22 +17,23 @@ export default class DashboardMemberService {
     * @memberOf doxa.dashboard.services.organization
     */
    get(id) {
-      return this.$http.get(`/api/v1/member/${id}/`,{
+      return this.$http.get(`/api/v1/members/${id}/`,{
          params: {
            context: 'dashboard.organization.member.edit',
          }
       });
+
    }
    
-    /**
-    * @name get
-    * @desc Retrieve data for an member
-    * @param {int/string} id Member id or slug
-    * @returns {Promise}
-    * @memberOf doxa.dashboard.services.organization
+   /**
+   * @name list
+   * @description List members based on object moniker
+   * @param {moniker} Object moniker
+   * @returns {Promise}
+   * @memberOf doxa.dashboard.services.members
     */
-   list(token) {
-      return this.$http.get(`api/v1/members/${token}`, {
+   list(moniker) {
+      return this.$http.get(`api/v1/members/${moniker}/`, {
          
       });
    }
@@ -43,7 +44,7 @@ export default class DashboardMemberService {
     * @param {object} Member object
     * @param {boolean} Update contact information
     * @returns {Promise}
-    * @memberOf doxa.dashboard.services.organization
+    * @memberOf doxa.dashboard.services.members
     */
    save(data) {
       if ( data.id ) {
@@ -54,6 +55,8 @@ export default class DashboardMemberService {
       }
       
    }
+
+
    
 }
 

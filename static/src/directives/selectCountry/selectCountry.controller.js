@@ -20,6 +20,8 @@ export default class SelectCountryController {
    * */
   querySearch(query) {
 
+    console.log(query)
+
     // create filter
     var lowercaseQuery = angular.lowercase(query);
 
