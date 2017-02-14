@@ -1,9 +1,9 @@
-<!-- form-profile.html -->
+
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
 <form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()" go-back="dashboard.home()">
-  <main class="card-collection">
-    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch="">
+  <main class="card-collection cozy">
+    <md-card>
     <md-card-title>
       <md-card-title-text>
         <span class="md-headline">Church Details</span>
@@ -30,11 +30,11 @@
             </md-input-container>
         </div>
         
-        <md-input-container flex>
+<!--         <md-input-container flex>
           <label>Description</label>
             <label for="name">Description</label>
             <textarea name="description" ng-model="$ctrl.item.description" rows="3" md-select-on-focus></textarea>
-        </md-input-container>
+        </md-input-container> -->
       </div>
     </md-card-content>
     </md-card>
@@ -109,4 +109,4 @@
        
 <!--<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="save">
   <md-icon>save</md-icon>
-</md-button>-->
+</md-button>

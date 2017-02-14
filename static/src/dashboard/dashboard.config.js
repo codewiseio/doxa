@@ -26,8 +26,6 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
       })
       .state('dashboard.organization', {
         url: '/organization',
-        //templateUrl: 'dashboard.organization.html',
-        //controller: 'DashboardOrganizationController',
         title: 'Edit organization',
         views : {
           'appbar': {
@@ -42,8 +40,6 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
       })
       .state('dashboard.members', {
         url: '/members',
-        //templateUrl: 'dashboard.organization.html',
-        //controller: 'DashboardOrganizationController',
         title: 'Members',
         views : {
           'appbar': {

@@ -1,18 +1,17 @@
 import personTitleOptions from '../../assets/json/formOptions/person.title.json';
 
 export default class DashboardMemberController {
-  constructor(DashboardMemberService, $cookies, $state, $stateParams, $mdToast) {
+  constructor(DashboardMemberService, AppDataService, $cookies, $state, $stateParams, $mdToast) {
     'ngInject';
     
     this.DashboardMemberService = DashboardMemberService;
+    this.AppDataService = AppDataService
     this.$mdToast = $mdToast;
     this.$state = $state;
     this.$stateParams = $stateParams;
     this.$cookies = $cookies;
     
     this.personTitleOptions = personTitleOptions;
-    // console.log('dashboardMemberController');
-    // console.log(personTitleOptions);
     
     this.context = "dashboard.member.edit";
     this.errors = [];
@@ -24,17 +23,13 @@ export default class DashboardMemberController {
     this.organization = JSON.parse(this.$cookies.get('organization'));
 
     let id = this.$stateParams.id;
-    // console.log('Member id');
-    // console.log(id);
-    
     if ( id && id != "new" ) {
 
       // Retrieve record data
       this.DashboardMemberService.get(id).then(
           (response) => {
             this.data = response.data;
-            console.log('Dashboard controller');
-            console.log(this.data);
+            this.AppDataService.pageTitle = `${this.data.entity.first_name} ${this.data.entity.last_name}`;
           },
           (err) => {
             console.log('Error fetching data.');
@@ -48,7 +43,7 @@ export default class DashboardMemberController {
       );
     }
     else {
-      this.title = "New member"
+      this.AppDataService.pageTitle = `New member`;
       this.data = {
         "member": {
           "join_date": new Date(),

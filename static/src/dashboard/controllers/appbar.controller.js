@@ -1,5 +1,5 @@
 export default class DashboardAppbarController {
-    constructor(AuthenticationService, $state, $location, $mdSidenav, $rootScope) {
+    constructor(AuthenticationService, AppDataService, $scope, $state, $location, $mdSidenav, $rootScope) {
       'ngInject';
       
 
@@ -7,10 +7,17 @@ export default class DashboardAppbarController {
       this.$location = $location;
       this.$rootScope = $rootScope;
 
-      this.title = $state.current.title;
-      
       this.AuthenticationService = AuthenticationService;
       this.$mdSidenav = $mdSidenav;
+
+      // Watch changes to the page title and update appbar title
+      this.AppDataService = AppDataService
+      $scope.$watch( '$ctrl.AppDataService.pageTitle',
+        function (newValue) {
+          $scope.$ctrl.title = newValue;
+        }
+      ); 
+      this.title = AppDataService.pageTitle;
     }
   
     /**

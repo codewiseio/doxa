@@ -2,16 +2,16 @@
 import organizationSizeOptions from '../../assets/json/formOptions/organization.size.json';
 
 export default class DashboardOrganizationController {
-  constructor(DashboardOrganizationService, $cookies, $state, $mdToast) {
+  constructor(DashboardOrganizationService, AppDataService, $cookies, $state, $mdToast) {
     'ngInject';
     
     this.DashboardOrganizationService = DashboardOrganizationService;
+    this.AppDataService = AppDataService;
     this.$cookies = $cookies;
     this.$mdToast = $mdToast;
     this.$state = $state;
     
     this.context = "dashboard.organization.edit";
-    this.title = $state.current.title;
 
     this.organizationSizeOptions = organizationSizeOptions;
     
@@ -28,7 +28,7 @@ export default class DashboardOrganizationController {
     this.DashboardOrganizationService.get(id).then(
         (response) => {
           this.organization = response.data;
-          console.log(this.organization);
+          this.AppDataService.pageTitle = this.organization.title;
         },
         (err) => {
           console.log(err);

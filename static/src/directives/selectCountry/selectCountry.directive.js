@@ -12,19 +12,12 @@ export default class selectCountry {
     }
   
     link($scope, $element, $attrs, $ctrl) {
-        //var options = $ctrl.options;
-        
-        console.log('Linking');
-        console.log($scope);
-        console.log($attrs.required);
-        
         if ( $attrs.required === undefined ) {
             $scope.$ctrl.required = false;
         }
         else {
             $scope.$ctrl.required = true;
         }
-        console.log($ctrl);
         
         
         $scope.$parent.$watch(

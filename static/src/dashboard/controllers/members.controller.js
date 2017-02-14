@@ -1,5 +1,5 @@
 export default class DashboardMemberController {
-  constructor(DashboardMemberService, $cookies, $state, $stateParams, $mdToast) {
+  constructor(DashboardMemberService, AppDataService, $cookies, $state, $stateParams, $mdToast) {
     'ngInject';
     
     this.DashboardMemberService = DashboardMemberService;
@@ -11,7 +11,8 @@ export default class DashboardMemberController {
     this.context = "dashboard.members";
     this.errors = [];
 
-    console.log('DashboardMembersController');
+    this.AppDataService = AppDataService
+    this.AppDataService.pageTitle = `New member`;
     
     this.initPage();    
   }
@@ -28,14 +29,9 @@ export default class DashboardMemberController {
     // Retrieve record data
     this.DashboardMemberService.list( this.organization.moniker ).then(
         (response) => {
-          console.log(response);
           this.items = response.data;
-          console.log(this.data);
         },
         (err) => {
-          console.log('Error fetching data.');
-          console.log(err);
-
           var toast = this.$mdToast.simple()
             .textContent(error.data.message)
             .position('top right')
