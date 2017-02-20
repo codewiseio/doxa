@@ -33,7 +33,7 @@ export default class DashboardMemberService {
    * @memberOf doxa.dashboard.services.members
     */
    list(moniker) {
-      return this.$http.get(`api/v1/members/${moniker}/`, {
+      return this.$http.get(`/api/v1/members/${moniker}/`, {
          
       });
    }
