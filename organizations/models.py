@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from core.models import CreatedModifiedMixin
+from people.models import Person
 
 class Organization(models.Model, CreatedModifiedMixin):
     SIZE_NONE = 0
@@ -29,8 +30,6 @@ class Organization(models.Model, CreatedModifiedMixin):
     
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
-    
-    
     def save(self, *args, **kwargs):
            self.slug = slugify(self.title)
            super().save(*args, **kwargs)
@@ -41,7 +40,10 @@ class Organization(models.Model, CreatedModifiedMixin):
     def __str__(self):
         return self.title
     
+# class OrganizationMembers(models.Model):
+#     organization = models.ForeignKey(Organization, on_delete=models.PROTECT)
+#     member = models.ForeignKey(Person, on_delete=models.PROTECT)
+#     join_date = models.DateTimeField(blank=True,null=True)
 
-    
     
     

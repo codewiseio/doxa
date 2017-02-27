@@ -40,19 +40,53 @@ class MembersItemView(generics.RetrieveUpdateDestroyAPIView):
 
         mold, id = moniker.split(':')
 
-
-        print(mold)
-        print(id)
-
         if mold == 'person':
             entity = Person.objects.get(id=id)
             serializer = PersonSerializer(entity)
             return serializer.data
         else:
-            raise Http404("Poll does not exist")
+            raise Http404("Person does not exist")
 
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        print( request.data )
+        partial = kwargs.pop('partial', False)
 
+        data = request.data;
+        
+        try:
+            self.object = self.get_object()
+            success_status_code = status.HTTP_200_OK
+            self._update_person_info( request.data.get('entity') )
+            self._update_contact_info( request.data.get('contacts') )
+            return Response(data, status=success_status_code)
+        except Http404:
+            self.object = None
+            return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
+        
 
+    def _update_person_info( self, data ):
+
+        person = Person.objects.get(id=data['id']);
+        serializer = PersonSerializer(person,data=data,partial=True)
+        if serializer.is_valid():
+            serializer.save();
+            return serializer.data
+
+    def _update_contact_info(self, contacts, partial=False):
+        serialized_data = []
+        errors = []
+        
+        try:
+            for item in contacts:
+                serialized_data.append( ContactManager.save( item ) )
+        except StorageException as err:
+                errors.merge( err.args[1] )
+                
+        if ( len(errors) > 0 ):
+            raise StorageException( 'Could not update contact information', errors );
+        else:
+            return serialized_data;
 
 class MembersListView(generics.ListAPIView):    
     serializer_class = MemberSerializer

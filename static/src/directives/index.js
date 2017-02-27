@@ -12,7 +12,5 @@ export default angular
                     'doxa.directives.selectCountry',
                 ])
                 .directive('externalSubmit', externalSubmit.factory )
-                .directive('utcParser', utcParser.factory )
+                .directive('utcParser', utcParser )
                 .name;
-                
-                

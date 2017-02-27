@@ -68,12 +68,13 @@ export default class DashboardMemberController {
   save() {
 
     this.data.owner = this.organization;
-    console.log(this.data);
+    console.log('Saving');
 
     this.DashboardMemberService.save(this.data).then(
         (response) => {          
           this.item = response.data;
           this.$state.go('dashboard.members');
+          console.log('Saved');
         },
         (err) => {
           console.log('Error saving member data.');

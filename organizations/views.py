@@ -79,20 +79,20 @@ class OrganizationViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
-    def _update_contact_info(self, contacts, partial=False):
-        serialized_data = []
-        errors = []
+    # def _update_contact_info(self, contacts, partial=False):
+    #     serialized_data = []
+    #     errors = []
         
-        try:
-            for item in contacts:
-                serialized_data.append( ContactManager.save( item ) )
-        except StorageException as err:
-                errors.merge( err.args[1] )
+    #     try:
+    #         for item in contacts:
+    #             serialized_data.append( ContactManager.save( item ) )
+    #     except StorageException as err:
+    #             errors.merge( err.args[1] )
                 
-        if ( len(errors) > 0 ):
-            raise StorageException( 'Could not update contact information', errors );
-        else:
-            return serialized_data;
+    #     if ( len(errors) > 0 ):
+    #         raise StorageException( 'Could not update contact information', errors );
+    #     else:
+    #         return serialized_data;
     
     
 

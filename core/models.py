@@ -11,3 +11,8 @@ class CreatedModifiedMixin():
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True,null=True)
     modified = models.DateTimeField(auto_now=True,blank=True)
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True,null=True)
+
+# Create your models here.
+class Entity():
+    entity_type = 'entity';
+

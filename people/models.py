@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import CreatedModifiedMixin
+from core.models import Entity, CreatedModifiedMixin
 
 # Create your models here.
 class Person (models.Model, CreatedModifiedMixin):
@@ -12,4 +12,7 @@ class Person (models.Model, CreatedModifiedMixin):
     number_of_children =  models.PositiveSmallIntegerField(blank=True,null=True)
     
     birthday = models.DateTimeField(blank=True,null=True)
+
+    def moniker(self):
+        '{}:{}'.format(self.entity_type, self.id)
     

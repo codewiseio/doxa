@@ -116,7 +116,9 @@ module.exports = function makeWebpackConfig () {
   ];
 
 
-  config.plugins = [];
+  config.plugins = [
+
+    ];
   
   config.plugins.push (
         new webpack.ResolverPlugin(
@@ -126,7 +128,10 @@ module.exports = function makeWebpackConfig () {
             jQuery: 'jquery',
             $: 'jquery',
             jquery: 'jquery'
-        })
+        }),
+        new webpack.ProvidePlugin({
+            moment: "moment"
+          })
   );
 
   // Skip rendering index.html in test mode

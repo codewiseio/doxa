@@ -26,14 +26,14 @@
             </div>
 
             <!-- Primary Email -->
-            <div class="primary-email" flex hide-xs>Email Address</div>
+            <!-- <div class="primary-email" flex hide-xs>Email Address</div> -->
             <!-- Primary Telephone -->
-            <div class="primary-telephone" flex hide-xs>Telephone Address</div>
+            <!-- <div class="primary-telephone" flex hide-xs>Telephone Address</div> -->
             <!-- Position/Title, Organization -->
 
             <div class="item-actions" flex="none">
               <md-button class="md-icon-button"><md-icon>edit</md-icon></md-button>
-              <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();"><md-icon>delete</md-icon></md-button>
+              <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button>
             </div>
           </md-button>
 
