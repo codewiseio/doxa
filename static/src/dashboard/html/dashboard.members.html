@@ -1,44 +1,50 @@
 <!-- form-profile.html -->
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()">
-  <main class="card-collection member-list">
-
-<!--     <md-card class="member">
-        <md-card-title>
-          <md-card-title-text>{{item.person.first_name}} {{item.person.last_name}}</md-card-title-text>
-        </md-card-title>
-    </md-card> -->
+  <main class="organization-members" layout="column" flex>
+  
+     <md-list class="members-list" layout="column" flex>
 
 
+        <md-list-item ng-repeat="item in $ctrl.items" layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
+          
+          <!-- First initial icon -->
+          <div flex="none" class="abstract-first-initial">
+            <span>{{item.entity.first_name | InitialFilter }}</span>
+          </div>
+
+          <md-button class="item-row md-button" flex="100" layout="row"  ui-sref="dashboard.member({id:item.id})">
+            <!-- Second initial icon -->
+            <div class="abstract-graphic-id" flex="none">
+              <span>{{item.entity.last_name | InitialFilter }}</span>
+            </div>
 
 
-    <md-card>
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">{{ $ctrl.items.length }} Members</span>
-      </md-card-title-text> 
-    </md-card-title>
-    <md-card-content>
-    
+            <!-- Full display name -->
+            <div class="display-name" flex>
+              <span>{{item.entity.first_name}} {{item.entity.last_name}}</span>
+            </div>
 
-    <md-grid-list md-cols-xs="2" md-cols-sm="3" md-cols-gt-sm="3" md-cols-lg="4" md-cols-gt-lg="4" md-gutter="1em" md-row-height="2em">
-      <md-grid-tile ng-repeat="item in $ctrl.items" style="text-align: left;">
-          <md-button flex style="text-align: left;" ui-sref="dashboard.member({id:item.id})">
-            {{item.entity.first_name}} {{item.entity.last_name}}
+            <!-- Primary Email -->
+            <div class="primary-email" flex hide-xs>Email Address</div>
+            <!-- Primary Telephone -->
+            <div class="primary-telephone" flex hide-xs>Telephone Address</div>
+            <!-- Position/Title, Organization -->
+
+            <div class="item-actions" flex="none">
+              <md-button class="md-icon-button"><md-icon>edit</md-icon></md-button>
+              <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();"><md-icon>delete</md-icon></md-button>
+            </div>
           </md-button>
-      </md-grid-tile>
-    </md-grid-list>
-   
-    </md-card-content>
-    
-    </md-card>
+
+
+        </md-list-item>
+
+
+      </md-list>
+
   </main>
-  
-  <input type="hidden" name="context" value="$ctrl.context"/>
-  
-</form>
        
-<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add" ui-sref="dashboard.member({id:'new'})">
+<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add"  ui-sref="dashboard.member()">
   <md-icon>add</md-icon>
 </md-button>

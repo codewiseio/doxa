@@ -23,6 +23,7 @@ import './registration';
 import './foo';
 
 import './directives/index';
+import './filters';
 
 require('./assets/css/default.less');
 
@@ -35,6 +36,7 @@ angular.module( "doxa", [
                 'doxa.landing-page',
                 'doxa.registration',
                 'doxa.directives',
+                'doxa.filters',
                 'doxa.foo',
                 ngMessages,
                 ngCookies

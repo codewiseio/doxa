@@ -9,6 +9,8 @@ export default class selectCountry {
         this.require = '?ngModel';
         this.controller = "SelectCountryController as $ctrl";
         this.scope = { ngModel: '=', required: '=' };
+
+
     }
   
     link($scope, $element, $attrs, $ctrl) {

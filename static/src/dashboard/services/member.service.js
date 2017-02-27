@@ -8,13 +8,20 @@ export default class DashboardMemberService {
       // Object to store our user properties
       this.current = null;
    }
+
+   /**
+    * Delete the member
+    * @param  {Int} id Record ID
+    * @return {Promise} 
+    */
+   delete(id) {
+      return this.$http.delete(`/api/v1/members/${id}/`);
+   }
    
-    /**
-    * @name get
-    * @desc Retrieve data for an member
-    * @param {int/string} id Member id or slug
-    * @returns {Promise}
-    * @memberOf doxa.dashboard.services.organization
+   /**
+    * Get the member
+    * @param  {int} id Record ID
+    * @return {Promise}
     */
    get(id) {
       return this.$http.get(`/api/v1/members/${id}/`,{
@@ -26,11 +33,9 @@ export default class DashboardMemberService {
    }
    
    /**
-   * @name list
-   * @description List members based on object moniker
-   * @param {moniker} Object moniker
-   * @returns {Promise}
-   * @memberOf doxa.dashboard.services.members
+    * Get members
+    * @param  {[type]} moniker [description]
+    * @return {[type]}         [description]
     */
    list(moniker) {
       return this.$http.get(`/api/v1/members/${moniker}/`, {

@@ -1,13 +1,15 @@
 class DashboardController {
-  constructor(AuthenticationService, $state, $location) {
+  constructor(AuthenticationService, $cookies, $rootScope, $state) {
     'ngInject';
 
     
     // If the user is not authenticated they should not be here
     if (! AuthenticationService.isAuthenticated()) {
-        $location.url('/login');
+        $state.go('login');
     }
-  
+
+    // Get the active organization using cookie
+    $rootScope.organization = JSON.parse($cookies.get('organization'));
   }
 
 }

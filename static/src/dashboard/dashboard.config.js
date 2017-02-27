@@ -1,4 +1,5 @@
 //@require "./html/*.html"
+require('../assets/css/default.less');
 require('../assets/css/dashboard.less');
 require('../common/html/form.appbar.html');
 
@@ -73,6 +74,10 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('light-blue')
       .accentPalette('pink');
+
+    $mdThemingProvider.theme('grey')
+      .primaryPalette('grey', {'default': '100'})
+      .accentPalette('light-blue');
       
    // /* Configure icons */
    // TODO: CONFIGURE ICONS

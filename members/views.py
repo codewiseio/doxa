@@ -20,7 +20,7 @@ class MemberViewSet(viewsets.ModelViewSet):
 
 
     
-class MembersItemView(generics.RetrieveUpdateAPIView):
+class MembersItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer
     queryset = Member.objects
 

@@ -8,6 +8,11 @@
     }
 }
 
+
+/**
+ * Customize form field styles
+ */
+
 .date-picker {
     padding-right : 18px;
     height        : 58px !important;
@@ -60,4 +65,138 @@
 
 .md-select-placeholder {
     font-weight: bold;
+}
+
+
+
+/*
+ * General styles to apply to item lists
+ */
+// .item-row {
+//     display: table-row;
+// }
+
+.item-row:hover {
+    background: orange;
+}
+
+.item-row > div {
+    line-height: 48px;
+}
+
+.md-button.item-row {
+    text-align: left;
+    text-transform: none;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.item-actions .md-button {
+    padding: 0px;
+    margin: 0px;
+}
+
+.item-actions {
+    visibility: hidden;
+}
+
+.item-row:hover .item-actions {
+    visibility: visible;
+}
+
+
+.members-list .abstract-first-initial {
+    color: #2a56c6;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    position: -webkit-sticky;
+    position: sticky;
+    text-align: center;
+    width: 24px;
+    padding: 17px 0px;
+}
+
+.abstract-graphic-id {
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    color: white;
+    background: orange;
+    border-radius: 50%;
+    line-height: 36px !important;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+.members-list .abstract-graphic-id {
+    margin-right: 12px;
+}
+
+
+.members-list .item-row .display-name {
+    width: auto;
+}
+
+.members-list .item-actions {
+    width: 98px;
+}
+
+
+md-dialog.member md-toolbar .abstract-graphic-id {
+    width: 48px;
+    height: 48px;
+    line-height: 48px !important;
+    font-size: 24px;
+    border-radius: 50%;
+    border: blue 2px;
+    margin: 24px;
+}
+
+md-dialog.member .md-toolbar-tools {
+    height: 120px;
+    max-height: 120px;
+}
+
+md-dialog.member md-dialog-content {
+    margin-top: 140px;
+    min-width: 600px;
+    max-width: 100%;
+    padding: 12px;
+}
+
+
+md-dialog.member md-dialog-content div.field-icon {
+    width: 80px;
+}
+
+md-dialog.member md-dialog-content div.action-icons {
+    width: 120px;
+}
+
+
+md-dialog md-input-container {
+    margin-bottom: 0px;
+}
+
+md-dialog .md-errors-spacer {
+    display: none;
+}
+
+
+contact-input .field-icon {
+    width: 80px;
+    text-align: center;
+}
+contact-input .field-icon md-icon {
+    line-height: 60px;
+}
+contact-input .action-icons {
+    width: 120px;
+}
+
+
+md-input-container.md-grey-theme:not(.md-input-invalid).md-input-has-value label {
+    color: rgba(0,0,0,0.54);
 }
