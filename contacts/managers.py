@@ -1,5 +1,6 @@
 from .serializers import ContactSerializer
 from .models import Contact
+from doxa.exceptions import StorageException
 
 class ContactManager():
     

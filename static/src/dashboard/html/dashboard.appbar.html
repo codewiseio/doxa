@@ -12,8 +12,15 @@
           <md-button aria-label="Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon md-menu-origin="">person</md-icon>
           </md-button>
-          <md-menu-content width="4">
-            
+          <md-menu-content width="4" layout="column">
+            <md-menu-item>
+              <md-button ng-click="$ctrl.editAccount()">
+                  <div layout="row" flex="">
+                    <p flex="">Account</p>
+                  </div>
+              </md-button>
+            </md-menu-item>
+
             <md-menu-item>
               <md-button ng-click="$ctrl.logout()">
                   <div layout="row" flex="">

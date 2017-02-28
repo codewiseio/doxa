@@ -2,6 +2,8 @@ import angular from 'angular';
 
 import DashboardConfig from './dashboard.config';
 
+import UserController from './controllers/user.controller'
+import UserService from './services/user.service';
 import DashboardController from './dashboard.controller';
 import DashboardAppbarController from './controllers/appbar.controller';
 import AppDataService from './services/appdata.service';
@@ -22,9 +24,11 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('DashboardMemberDialogController', DashboardMemberDialogController)
     .controller('DashboardMembersController',DashboardMembersController)
     .controller('DashboardOrganizationController',DashboardOrganizationController)
+    .controller('UserController', UserController)  
     .controller('SidenavController', SidenavController )
     .service('AppDataService', AppDataService )
     .service('DashboardMemberService',DashboardMemberService)
-    .service('DashboardOrganizationService',DashboardOrganizationService);
+    .service('DashboardOrganizationService',DashboardOrganizationService)
+    .service('UserService',UserService);
 
 export default dashboardModule;

@@ -6,13 +6,13 @@ from .views import IndexView
 from foo.views import FooViewSet
 
 from rest_framework_nested import routers
-from authentication.views import LoginView,LogoutView,UserViewSet
+from authentication.views import LoginView,LogoutView,UserViewSet, UserView
 from registration.views import RegisterView
 from members.views import MembersListView, MembersCreateView, MembersItemView
 from organizations.views import OrganizationViewSet
 
 router = routers.SimpleRouter()
-router.register(r'users', UserViewSet )
+# router.register(r'users', UserViewSet )
 # router.register(r'members', MemberViewSet )
 router.register(r'organizations', OrganizationViewSet )
 router.register(r'foo', FooViewSet )
@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^api/v1/',include(router.urls)),
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
     url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^api/v1/users/(?P<pk>\d+)/$', UserView.as_view(), name='users'),
     url(r'^api/v1/register/$', RegisterView.as_view(), name='register'),
     
     url(r'^api/v1/members/$', MembersCreateView.as_view(), name="membersCreate" ),

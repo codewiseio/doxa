@@ -1,11 +1,12 @@
 export default class DashboardAppbarController {
-    constructor(AuthenticationService, AppDataService, $scope, $state, $location, $mdSidenav, $rootScope) {
+    constructor(AuthenticationService, AppDataService, $scope, $state, $location, $mdSidenav, $mdDialog, $rootScope) {
       'ngInject';
       
 
       this.$state = $state;
       this.$location = $location;
       this.$rootScope = $rootScope;
+      this.$mdDialog = $mdDialog;
 
       this.AuthenticationService = AuthenticationService;
       this.$mdSidenav = $mdSidenav;
@@ -36,6 +37,25 @@ export default class DashboardAppbarController {
             }
             
         );
+    }
+
+    editAccount(item, $event) {
+      this.$mdDialog.show({
+        templateUrl: 'dashboard.user.edit.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        controller: 'UserController as $ctrl',
+        clickOutsideToClose:true,
+        fullscreen: true,
+        locals: {
+          "item": item
+        }
+      })
+      .then(function(answer) {
+          console.log(answer);
+      }, function() {
+          console.log('canceled');
+      });
     }
     
     /**

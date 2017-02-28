@@ -9,6 +9,7 @@ class DashboardController {
     }
 
     // Get the active organization using cookie
+    $rootScope.user = JSON.parse($cookies.get('authenticatedAccount'));
     $rootScope.organization = JSON.parse($cookies.get('organization'));
   }
 

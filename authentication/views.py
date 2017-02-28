@@ -1,5 +1,6 @@
 from rest_framework import permissions,status,views,viewsets
 from rest_framework.response import Response
+from rest_framework import generics
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
@@ -11,6 +12,8 @@ from organizations.serializers import OrganizationSerializer
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
 from django.shortcuts import render
+
+from django.db import transaction
 
 import json
 
@@ -53,6 +56,47 @@ class UserViewSet(viewsets.ModelViewSet):
             'status': 'Bad request',
             'message': 'Account could not be created with received data.'
         }, status=status.HTTP_400_BAD_REQUEST)
+
+class UserView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+
+        if request.data.get('password') :
+            user = User.objects.get(pk=kwargs['pk'])
+            user.set_password( request.data.get('password') )
+            request.data.pop('password');
+
+        serializer = self.get_serializer(user,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save();
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+        # print( kwargs['id'] );
+        # return Response(request.data, status=status.HTTP_200_OK)
+
+
+        # partial = kwargs.pop('partial', False)
+
+        # data = request.data;
+        
+        # try:
+        #     self.object = self.get_object()
+        #     success_status_code = status.HTTP_200_OK
+        #     self._update_person_info( request.data.get('entity') )
+        #     self._update_contact_info( request.data.get('contacts') )
+        #     return Response(data, status=success_status_code)
+        # except Http404:
+        #     self.object = None
+        #     return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
+
+        # user.set_password(password)
+
 
 
 class LoginView(views.APIView):
@@ -106,7 +150,7 @@ class LoginView(views.APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
     
 class LogoutView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request, format=None):
         print('Logout')
