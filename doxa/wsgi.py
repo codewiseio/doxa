@@ -12,8 +12,6 @@ import sys
 from django.core.wsgi import get_wsgi_application
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-import sys
-sys.path.insert(0, '/var/www/doxa-dev/doxa')
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "doxa.settings")
 

@@ -6,5 +6,5 @@ doxa/__pycache__/*
 __pycache__/
 */*.pyc
 *.pyc
-
+doxa/settings_local.py
 
