@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
+import pymysql
+pymysql.install_as_MySQLdb()
 
 SITE_NAME = "Doxa Social CRM"
 
