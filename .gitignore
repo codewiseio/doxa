@@ -4,5 +4,7 @@ static/dist/*
 core/__pycache__/*
 doxa/__pycache__/*
 __pycache__/
+*/*.pyc
 *.pyc
+
 

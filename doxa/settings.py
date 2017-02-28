@@ -139,3 +139,4 @@ STATICFILES_DIRS = (
 
 
 # APPEND_SLASH = False
+from .settings_local import *
