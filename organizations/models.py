@@ -39,11 +39,4 @@ class Organization(models.Model, CreatedModifiedMixin):
 
     def __str__(self):
         return self.title
-    
-# class OrganizationMembers(models.Model):
-#     organization = models.ForeignKey(Organization, on_delete=models.PROTECT)
-#     member = models.ForeignKey(Person, on_delete=models.PROTECT)
-#     join_date = models.DateTimeField(blank=True,null=True)
 
-    
-    

@@ -107,27 +107,8 @@ class LoginView(views.APIView):
         password = data.get('password', None)
         entry_point = data.get('entry_point','dashboard')           
         
-        
-        print('Received {}:{}'.format(email, password) )
-
         user = authenticate(email=email, password=password)
-        
-        if entry_point == "dashboard":
-            # discover organizations that user is owner of
-            organization = Organization.objects.filter(owner=user.id)[:1][0]
-            
-            
-            # if not owner of any organizations throw an error
-            if organization == None:
-                return Response({
-                    'status': 'Unauthorized',
-                    'message': 'You are not an authorized organization owner.'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-            
-            # if owner of an organization, set session data
-            # request.session['user'] = user
-            # request.session['organization'] = organization
-            
+                   
         
         if user is not None:
             if user.is_active:
@@ -142,6 +123,18 @@ class LoginView(views.APIView):
                     'status': 'Unauthorized',
                     'message': 'This user has been disabled.'
                 }, status=status.HTTP_401_UNAUTHORIZED)
+
+            if entry_point == "dashboard":
+                # discover organizations that user is owner of
+                organization = Organization.objects.filter(owner=user.id)[:1][0]
+                
+                
+                # if not owner of any organizations throw an error
+                if organization == None:
+                    return Response({
+                        'status': 'Unauthorized',
+                        'message': 'You are not an authorized organization owner.'
+                    }, status=status.HTTP_401_UNAUTHORIZED)
         else:
             print ('Email/password combination invalid')
             return Response({
