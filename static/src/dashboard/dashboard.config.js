@@ -22,7 +22,10 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
             controller: 'DashboardAppbarController as $ctrl',
             templateUrl: 'dashboard.appbar.html'
           },
-          '': { templateUrl: 'dashboard.home.html' }
+          '': { 
+            controller: 'DashboardHomeController as $ctrl',
+            templateUrl: 'dashboard.home.html' 
+          }
         }
       })
       .state('dashboard.organization', {
@@ -62,31 +65,91 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
             controller: 'DashboardAppbarController as $ctrl',
           },
           '': {
-            templateUrl: 'dashboard.member.html',
+            templateUrl: 'dashboard.member.edit.html',
             controller: 'DashboardMemberController as $ctrl',
           }
         }
-      });
+      })
+      .state('dashboard.groups', {
+        url: '/groups',
+        title: 'Groups',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.groups.html',
+            controller: 'DashboardGroupsController as $ctrl',
+          }
+        },
+      })
+      .state('dashboard.newGroup', {
+        url: '/group',
+        title: 'New Group',
+        views : {
+          'appbar': {
+            templateUrl: 'form.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.group.edit.html',
+            controller: 'DashboardGroupController as $ctrl',
+          }
+        }
+      })
+      .state('dashboard.editGroup', {
+        url: '/group/:id/edit',
+        title: 'Group',
+        views : {
+          'appbar': {
+            templateUrl: 'form.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.group.edit.html',
+            controller: 'DashboardGroupController as $ctrl',
+          }
+        }
+      })
+      .state('dashboard.group', {
+        url: '/group/:id',
+        title: 'Group',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.group.view.html',
+            controller: 'DashboardGroupController as $ctrl',
+          }
+        }
+      })
+      .state('dashboard.groupMembers', {
+        url: '/group/:id/members',
+        title: 'Group Members',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.group.members.html',
+            controller: 'DashboardGroupMembersController as $ctrl',
+          }
+        }
+      })
+      ;
 
     /**
      *  Set the dashboard them colors
      * */
     $mdThemingProvider.theme('default')
-      .primaryPalette('light-blue')
-      .accentPalette('pink');
+      .primaryPalette('purple', {'default': '300'})
+      .accentPalette('amber');
 
-    $mdThemingProvider.theme('grey')
-      .primaryPalette('grey', {'default': '100'})
-      .accentPalette('light-blue');
-      
-   // /* Configure icons */
-   // TODO: CONFIGURE ICONS
-   //$mdIconProvider
-   //   .defaultIconSet("./assets/svg/avatars.svg", 128)
-   //   .icon("menu", "./assets/svg/menu.svg", 24)
-   //   .icon("share", "./assets/svg/share.svg", 24)
-   //   .icon("google_plus", "./assets/svg/google_plus.svg", 24)
-   //   .icon("hangouts", "./assets/svg/hangouts.svg", 24)
-   //   .icon("twitter", "./assets/svg/twitter.svg", 24)
-   //   .icon("phone", "./assets/svg/phone.svg", 24);
+    // $mdThemingProvider.theme('grey')
+    //   .primaryPalette('grey', {'default': '100'})
+    //   .accentPalette('light-blue');
 }

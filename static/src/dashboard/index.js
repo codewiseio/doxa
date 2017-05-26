@@ -6,7 +6,13 @@ import UserController from './controllers/user.controller'
 import UserService from './services/user.service';
 import DashboardController from './dashboard.controller';
 import DashboardAppbarController from './controllers/appbar.controller';
+import DashboardGroupsController from './controllers/groups.controller';
+import DashboardGroupController from './controllers/group.controller';
+import DashboardGroupMembersController from './controllers/group.members.controller';
+import DashboardGroupMembersAddMembersController from './controllers/group.members.add.members';
+import DashboardHomeController from './controllers/home.controller';
 import AppDataService from './services/appdata.service';
+
 import DashboardMemberController from './controllers/member.controller';
 import DashboardMemberDialogController from './controllers/member.dialog.controller';
 import DashboardMembersController from './controllers/members.controller';
@@ -15,6 +21,7 @@ import SidenavController from './controllers/sidenav.controller';
 
 import DashboardOrganizationService from './services/organization.service';
 import DashboardMemberService from './services/member.service';
+import GroupService from './services/group.service';
 
 let dashboardModule = angular.module('doxa.dashboard', [])
     .config(DashboardConfig)
@@ -24,11 +31,18 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('DashboardMemberDialogController', DashboardMemberDialogController)
     .controller('DashboardMembersController',DashboardMembersController)
     .controller('DashboardOrganizationController',DashboardOrganizationController)
+    .controller('DashboardGroupController', DashboardGroupController )
+    .controller('DashboardGroupsController', DashboardGroupsController )
+    .controller('DashboardGroupMembersController', DashboardGroupMembersController)
+    .controller('DashboardGroupMembersAddMembersController', DashboardGroupMembersAddMembersController)
+    .controller('DashboardHomeController', DashboardHomeController)
     .controller('UserController', UserController)  
     .controller('SidenavController', SidenavController )
+
     .service('AppDataService', AppDataService )
     .service('DashboardMemberService',DashboardMemberService)
     .service('DashboardOrganizationService',DashboardOrganizationService)
+    .service('GroupService', GroupService)
     .service('UserService',UserService);
 
 export default dashboardModule;

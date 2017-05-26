@@ -12,13 +12,22 @@ export default class DashboardAppbarController {
       this.$mdSidenav = $mdSidenav;
 
       // Watch changes to the page title and update appbar title
-      this.AppDataService = AppDataService
+      this.AppDataService = AppDataService;
       $scope.$watch( '$ctrl.AppDataService.pageTitle',
         function (newValue) {
           $scope.$ctrl.title = newValue;
         }
       ); 
       this.title = AppDataService.pageTitle;
+
+      $scope.$watch( '$ctrl.AppDataService.pageType',
+        function (newValue) {
+          $scope.$ctrl.mode = newValue;
+        }
+      ); 
+      this.mode = AppDataService.pageType ?  AppDataService.pageType : 'dashboard';
+
+
     }
   
     /**

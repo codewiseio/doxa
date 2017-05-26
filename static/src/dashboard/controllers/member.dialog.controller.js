@@ -1,6 +1,8 @@
+import personTitleOptions from '../../assets/json/formOptions/person.title.json';
+
 export default class DashboardMemberDialogController {
   
-  constructor(DashboardMemberService, $cookies, $mdDialog, $rootScope, $state, $stateParams, $mdToast, item) {
+  constructor(DashboardMemberService, $cookies, $mdDialog, $rootScope, $state, $stateParams, $mdToast, locals) {
     'ngInject';
     
     this.DashboardMemberService = DashboardMemberService;
@@ -9,12 +11,16 @@ export default class DashboardMemberDialogController {
     this.$rootScope = $rootScope;
     this.$mdDialog = $mdDialog;
     
-    // this.personTitleOptions = personTitleOptions;
+    this.personTitleOptions = personTitleOptions;
     
     this.context = "dashboard.member";
-    this.item = item;
+    this.item = locals.item;
+
+    if ( ! this.item ) this.item = { person: {} };
+    if ( ! this.item.person  ) this.item.person =  {};
+
     console.log('Dialog');
-    console.log(item);
+    console.log(this.item);
   }
   
   /**
@@ -30,31 +36,30 @@ export default class DashboardMemberDialogController {
    * Save changes to the item
    */
   save() {
-    this.data.owner = this.$rootScope.organization;
-    console.log(this.data);
 
-    return this.DashboardMemberService.save(this.data).then(
-        (response) => {          
-          this.item = response.data;
-          this.$mdDialog.hide();
+    console.log('Saving');
+    console.log(this.item);
 
-          // notify the user operation failed
-          var toast = this.$mdToast.simple()
-            .textContent(this.data.id ? "Changes saved" : "New member created" )
-            .position('bottom center')
-            .parent();
-          this.$mdToast.show(toast);
+    return this.DashboardMemberService.save(this.item).then(
+        (response) => {   
+          console.log('Save successful');
+          console.log(response);
+          var savedItem = response.data;
+          this.$mdDialog.hide(savedItem);
         },
-        (err) => {
+        (error) => {
+
+          message = error.data.message;
+
           // notify the user operation failed
           var toast = this.$mdToast.simple()
-            .textContent('Error saving data')
+            .textContent(message)
             .position('bottom center')
             .parent();
           this.$mdToast.show(toast);
 
           console.log('Error saving member data.');
-          console.log(err);
+          console.log(error);
         }
     );
   }

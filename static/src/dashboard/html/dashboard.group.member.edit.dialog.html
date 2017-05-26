@@ -1,0 +1,81 @@
+<md-dialog aria-label="Add members to {{$ctrl.group.name}}" class="add-group-member">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add members</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+
+        <div style="height: 30px"></div>
+
+        <form>
+
+            <div layout="column" layout-gt-xs="row">
+
+                <div flex-gt-xs="50">
+
+                    <md-autocomplete
+                        required
+                        md-selected-item="$ctrl.selectedItem"
+                        md-search-text="$ctrl.searchText"
+                        md-items="item in $ctrl.querySearch($ctrl.searchText)"
+                        md-item-text="item.person.first_name"
+                        md-min-length="0"
+                        md-selected-item-change="$ctrl.selectedItemChange($ctrl.selectedItem)"
+                        placeholder="What is your favorite US state?"
+                        md-autofocus>
+                      <md-item-template>
+                        <div layout="row" layout-align="center">
+                            <div class="abstract-graphic-id" flex="none">
+                              <span>{{item.person.last_name | InitialFilter }}</span>
+                            </div>
+                            <div flex>
+                                <span md-highlight-text="searchText" md-highlight-flags="^i">
+                                {{item.person.first_name}} {{item.person.last_name}}
+                                </span>
+                            </div>
+                        </div>
+
+                      </md-item-template>
+                      <md-not-found>
+                        No members matching "{{searchText}}" were found.
+                      </md-not-found>
+                    </md-autocomplete>
+
+                </div>
+
+                <div flex-gt-xs="50">
+                  <md-select required name="type" ng-model="$ctrl.item.role">
+                    <md-option value=""></md-option>
+                    <md-option ng-repeat="item in $ctrl.groupMemberRoleOptions" value="{{item}}">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </div>
+
+            </div>
+
+        </form>
+
+
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="$ctrl.cancel()">
+       Cancel 
+      </md-button>
+      <md-button ng-click="$ctrl.save()">
+       Ok 
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

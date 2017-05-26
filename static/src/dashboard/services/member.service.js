@@ -23,11 +23,9 @@ export default class DashboardMemberService {
     * @param  {int} id Record ID
     * @return {Promise}
     */
-   get(id) {
-      return this.$http.get(`/api/v1/members/${id}/`,{
-         params: {
-           context: 'dashboard.organization.member.edit',
-         }
+   get(id, params={}) {
+      return this.$http.get(`/api/v1/memberS/${id}/`,{
+         params: params
       });
 
    }
@@ -37,8 +35,8 @@ export default class DashboardMemberService {
     * @param  {[type]} moniker [description]
     * @return {[type]}         [description]
     */
-   list(moniker) {
-      return this.$http.get(`/api/v1/members/${moniker}/`, {
+   list(id) {
+      return this.$http.get(`/api/v1/organizations/${id}/members/`, {
          
       });
    }
@@ -53,7 +51,7 @@ export default class DashboardMemberService {
     */
    save(data) {
       if ( data.id ) {
-         return this.$http.patch(`/api/v1/members/${data.id}/`, data );
+         return this.$http.patch(`/api/v1/members/`, data );
       }
       else {
          return this.$http.post(`/api/v1/members/`, data );

@@ -10,19 +10,18 @@
           
           <!-- First initial icon -->
           <div flex="none" class="abstract-first-initial">
-            <span>{{item.entity.first_name | InitialFilter }}</span>
+            <span>{{item.person.first_name | InitialFilter }}</span>
           </div>
 
-          <md-button class="item-row md-button" flex="100" layout="row"  ui-sref="dashboard.member({id:item.id})">
+          <md-button class="item-row md-button" flex="100" layout="row">
             <!-- Second initial icon -->
             <div class="abstract-graphic-id" flex="none">
-              <span>{{item.entity.last_name | InitialFilter }}</span>
+              <span>{{item.person.last_name | InitialFilter }}</span>
             </div>
-
 
             <!-- Full display name -->
             <div class="display-name" flex>
-              <span>{{item.entity.first_name}} {{item.entity.last_name}}</span>
+              <span>{{item.person.first_name}} {{item.person.last_name}}</span>
             </div>
 
             <!-- Primary Email -->
@@ -32,7 +31,7 @@
             <!-- Position/Title, Organization -->
 
             <div class="item-actions" flex="none">
-              <md-button class="md-icon-button"><md-icon>edit</md-icon></md-button>
+              <md-button class="md-icon-button" ng-click="$ctrl.edit(item,$event);"><md-icon>edit</md-icon></md-button>
               <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button>
             </div>
           </md-button>
@@ -45,6 +44,6 @@
 
   </main>
        
-<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add"  ui-sref="dashboard.member()">
+<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add"  ng-click="$ctrl.new()">
   <md-icon>add</md-icon>
 </md-button>

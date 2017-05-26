@@ -1,5 +1,6 @@
 //import countryOptions from '../assets/json/formOptions/countries.json';
 import organizationSizeOptions from '../assets/json/formOptions/organization.size.json';
+import personTitleOptions from '../assets/json/formOptions/person.title.json';
 
 class RegistrationController {
   constructor(AuthenticationService, RegistrationService, $state, $timeout, $location, $q, $rootScope, $mdToast) {
@@ -18,13 +19,14 @@ class RegistrationController {
     this.countrySelectedItem  = null;
     this.countrySearchText    = null;
     
+    this.personTitleOptions = personTitleOptions;
     this.organizationSizeOptions = organizationSizeOptions;
     
     this.errors = [];
     
     //this.user = {};
     //this.organization = {};
-    this.formData = {};
+    this.formData = { person: {} };
     
     // If the user is authenticated they should not be here
     if (AuthenticationService.isAuthenticated()) {
@@ -83,8 +85,9 @@ class RegistrationController {
                     },
                     (error) => {
                       console.log(error);
+                      var message = error.data.message || error.statusText;
                       var toast = this.$mdToast.simple()
-                        .textContent(error.data.message)
+                        .textContent(message)
                         .position('top right')
                         .parent();
                       

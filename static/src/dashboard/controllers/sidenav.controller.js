@@ -24,6 +24,12 @@ class SidenavController {
                 icon: 'people',
                 state: 'dashboard.members()'
             },
+            {
+                label: 'Groups',
+                type: 'link',
+                icon: 'group',
+                state: 'dashboard.groups()'
+            },
         ];
 
     }

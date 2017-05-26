@@ -9,8 +9,10 @@ from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
 from contacts.models import Contact
 from contacts.managers import ContactManager
-from organizations.models import Organization
-from organizations.serializers import OrganizationSerializer
+from organizations.models import Organization, OrganizationMember
+from organizations.serializers import OrganizationSerializer, OrganizationMemberSerializer
+from people.models import Person
+from people.serializers import PersonSerializer
 from django.shortcuts import render
 from django.db import transaction
 import json
@@ -34,7 +36,9 @@ class RegisterView(views.APIView):
         try:
             with transaction.atomic():
                 user = self._create_user_account(data)
+                person = self._create_person(data['person'], user)
                 organization = self._create_organization(data, user)
+                member = self._create_member(organization, person)
                 organization_contacts = self._create_organization_contacts(data, organization)
         
         except HttpException as e:
@@ -80,6 +84,24 @@ class RegisterView(views.APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         return user
+
+    def _create_person(self,data,user):
+
+        data['user'] = user.id
+        serializer = PersonSerializer(data=data)
+
+        if serializer.is_valid():
+            print('Created person object')
+            person = Person.objects.create(**serializer.validated_data)
+        else:
+            print( serializer.errors )
+            raise HttpException({
+                'status': 'Bad request',
+                'message': 'Could not create account with received data.',
+                'details': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        return person
     
     def _create_organization(self,data,user):
         """ Create an Organization based on user input and save to the database."""
@@ -97,11 +119,32 @@ class RegisterView(views.APIView):
             # data not valid, return bad request response
             raise HttpException({
                 'status': 'Bad request',
-                'message': 'Account could not be created with received data.',
+                'message': 'Could not create account with received data.',
                 'details': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
         
         return organization
+
+    def _create_member(self,organization,person):
+        print( organization.id )
+        print( person.id )
+        data = { 'person': person, 'organization': organization, 'added_by':person }
+        OrganizationMember.objects.create(**data)
+
+
+        # serializer = OrganizationMemberSerializer(data=data)
+
+        # if serializer.is_valid():
+        #     print( 'Created member.' )
+        
+        # else:
+        #     print ( serializer.errors )
+        #     raise HttpException({
+        #         'status': 'Bad request',
+        #         'message': 'Could not create account with received data.',
+        #         'details': serializer.errors
+        #     }, status=status.HTTP_400_BAD_REQUEST)
+
         
     def _create_organization_contacts(self, data, organization):
         """ Create Contact entries for an organization and save to the database."""

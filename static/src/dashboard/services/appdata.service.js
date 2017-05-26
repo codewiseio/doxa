@@ -3,6 +3,7 @@ export default class AppDataService {
       'ngInject';
       
       this.pageTitle = "Testing";
+      this.pageType = 'component';
       this._bindings = { 'get':[], 'set':[] };
    }
 

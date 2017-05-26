@@ -18,7 +18,7 @@ export default class DashboardOrganizationService {
     * @memberOf doxa.dashboard.services.organization
     */
     get(id) {
-      return this.$http.get(`/api/v1/organizations/${id}/`,{
+      return this.$http.get(`/api/v1/organizations/${id}/`, {
          params: {
            context: 'dashboard.organization.edit',
          }

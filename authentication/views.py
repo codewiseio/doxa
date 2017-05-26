@@ -9,6 +9,9 @@ User = get_user_model()
 from organizations.models import Organization
 from organizations.serializers import OrganizationSerializer
 
+from people.models import Person
+from people.serializers import PersonSerializer
+
 from authentication.permissions import IsAccountOwner
 from authentication.serializers import UserSerializer
 from django.shortcuts import render
@@ -76,29 +79,6 @@ class UserView(generics.RetrieveUpdateDestroyAPIView):
         else:
             return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
 
-
-        # print( kwargs['id'] );
-        # return Response(request.data, status=status.HTTP_200_OK)
-
-
-        # partial = kwargs.pop('partial', False)
-
-        # data = request.data;
-        
-        # try:
-        #     self.object = self.get_object()
-        #     success_status_code = status.HTTP_200_OK
-        #     self._update_person_info( request.data.get('entity') )
-        #     self._update_contact_info( request.data.get('contacts') )
-        #     return Response(data, status=success_status_code)
-        # except Http404:
-        #     self.object = None
-        #     return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
-
-        # user.set_password(password)
-
-
-
 class LoginView(views.APIView):
     def post(self, request, format=None):
         
@@ -111,23 +91,14 @@ class LoginView(views.APIView):
                    
         
         if user is not None:
+
+            # if user is active
             if user.is_active:
                 login(request, user)
-                return Response({
-                    'user': UserSerializer(user).data,
-                    'organization': OrganizationSerializer(organization).data
-                });
-            else:
-                print ('User is disabled')
-                return Response({
-                    'status': 'Unauthorized',
-                    'message': 'This user has been disabled.'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-
-            if entry_point == "dashboard":
-                # discover organizations that user is owner of
                 organization = Organization.objects.filter(owner=user.id)[:1][0]
+
                 
+                # person = Person.objects.filter(user=user.id)[:1][0]
                 
                 # if not owner of any organizations throw an error
                 if organization == None:
@@ -135,6 +106,29 @@ class LoginView(views.APIView):
                         'status': 'Unauthorized',
                         'message': 'You are not an authorized organization owner.'
                     }, status=status.HTTP_401_UNAUTHORIZED)
+
+                response = {
+                    'user': UserSerializer(user).data,
+                    'organization': OrganizationSerializer(organization).data,
+                    # 'person':  PersonSerializer(person).data,
+                }
+
+                print( response )
+
+                # if everything is ok, return user and organization
+                return Response(response);
+
+            # if user is not active
+            else:
+                print ('User is disabled')
+                return Response({
+                    'status': 'Unauthorized',
+                    'message': 'This user has been disabled.'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
         else:
             print ('Email/password combination invalid')
             return Response({

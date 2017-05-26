@@ -1,14 +1,21 @@
 <md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
-    <md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.toggleSidebar()">
-        <md-icon>menu</md-icon>
-    </md-button>
+      <md-button class="menu md-icon-button" hide-gt-sm ng-click="$ctrl.toggleSidebar()"  ng-show="$ctrl.mode == 'dashboard'">
+          <md-icon>menu</md-icon>
+      </md-button>
+
+        <md-button class="menu md-icon-button"  ng-click="$ctrl.goBack()"   ng-show="$ctrl.mode == 'component'">
+            <md-icon>arrow_back</md-icon>
+        </md-button>
+
       <h2>
-        <span>Dashboard</span>
+        <span>{{$ctrl.title}}</span>
       </h2>
       <span flex=""></span>
 
-        <md-menu md-position-mode="target-right bottom">
+
+      
+        <md-menu md-position-mode="target-right bottom" ng-show="$ctrl.mode == 'dashboard'">
           <md-button aria-label="Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon md-menu-origin="">person</md-icon>
           </md-button>
@@ -29,9 +36,6 @@
                   </div>
               </md-button>
             </md-menu-item>
-            
-
-            
           </md-menu-content>
         </md-menu>
       

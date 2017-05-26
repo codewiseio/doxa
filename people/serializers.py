@@ -11,7 +11,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
         fields = (
             'id','first_name','middle_name','last_name',
-            'gender','marital_status','number_of_children','birthday')
+            'gender','marital_status','number_of_children','birthday','user')
         
         read_only_fields = ['id']
 

@@ -1,0 +1,55 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
+  <main class="card-collection">
+    
+    <div layout="column">        
+          
+        <div layout="row">           
+        </div>
+    </md-card-content>
+    </md-card>
+
+    <md-grid-list
+          md-cols="4" md-cols-sm="2" md-cols-xs="1" md-cols-gt-lg="5"
+          md-row-height="160px"
+          md-gutter="8px" md-gutter-gt-sm="4px" 
+          class="group-members">
+
+      <md-grid-tile ng-repeat="member in $ctrl.members"
+                    md-rowspan="1"
+                    md-colspan="1"
+                    md-colspan-sm="1"
+                    md-colspan-xs="1"
+                    ng-class="white" 
+                    ng-layout="row"
+                    class="group-member"
+                    >
+
+        <div flex="none" class="abstract-profile-graphic abstract-profile-graphic-md">
+          <span>{{member.person.first_name | InitialFilter }}{{member.person.last_name | InitialFilter }}</span>
+        </div>
+
+        <div class="member-details" flex>
+          <h3>{{member.person.first_name}} {{member.person.last_name | InitialFilter }}</h3>
+          <div class="member-role">{{member.role}}</div>
+          <div class="member-added">Added by
+            <span class="member-added-by">{{member.added_by.first_name}} {{member.added_by.last_name}}</span><br/> on 
+            <span class="member-added-date">{{member.join_date | date : dd/mm/yyyy }}</span></div>
+          </div>
+        </div>
+
+      </md-grid-tile>
+
+
+    </md-grid-list>
+  
+  
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+
+  <md-button class="md-primary md-fab md-fab-br md-whiteframe-12dp" ng-click="$ctrl.addMember()"><md-icon>add</md-icon></md-button>
+  
+</form>

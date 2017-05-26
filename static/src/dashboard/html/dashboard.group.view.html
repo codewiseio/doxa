@@ -1,0 +1,75 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
+  <main class="card-collection">
+
+    <md-card class="group-profile">
+      <md-card-content>
+      
+      <div layout="column">        
+            
+          <div layout="row">           
+              
+              <!-- First initial icon -->
+              <div flex="none" class="abstract-profile-graphic abstract-profile-graphic-lg">
+                <span>{{$ctrl.item.name | InitialFilter }}</span>
+              </div>
+
+              <div flex class="profile-content">
+                <h2>{{$ctrl.item.name}}</h2>
+                <div>{{$ctrl.item.meeting_times}}</div>
+                <div>{{$ctrl.item.meeting_location}}</div>
+              </div>
+
+              <md-card-actions layout="row" layout-align="end">
+                <md-button class="md-icon-button" aria-label="Share" ui-sref="dashboard.editGroup({id: $ctrl.item.id})">
+                  <md-icon>edit</md-icon>
+                </md-button>
+              </md-card-actions>
+
+          </div>
+      </md-card-content>
+    </md-card>
+
+    <div layout="row" layout-gt-sm="row">
+
+      <md-card class="group-members" flex-gt-xs="50" ui-sref="dashboard.groupMembers({id: $ctrl.item.id })" >
+        <md-card-title>
+          <md-card-title-media>
+            <div class="md-media-md card-media">
+                <md-icon style="font-size: 112px">person</md-icon>
+            </div>
+          </md-card-title-media>
+          <md-card-title-text>
+            <span class="md-headline">362 members</span>
+            <span class="md-subhead">186 with accounts</span>
+            <span class="md-subhead">112 active this week</span>
+            <span class="md-subhead">6 currently online</span>
+          </md-card-title-text>
+
+        </md-card-title>
+      </md-card>
+
+      <md-card class="group-events" flex-gt-xs="50">
+        <md-card-title>
+          <md-card-title-media>
+            <div class="md-media-md card-media">
+                <md-icon style="font-size: 112px">event</md-icon>
+            </div>
+          </md-card-title-media>
+          <md-card-title-text>
+            <span class="md-headline">5 events</span>
+            <span class="md-subhead">3 this week</span>
+          </md-card-title-text>
+
+        </md-card-title>
+      </md-card>
+
+    </div>
+  
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+  
+</form>

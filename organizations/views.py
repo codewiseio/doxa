@@ -1,17 +1,18 @@
-from rest_framework import permissions, viewsets, status
+from rest_framework import generics, permissions, viewsets, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from contacts.models import Contact
 from contacts.managers import ContactManager
-from organizations.models import Organization
+from organizations.models import Organization, OrganizationMember
 from organizations.permissions import IsAdministratorOfOrganization
-from organizations.serializers import OrganizationSerializer
+from organizations.serializers import OrganizationSerializer, OrganizationMemberSerializer
 from contacts.serializers import ContactSerializer
 from django.db import transaction
 
 from doxa.exceptions import StorageException
+from django.conf import settings
 
 
 
@@ -30,28 +31,46 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         queryset = Organization.objects.all()
         organization = get_object_or_404(queryset, pk=pk)
         serializer = OrganizationSerializer(organization)
+        moniker = 'organization:{}'.format(organization.id)
         
+        # determine the context
         context = request.GET.get('context',None)
-        
-        serialized_organization = serializer.data
-        serialized_organization['contacts'] = {}
-        
+        print('Retrieving organization')
+        print(context)
+
+        item = serializer.data
+        item['contacts'] = {}
+
+
+        # if we are editing the organization from the dashboard
         if context == 'dashboard.organization.edit':
             # get primary contact details
-            moniker = 'organization:{}'.format(organization.id)
+            
             # contacts = ContactManager.get_primary_contacts(moniker);
 
-            contacts = Contact.objects.filter(owner=moniker, primary=True)
-            
-            serialized_organization['contacts'] = [ {}, {}, {}]
-            
+            contacts = Contact.objects.filter(owner=moniker, primary=True) 
+            item['contacts'] = [ {}, {}, {}]
             contact_map = {'email':0, 'telephone':1, 'postaddress':2}
             
             for contact in contacts:
                 index = contact_map.get(contact.kind)
-                serialized_organization['contacts'][index] = contact.serialize()
+                item['contacts'][index] = contact.serialize()
 
-        return Response(serialized_organization)
+        # if we are viewing the organizatoin profile
+        elif context == "organization.profile":
+            item['profile'] = {
+                'pastor': 'John Doe',
+                'bannerPhoto': '{}/default/organization-banner-photo.jpg'.format(settings.USER_FILES),
+                'profilePhoto': '{}/default/organization-profile-photo.png'.format(settings.USER_FILES)
+            }
+
+
+
+            # profile = Profile.objects.filter(entity=moniker)
+
+
+
+        return Response(item)
     
     @transaction.atomic
     def update(self, request, *args, **kwargs):
@@ -94,9 +113,28 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         else:
             return serialized_data;
     
-    
 
-def perform_create(self, serializer):
-    instance = serializer.save(created=self.request.user)
+class OrganizationMembersView(generics.ListCreateAPIView): 
+    serializer_class = OrganizationMemberSerializer
+    lookup_url_kwarg = "organization"
 
-    return super(OrganizationViewSet, self).perform_create(serializer)
+    def get_queryset(self):
+        organization = self.kwargs.get('organization')
+        members = OrganizationMember.objects.filter(organization=organization)
+        return members
+
+    def list(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = OrganizationMemberSerializer(queryset, many=True)
+        members = serializer.data
+        return Response(members, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

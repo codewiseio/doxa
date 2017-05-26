@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'contacts',
     'people',
     'members',
-    'foo'
+    'groups'
 ]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -117,18 +117,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    )
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -138,6 +141,9 @@ STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
 
+USER_FILES = '/static/files'
+
 
 # APPEND_SLASH = False
+FILE_UPLOAD_DIR = 'static/files/upload';
 from .settings_local import *

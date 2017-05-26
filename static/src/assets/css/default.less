@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
 .fixed-appbar .appbar {
     position: fixed;
 }
@@ -16,7 +19,7 @@
 .date-picker {
     padding-right : 18px;
     height        : 58px !important;
-    margin-top    : 18px !important;
+    margin-top    : 0px !important;
 
     label {
         left  : 33px !important;
@@ -32,7 +35,7 @@
 
         .md-datepicker-button {
             float       : left;
-            margin-top  : -12.5px;
+            margin-top  : -28px;
             margin-left : -33px;
         }
 
@@ -117,6 +120,7 @@
     padding: 17px 0px;
 }
 
+.abstract-profile-graphic,
 .abstract-graphic-id {
     text-align: center;
     width: 36px;
@@ -127,6 +131,20 @@
     line-height: 36px !important;
     font-size: 18px;
     font-weight: 500;
+}
+
+.abstract-profile-graphic-md {
+    height: 72px;
+    width: 72px;
+    font-size: 36px;
+    line-height: 72px !important;
+}
+
+.abstract-profile-graphic-lg {
+    height: 108px;
+    width: 108px;
+    font-size: 54px;
+    line-height: 108px !important;
 }
 
 
@@ -206,4 +224,118 @@ contact-input .action-icons {
 
 md-input-container.md-grey-theme:not(.md-input-invalid).md-input-has-value label {
     color: rgba(0,0,0,0.54);
+}
+
+
+
+.profile-banner {
+    background-size: cover;
+}
+
+.profile-banner-sm {
+    height: 150px;
+}
+
+.profile-widget .profile-image {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90px;
+    height: 90px;
+    margin-top: -45px;
+    border-radius: 50%;
+    background: lightblue;
+    border: 10px solid white;
+}
+
+.profile-widget .profile-image img {
+    width: 100%;
+}
+
+// md-side-nav {
+//     width: 260px;
+// }
+
+
+@darkPrimaryColor:   #455A64;
+@primaryColor:       #607D8B;
+@lightPrimaryColor:  #CFD8DC;
+@textPrimaryColor:   #FFFFFF;
+@accentColor:        #E040FB;
+@primaryTextColor:   #212121;
+@secondaryTextColor: #757575;
+@dividerColor:       #BDBDBD;
+
+
+// md-card-content {
+//     padding: 32px 16px;
+// }
+
+// body,
+// md-content {
+//     background: #CFD8DC;
+// }
+
+md-grid-list.group-members  md-grid-tile {
+    border-radius: 36px;
+    background-color: white;
+}
+
+md-grid-list.group-members  md-grid-tile figure {
+    padding: 18px;
+}
+
+md-grid-tile.group-member .member-details {
+    margin-left: 18px;
+}
+
+
+
+md-dialog + md-content {
+    margin-top: 32px;
+}
+
+@media screen and (min-width: 600px) {
+    md-dialog.add-group-member {
+        min-width: 600px;
+        max-width: 100%;
+    }
+}
+
+md-toolbar + md-dialog-content {
+    margin-top: 36px;
+}
+
+
+md-dialog md-input-container {
+    margin-top: 18px;
+}
+md-dialog md-input-container.date-picker {
+    margin-top: 18px!important;
+}
+
+/* $mdDialog - fullscreen dialog styling */
+// @media screen and (max-width: 760px){
+
+//        .fullscreen-dialog {
+//        height:100%;
+//        width:100%;
+//        max-height:100%;
+//        max-width: 100%;
+//        position: absolute;
+//        top: 0;
+//        left: 0;
+//        border-radius: 0;
+//    }
+// }
+// 
+// 
+md-dialog.edit-member md-dialog-content {
+    margin-top: 64px;
+    padding: 0px 16px;
+    margin-bottom: 32px;
+}
+
+
+md-toolbar .profile-graphic + h2 {
+    margin-left: 16px;
 }

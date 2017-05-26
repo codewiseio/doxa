@@ -1,0 +1,46 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.save()" >
+  <main class="card-collection">
+    <md-card>
+    <md-card-content>
+    
+    <div layout="column">        
+          
+        <div layout="column">           
+            
+
+            <md-input-container>
+              <label>Group name</label>
+              <input required name="name" ng-model="$ctrl.item.name" type="text" />
+            </md-input-container>
+
+            <md-input-container>
+              <label>Description</label>
+              <textarea ng-model="$ctrl.item.description" md-maxlength="400" rows="3" md-select-on-focus></textarea>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Meeting Times</label>
+              <input name="meeting_times" ng-model="$ctrl.item.meeting_times" type="text" />
+            </md-input-container>
+
+            <md-input-container >
+              <label>Location</label>
+              <input name="location" ng-model="$ctrl.item.location" type="text" />
+            </md-input-container>
+
+        </div>
+    </md-card-content>
+    </md-card>
+  
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+  
+</form>
+       
+<!--<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="save">
+  <md-icon>save</md-icon>
+</md-button>-->

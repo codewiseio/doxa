@@ -15,12 +15,8 @@ export default class DashboardMembersController {
     this.context = "dashboard.members";
     this.errors = [];
 
-    // TODO: GET RID OF APPDATASERVICE
     this.AppDataService = AppDataService
-    this.AppDataService.pageTitle = `New member`;
-
-    console.log('initializing members controller');
-
+    this.AppDataService.pageTitle = `Members`;
     
     this.initPage();    
   }
@@ -31,14 +27,11 @@ export default class DashboardMembersController {
    */
   initPage() {
     // get currently set organization
-    this.organization = JSON.parse(this.$cookies.get('organization'));
-    this.organization.moniker = 'organization:'+this.organization.id;
-    console.log(this.organization.moniker);
-
     let id = this.$stateParams.id;
+    this.organization = this.AppDataService.organization;
 
     // Retrieve record data
-    this.DashboardMemberService.list( this.organization.moniker ).then(
+    this.DashboardMemberService.list( this.organization.id ).then(
         (response) => {
           this.items = response.data;
         },
@@ -58,11 +51,40 @@ export default class DashboardMembersController {
    * @param  {object} $item   The item to be edited
    * @param  {event} $event   The event triggering the dialog to open
    */
-  create(item, $event) {
-    item = {
-      contacts: [ { kind: 'email' }, { kind: 'telephone' }, { kind: 'address' }  ]
-    }
-    return this.edit(item,$event);
+  new(item=null, $event=null) {
+
+    if ( ! item ) item = { person: {}, organization_id: this.AppDataService.organization.id };
+
+    return this.$mdDialog.show({
+          controller: 'DashboardMemberDialogController as $ctrl',
+          templateUrl: 'dashboard.member.dialog.edit.html',
+          locals: { "item": item },
+          clickOutsideToClose:true,
+          fullscreen: true,
+          parent: angular.element(document.body),
+          targetEvent: $event
+        })
+        .then(
+          (item) => {
+
+            // if and item was returned the action completed successfuly
+            if ( item ) {
+              console.log('Members Controller Received edited item:')
+              console.log(item);
+
+              // add it to the beginning of list
+              this.items.unshift(item);
+
+              // notify the user
+              var toast = this.$mdToast.simple()
+                .textContent("New member created" )
+                .position('bottom center')
+                .parent();
+              this.$mdToast.show(toast);
+            }
+        }, (error) => {
+            console.log('error');
+        });
   }
 
   /**
@@ -70,25 +92,47 @@ export default class DashboardMembersController {
    * @param  {object} $item   The item to be edited
    * @param  {event} $event   The event triggering the dialog to open
    */
-  edit(item, $event) {
-    this.$mdDialog.show({
-      templateUrl: 'dashboard.member.dialog.edit.html',
-      parent: angular.element(document.body),
-      targetEvent: $event,
-      controller: 'DashboardMemberDialogController as $ctrl',
-      clickOutsideToClose:true,
-      fullscreen: true,
-      locals: {
-        "item": item
-      }
-    })
-    .then(
-      (answer) => {
-        console.log(item);
-    }, () => {
-        console.log(item);
-        console.log('canceled');
-    });
+  edit(item, $event=null) {
+
+    $event.stopPropagation();
+    // $event.preventDefault();
+    
+
+    // retrieve remote data for this item
+    this.DashboardMemberService.get(item.id)
+      .then()
+
+
+    return this.$mdDialog.show({
+          controller: 'DashboardMemberDialogController as $ctrl',
+          templateUrl: 'dashboard.member.dialog.edit.html',
+          locals: { "item": item },
+          clickOutsideToClose:true,
+          fullscreen: true,
+          parent: angular.element(document.body),
+          targetEvent: $event
+        })
+        .then(
+          (item) => {
+
+            // if and item was returned the action completed successfuly
+            if ( item ) {
+              console.log('Members Controller Received edited item:')
+              console.log(item);
+
+              // add it to the beginning of list
+              // this.items.unshift(item);
+
+              // notify the user
+              var toast = this.$mdToast.simple()
+                .textContent("New member created" )
+                .position('bottom center')
+                .parent();
+              this.$mdToast.show(toast);
+            }
+        }, (error) => {
+            console.log('error');
+        });
   }
 
   view(item, $event) {

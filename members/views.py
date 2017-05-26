@@ -11,15 +11,110 @@ from people.serializers import PersonSerializer
 from members.models import Member
 from members.serializers import MemberSerializer
 
+from organizations.models import OrganizationMember
+from organizations.serializers import OrganizationMemberSerializer
+
 from django.db import transaction
 from doxa.exceptions import HttpException, StorageException
 
-class MemberViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.order_by('id')
+
+class MembersListView(generics.ListCreateAPIView):
+    queryset = OrganizationMember.objects.order_by('id')
+    serializer_class = OrganizationMemberSerializer
+
+
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
+
+        # if a person data was sent, create a new person object
+        if 'person' in data:
+            person = Person.objects.create(**data['person'])
+            data['person_id'] = person.id
+            data.pop('person')
+
+        member = OrganizationMember.objects.create(**data)
+        serializer = OrganizationMemberSerializer(member)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def list(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = OrganizationMemberSerializer(queryset, many=True)
+        
+        members = serializer.data
+        members = self.get_entity_data(members)
+
+        return Response(members, status=status.HTTP_201_CREATED)
+
+
+
+class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer
+    queryset = Member.objects
+
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(self.object)
+        member = serializer.data
+        return Response(member)
+
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        print( 'UPDATING' )
+        print( request.data )
+        partial = kwargs.pop('partial', False)
+
+        data = request.data;
+        
+
+
+
+
+# class MembersListView(generics.ListAPIView):    
+#     serializer_class = MemberSerializer
+#     lookup_url_kwarg = "owner"
+#     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+#     def get_queryset(self):
+#         owner = self.kwargs.get('owner')
+#         members = Member.objects.filter(owner=owner)
+#         return members
+
+#     def list(self, *args, **kwargs):
+#         queryset = self.filter_queryset(self.get_queryset())
+#         serializer = MemberSerializer(queryset, many=True)
+        
+#         members = serializer.data
+#         members = self.get_entity_data(members)
+
+#         return Response(members, status=status.HTTP_201_CREATED)
+
+#     def get_entity_data(self, members):
+
+#         monikers = []
+#         for member in members:
+#             entity_moniker = member.get('entity')
+#             entity_id = entity_moniker.split(':')[1];
+            
+#             person = Person.objects.get(id=entity_id)
+#             serializer = PersonSerializer(person)
+#             member['entity'] = serializer.data
+
+#         return members
 
 
     
+
+
+
+    
+
+
+
+
+
 class MembersItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer
     queryset = Member.objects
@@ -88,37 +183,6 @@ class MembersItemView(generics.RetrieveUpdateDestroyAPIView):
         else:
             return serialized_data;
 
-class MembersListView(generics.ListAPIView):    
-    serializer_class = MemberSerializer
-    lookup_url_kwarg = "owner"
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def get_queryset(self):
-        owner = self.kwargs.get('owner')
-        members = Member.objects.filter(owner=owner)
-        return members
-
-    def list(self, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = MemberSerializer(queryset, many=True)
-        
-        members = serializer.data
-        members = self.get_entity_data(members)
-
-        return Response(members, status=status.HTTP_201_CREATED)
-
-    def get_entity_data(self, members):
-
-        monikers = []
-        for member in members:
-            entity_moniker = member.get('entity')
-            entity_id = entity_moniker.split(':')[1];
-            
-            person = Person.objects.get(id=entity_id)
-            serializer = PersonSerializer(person)
-            member['entity'] = serializer.data
-
-        return members
 
 class MembersCreateView(generics.CreateAPIView):
 

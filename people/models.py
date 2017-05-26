@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import Entity, CreatedModifiedMixin
+from authentication.models import User
 
 # Create your models here.
 class Person (models.Model, CreatedModifiedMixin):
@@ -13,6 +14,12 @@ class Person (models.Model, CreatedModifiedMixin):
     
     birthday = models.DateTimeField(blank=True,null=True)
 
+    user  = models.ForeignKey(User,  on_delete=models.SET_NULL, blank=True, null=True)
+
     def moniker(self):
-        '{}:{}'.format(self.entity_type, self.id)
-    
+        return '{}:{}'.format(self.entity_type, self.id)
+
+    def __str__(self):
+        return '<{} {}>'.format(self.first_name, self.last_name)
+
+   

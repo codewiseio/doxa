@@ -23,12 +23,12 @@ class Organization(models.Model, CreatedModifiedMixin):
     
     prepopulated_fields = {"slug": ("title")}
     
-    title = models.CharField(max_length=255,null=False)
-    slug = models.SlugField(max_length=255,allow_unicode=True,blank=True)
+    title       = models.CharField(max_length=255,null=False)
+    slug        = models.SlugField(max_length=255,allow_unicode=True,blank=True)
     description = models.TextField(blank=True,null=True)
-    size = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True,null=True)
+    size        = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True,null=True)
     
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
     def save(self, *args, **kwargs):
            self.slug = slugify(self.title)
@@ -39,4 +39,19 @@ class Organization(models.Model, CreatedModifiedMixin):
 
     def __str__(self):
         return self.title
+
+class OrganizationMember(models.Model, CreatedModifiedMixin):
+    organization    = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=False, null=False)
+    person          = models.ForeignKey(Person, on_delete=models.CASCADE, blank=False, null=False)
+    role            = models.CharField(max_length=16,null=False,blank=True,default='member')
+    join_date       = models.DateTimeField(blank=True,null=True,auto_now_add=True)
+    added_by        = models.ForeignKey(Person, on_delete=models.SET_NULL, blank=True, null=True, related_name='OrganizationMembers_added')
+
+class OrganizationProfile(models.Model, CreatedModifiedMixin):
+    organization    = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    # field_group     = models.CharField(max_length=64,null=False,blank=False)
+    field           = models.CharField(max_length=64,null=False,blank=False)
+    value           = models.TextField(null=True,blank=True)
+
+
 
