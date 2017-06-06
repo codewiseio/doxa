@@ -98,10 +98,6 @@ export default class DashboardMembersController {
     // $event.preventDefault();
     
 
-    // retrieve remote data for this item
-    this.DashboardMemberService.get(item.id)
-      .then()
-
 
     return this.$mdDialog.show({
           controller: 'DashboardMemberDialogController as $ctrl',

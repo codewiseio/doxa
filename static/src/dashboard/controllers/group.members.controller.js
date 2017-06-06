@@ -66,12 +66,9 @@ export default class DashboardGroupController {
      var $http = this.$http;
      var o = this.AppDataService.organization;
 
-    
-
-
     this.$mdDialog.show({
-        controller: 'DashboardGroupMembersAddMembersController as $ctrl',
-        templateUrl: 'dashboard.group.member.edit.dialog.html',
+        controller: 'DashboardGroupAddMembersController as $ctrl',
+        templateUrl: 'dashboard.group.member.add.html',
         clickOutsideToClose: true,
         fullscreen: false,
         locals: {
@@ -79,47 +76,95 @@ export default class DashboardGroupController {
         }
     })
     .then( 
-      (data) => {
-
+      (item) => {
+        if ( item ) this.members.unshift(item);
       },
       (error) => {
 
       }
     )
   }
+
+  /**
+   * Display a dialog to add a member to the group
+   */
+  editMember(member, event) {
+
+    this.$mdDialog.show({
+        controller: 'DashboardGroupEditMemberController as $ctrl',
+        templateUrl: 'dashboard.group.member.edit.html',
+        clickOutsideToClose: true,
+        fullscreen: false,
+        locals: {
+          group: this.item,
+          item: member
+        }
+    })
+    .then( 
+      (item) => {
+        this.items.unshift(item);
+      },
+      (error) => {
+
+      }
+    )
+  }
+
+  removeMember(item, $event) {
+     // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = this.$mdDialog.confirm({ multiple: true, locals: {item: item } })
+            .title(`Really remove this member?`)
+            .textContent(`${item.person.first_name} ${item.person.last_name}`)
+            .ariaLabel('Really remove this member?')
+            .targetEvent($event)
+            .ok(`Yes, remove ${item.person.first_name}`)
+            .cancel('No, keep in group')
+            .multiple(true);
+
+      this.$mdDialog.show(confirm).then(
+          // user confirmed delete
+          () => {
+
+            console.log('Confirm ');
+            console.log(this.item);
+
+            this.GroupService.removeMember(item.id).then(
+                    (response) => {   
+                      console.log('Remove successful');
+                      console.log(response.data);
+
+                      // notify the user
+                      var toast = this.$mdToast.simple()
+                        .textContent(`Removed ${item.person.first_name} from group`)
+                        .position('bottom center')
+                        .parent();
+
+                    },
+                    (error) => {
+
+                      message = error.data.message;
+
+                      // notify the user operation failed
+                      var toast = this.$mdToast.simple()
+                        .textContent(message)
+                        .position('bottom center')
+                        .parent();
+
+                      this.$mdToast.show(toast);
+
+                      console.log('Error removing group.');
+                      console.log(error);
+                    }
+                );
+
+          },
+          // user canceled delete
+          () => {
+            console.log('Cancelled delete item.');
+          }
+      );
+  }
   
 }
-
- // var DialogController = function($scope, $mdDialog) {
- //          $scope.hide = function() {
- //            $mdDialog.hide();
- //          };
-
- //          $scope.cancel = function() {
- //            $mdDialog.cancel();
- //          };
-
- //          $scope.answer = function(answer) {
- //            $mdDialog.hide(answer);
- //          };
-
- //          $scope.querySearch = function(query) {
- //            var lowercaseQuery = angular.lowercase(query);
- //            console.log(query);
- //            console.log(lowercaseQuery);
-            
- //            return $http.get(`api/v1/organizations/${o.id}/members/`, { 'query':query } )
- //              .then( 
- //                  (response) => {
- //                    console.log(response.data);
- //                    return response.data;
- //                  }
- //              );
- //          }
-
- //          // selectedItemChange(item) {
- //          //   this.formData.country = item.value;
- //          // }
- //        };
 
 

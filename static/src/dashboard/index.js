@@ -7,9 +7,11 @@ import UserService from './services/user.service';
 import DashboardController from './dashboard.controller';
 import DashboardAppbarController from './controllers/appbar.controller';
 import DashboardGroupsController from './controllers/groups.controller';
+import DashboardGroupEditDialogController from './controllers/group.edit.dialog.controller.js';
+import DashboardGroupEditMemberController from './controllers/group.member.edit.controller.js';
 import DashboardGroupController from './controllers/group.controller';
 import DashboardGroupMembersController from './controllers/group.members.controller';
-import DashboardGroupMembersAddMembersController from './controllers/group.members.add.members';
+import DashboardGroupAddMembersController from './controllers/group.add.members';
 import DashboardHomeController from './controllers/home.controller';
 import AppDataService from './services/appdata.service';
 
@@ -31,10 +33,14 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('DashboardMemberDialogController', DashboardMemberDialogController)
     .controller('DashboardMembersController',DashboardMembersController)
     .controller('DashboardOrganizationController',DashboardOrganizationController)
+
     .controller('DashboardGroupController', DashboardGroupController )
+    .controller('DashboardGroupEditDialogController', DashboardGroupEditDialogController )
     .controller('DashboardGroupsController', DashboardGroupsController )
+
     .controller('DashboardGroupMembersController', DashboardGroupMembersController)
-    .controller('DashboardGroupMembersAddMembersController', DashboardGroupMembersAddMembersController)
+    .controller('DashboardGroupAddMembersController', DashboardGroupAddMembersController)
+    .controller('DashboardGroupEditMemberController', DashboardGroupEditMemberController)
     .controller('DashboardHomeController', DashboardHomeController)
     .controller('UserController', UserController)  
     .controller('SidenavController', SidenavController )

@@ -8,8 +8,10 @@ from contacts.managers import ContactManager
 from organizations.models import Organization, OrganizationMember
 from organizations.permissions import IsAdministratorOfOrganization
 from organizations.serializers import OrganizationSerializer, OrganizationMemberSerializer
+from groups.models import GroupMember
 from contacts.serializers import ContactSerializer
 from django.db import transaction
+from django.db.models import Q
 
 from doxa.exceptions import StorageException
 from django.conf import settings
@@ -124,9 +126,27 @@ class OrganizationMembersView(generics.ListCreateAPIView):
         return members
 
     def list(self, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.get_queryset()
+
+        # filter query set by name
+        query = self.request.GET.get('query', '')
+        if query:
+            print("Filtering list on " + query)
+            queryset = queryset.filter(Q(person__first_name__icontains=query) | Q(person__last_name__icontains=query)).order_by('person__first_name','person__last_name')
+
+            # subquery to filter out members already in group
+            # groupid = self.request.GET.get('group', '')
+            # if groupid:
+            #     print("Filtering out members of group " + groupid)
+            #     existing_member_query = GroupMember.objects.filter(group=groupid).only('person').all()
+            #     queryset = queryset.filter(person__in=existing_member_query)
+
+            queryset = queryset[:10]
+
+
         serializer = OrganizationMemberSerializer(queryset, many=True)
         members = serializer.data
+
         return Response(members, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):

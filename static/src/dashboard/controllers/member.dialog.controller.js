@@ -48,8 +48,15 @@ export default class DashboardMemberDialogController {
           this.$mdDialog.hide(savedItem);
         },
         (error) => {
-
-          message = error.data.message;
+          console.log('Error saving member data.');
+          console.log(error);
+          if ( error.status == 500) {
+            message = 'Internal server error.';
+          }
+          else {
+             message = error.data.message;
+          }
+         
 
           // notify the user operation failed
           var toast = this.$mdToast.simple()
@@ -58,8 +65,7 @@ export default class DashboardMemberDialogController {
             .parent();
           this.$mdToast.show(toast);
 
-          console.log('Error saving member data.');
-          console.log(error);
+
         }
     );
   }

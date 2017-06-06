@@ -6,12 +6,8 @@
     
     <div layout="column">        
           
-        <div layout="row">           
-        </div>
-    </md-card-content>
-    </md-card>
 
-    <md-grid-list
+<!--     <md-grid-list
           md-cols="4" md-cols-sm="2" md-cols-xs="1" md-cols-gt-lg="5"
           md-row-height="160px"
           md-gutter="8px" md-gutter-gt-sm="4px" 
@@ -43,7 +39,48 @@
       </md-grid-tile>
 
 
-    </md-grid-list>
+    </md-grid-list> -->
+
+         <md-list class="members-list" layout="column" flex>
+
+
+        <md-list-item ng-repeat="item in $ctrl.members" layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
+          
+          <!-- First initial icon -->
+          <div flex="none" class="abstract-first-initial">
+            <span>{{item.person.first_name | InitialFilter }}</span>
+          </div>
+
+          <md-button class="item-row md-button" flex="100" layout="row">
+            <!-- Second initial icon -->
+            <div class="abstract-graphic-id" flex="none">
+              <span>{{item.person.last_name | InitialFilter }}</span>
+            </div>
+
+            <!-- Full display name -->
+            <div class="display-name" flex>
+              <span>{{item.person.first_name}} {{item.person.last_name}}</span>
+            </div>
+
+            <div class="member-since" flex>
+              <span>{{item.role}}
+            </div>
+
+            <div class="member-since" flex>
+              <span>{{item.join_date | date:'MMM, yyyy'}}
+            </div>
+
+            <div class="item-actions" flex="none">
+              <md-button class="md-icon-button" ng-click="$ctrl.editMember(item,$event);$event.stopPropagation();$event.preventDefault();"><md-icon>edit</md-icon></md-button>
+              <md-button class="md-icon-button" ng-click="$ctrl.removeMember(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button>
+            </div>
+          </md-button>
+
+
+        </md-list-item>
+
+
+      </md-list>
   
   
   </main>

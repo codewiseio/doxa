@@ -17,6 +17,63 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class GroupListView(generics.ListCreateAPIView):
+    serializer_class = GroupSerializer
+
+    def get_queryset(self):
+        organization = self.kwargs.get('organization')
+        # if organization:
+        #     members = Group.objects.filter(organization=organization)
+        # else:
+        members = Group.objects.filter()
+        return members
+
+    def list(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset.order_by('name')
+
+
+
+        serializer = GroupSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+
+        data = request.data
+        # data['created_by_id']  = Person.objects.filter(user=request.user.id)[:1][0].id
+
+        # check data validity
+        errors = {}
+        if not data.get('name'):
+            errors['person_id'] = ['This field is required.']
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        groupMember = Group.objects.create(**data)
+        serializer =  GroupSerializer(groupMember)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class GroupItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+
+        # count number of members
+        data['count_members'] = GroupMember.objects.filter(group=instance).count()
+        print('Counted members:')
+        print(data)
+
+        return Response(data)
+    
+
+
 class GroupMembersView(generics.ListCreateAPIView): 
     serializer_class = GroupMemberSerializer
     lookup_url_kwarg = "group"
@@ -54,7 +111,7 @@ class GroupMembersView(generics.ListCreateAPIView):
             errors['group_id'] = ['This field is required.']
 
         if errors:
-            return Respoonse(errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         # check if this person is already part of the group
         memberExists = GroupMember.objects.filter(person=data['person_id'],group=data['group_id']).count()

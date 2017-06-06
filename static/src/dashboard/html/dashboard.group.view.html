@@ -17,13 +17,15 @@
               </div>
 
               <div flex class="profile-content">
-                <h2>{{$ctrl.item.name}}</h2>
-                <div>{{$ctrl.item.meeting_times}}</div>
-                <div>{{$ctrl.item.meeting_location}}</div>
+                <h2 class="group-name">{{$ctrl.item.name}}</h2>
+                <div class="meeting-times">{{$ctrl.item.meeting_times}}</div>
+                <div class="meeting-location">{{$ctrl.item.meeting_location}}</div>
+
+                <div class="description group-description">{{$ctrl.item.description}}</div>
               </div>
 
               <md-card-actions layout="row" layout-align="end">
-                <md-button class="md-icon-button" aria-label="Share" ui-sref="dashboard.editGroup({id: $ctrl.item.id})">
+                <md-button class="md-icon-button" aria-label="Share" ng-click="$ctrl.edit(item);">
                   <md-icon>edit</md-icon>
                 </md-button>
               </md-card-actions>
@@ -34,7 +36,7 @@
 
     <div layout="row" layout-gt-sm="row">
 
-      <md-card class="group-members" flex-gt-xs="50" ui-sref="dashboard.groupMembers({id: $ctrl.item.id })" >
+      <md-card class="group-members" flex-gt-xs="50" ui-sref="dashboard.groupMembers({id: $ctrl.item.id })" class="md-ink-ripple">
         <md-card-title>
           <md-card-title-media>
             <div class="md-media-md card-media">
@@ -42,10 +44,7 @@
             </div>
           </md-card-title-media>
           <md-card-title-text>
-            <span class="md-headline">362 members</span>
-            <span class="md-subhead">186 with accounts</span>
-            <span class="md-subhead">112 active this week</span>
-            <span class="md-subhead">6 currently online</span>
+            <span class="md-headline">{{$ctrl.item.count_members}} members</span>
           </md-card-title-text>
 
         </md-card-title>

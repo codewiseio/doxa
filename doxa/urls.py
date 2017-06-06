@@ -10,12 +10,12 @@ from registration.views import RegisterView
 from members.views import MemberItemView, MembersListView
 
 from organizations.views import OrganizationViewSet, OrganizationMembersView
-from groups.views import GroupViewSet, GroupMembersView, FileUploadView
+from groups.views import GroupViewSet, GroupListView, GroupItemView, GroupMembersView
 
 router = routers.SimpleRouter()
 # router.register(r'users', UserViewSet )
 # router.register(r'members', MemberViewSet )
-router.register(r'groups', GroupViewSet )
+# router.register(r'groups', GroupViewSet )
 router.register(r'organizations', OrganizationViewSet )
 # router.register(r'members', MemberViewSet )
 
@@ -30,14 +30,17 @@ urlpatterns = [
 
 
     url(r'^api/v1/organizations/(?P<organization>\d+)/members/$', OrganizationMembersView.as_view(), name="organizationMembers" ),
+    
+    url(r'^api/v1/groups/$', GroupListView.as_view(), name="groups"),
+    url(r'^api/v1/groups/(?P<pk>\d+)/$', GroupItemView.as_view(), name="group"),
     url(r'^api/v1/groups/(?P<group>\d+)/members/$', GroupMembersView.as_view(), name="groupMembers" ),
+     
     
     url(r'^api/v1/member/(?P<pk>\d+)/$', MemberItemView.as_view(), name="member"),
     url(r'^api/v1/members/$', MembersListView.as_view(), name="members" ),
     # url(r'^api/v1/members/(?P<pk>\d+)/$', MembersItemView.as_view(), name='membersItem'),
     # url(r'^api/v1/members/(?P<owner>\w+:\d+)/$', MembersListView.as_view(), name='membersList'),
 
-    url(r'^api/v1/upload/$', FileUploadView.as_view(), name="upload"),
 
     url(r'^.*$',IndexView.as_view(), name='index')
 ]

@@ -16,6 +16,12 @@ class DashboardController {
     this.AppDataService.organization = $rootScope.organization = JSON.parse($cookies.get('organization'));
   }
 
+
+  initPage() {
+
+    
+  }
+
 }
 
 

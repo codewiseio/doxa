@@ -27,7 +27,7 @@ export default class DashboardGroupsController {
    */
   initPage() {
 
-    this.AppDataService.pageType = 'component';
+    this.AppDataService.pageType = 'dashboard';
     this.AppDataService.pageTitle = `Groups`;
     this.AppDataService.previousState = 'dashboard.home()';
 
@@ -65,50 +65,54 @@ export default class DashboardGroupsController {
     return this.edit(item,$event);
   }
 
+
+
   /**
-   * Opens a dialog to edit member.
+   * Opens a dialog to create a new group
    * @param  {object} $item   The item to be edited
    * @param  {event} $event   The event triggering the dialog to open
    */
-  edit(item, $event) {
-    this.$mdDialog.show({
-      templateUrl: 'dashboard.member.dialog.edit.html',
-      parent: angular.element(document.body),
-      targetEvent: $event,
-      controller: 'DashboardMemberDialogController as $ctrl',
-      clickOutsideToClose:true,
-      fullscreen: true,
-      locals: {
-        "item": item
-      }
-    })
-    .then(
-      (answer) => {
-        console.log(item);
-    }, () => {
-        console.log(item);
-        console.log('canceled');
-    });
+  new(item=null, $event=null) {
+
+    if ( ! item ) item = { organization_id: this.AppDataService.organization.id };
+
+    return this.$mdDialog.show({
+          controller: 'DashboardGroupEditDialogController as $ctrl',
+          templateUrl: 'dashboard.group.edit.dialog.html',
+          locals: { "item": item },
+          clickOutsideToClose:true,
+          fullscreen: true,
+          parent: angular.element(document.body),
+          targetEvent: $event
+        })
+        .then(
+          (item) => {
+
+            // if and item was returned the action completed successfuly
+            if ( item ) {
+              console.log('Groups controller received edited item:')
+              console.log(item);
+
+              // add it to the beginning of list
+              this.items.unshift(item);
+
+              // notify the user
+              var toast = this.$mdToast.simple()
+                .textContent("New group created" )
+                .position('bottom center')
+                .parent();
+              this.$mdToast.show(toast);
+            }
+        }, (error) => {
+            console.log('error');
+        });
   }
 
-  view(item, $event) {
-    this.$mdDialog.show({
-      templateUrl: 'dashboard.member.dialog.view.html',
-      parent: angular.element(document.body),
-      targetEvent: $event,
-      controller: 'DashboardMemberDialogController as $ctrl',
-      clickOutsideToClose:true,
-      fullscreen: true,
-      locals: {
-        "item": item
-      }
-    })
-    .then(function(answer) {
-        console.log(answer);
-    }, function() {
-        console.log('canceled');
-    });
-  }
+
+
+
+  
+
 
   delete(item, event) {
       var confirm = this.$mdDialog.confirm()
@@ -122,7 +126,6 @@ export default class DashboardGroupsController {
       this.$mdDialog.show(confirm).then(
         () => {
           this._deleteItem(item);
-
         }
       );
   }
@@ -144,9 +147,6 @@ export default class DashboardGroupsController {
     );
   }
 
-  cancel() {
-    console.log('Canceled');
-    this.$mdDialog.cancel();
-  }
+
   
 }

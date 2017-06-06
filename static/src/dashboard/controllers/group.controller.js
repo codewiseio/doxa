@@ -1,43 +1,31 @@
+
+
+
 export default class DashboardGroupController {
-  constructor(GroupService, AppDataService, $cookies, $state, $stateParams, $mdToast, $http, FileUploader) {
+  constructor(GroupService, AppDataService, $stateParams, $mdDialog, $mdToast, $http) {
     'ngInject';
     
     this.GroupService = GroupService;
     this.AppDataService = AppDataService
     this.$mdToast = $mdToast;
-    this.$state = $state;
+    this.$mdDialog = $mdDialog;
     this.$stateParams = $stateParams;
-    this.$cookies = $cookies;
     this.$http = $http;
-
-
-
-
-    this.FileUploader = new FileUploader(
-      { url: '/api/v1/upload/',
-        alias: 'file',
-        removeAfterUpload: true,
-        headers: {
-          'X-CSRFToken': $cookies.get('csrftoken'),
-          'Content-Disposition': 'attachment; filename=upload.jpg'
-        },
-      }
-    );
     
-    this.context = "dashboard.group.edit";
+    this.context = "dashboard.group.view";
     this.errors = [];
     
     this.initPage();    
   }
   
   initPage() {
-    this.organization = JSON.parse(this.$cookies.get('organization'));
+    this.organization = this.AppDataService.organization;
 
     let id = this.$stateParams.id;
-    // if ( $state.current.name ! id ) $state.go('dashboard.editGroup');
 
     // if creating a new record
-    if( ! id || id == "new" ) {
+    if( ! id ) {
+      // TODO: Go to 404
       this.AppDataService.pageTitle = `New group`;
       this.item = { 'organization' : this.organization.id };
     }
@@ -46,12 +34,15 @@ export default class DashboardGroupController {
        this.AppDataService.pageTitle = `New group`;
 
       // Retrieve record data
-      this.GroupService.get(id).then(
+      this.GroupService.get(id, { context: this.context }).then(
           (response) => {
+            console.log('Retrieved record');
+            console.log(response.data);
             this.item = response.data;
             this.AppDataService.pageTitle = `${this.item.name}`;
           },
           (err) => {
+            // TODO: Go to 404
             console.log('Error fetching data.');
             console.log(error);
             var toast = this.$mdToast.simple()
@@ -61,54 +52,50 @@ export default class DashboardGroupController {
             this.$mdToast.show(toast);
           }
       );
-
-      // Retrieve group members
-      this.GroupService.getMembers(id).then(
-          (response) => {
-            this.members = response.data;
-          },
-          (err) => {
-            console.log('Could not retrieve group members.');
-
-            var toast = this.$mdToast.simple()
-              .textContent(error.data.message)
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-          }
-      );
     }
+  }
 
 
+  /**
+   * Opens a dialog to create a new group
+   * @param  {object} $item   The item to be edited
+   * @param  {event} $event   The event triggering the dialog to open
+   */
+  edit(item, $event=null) {
 
+    console.log('Edit item.');
+
+    return this.$mdDialog.show({
+          controller: 'DashboardGroupEditDialogController as $ctrl',
+          templateUrl: 'dashboard.group.edit.dialog.html',
+          locals: { "item": this.item },
+          clickOutsideToClose:true,
+          fullscreen: true,
+          parent: angular.element(document.body),
+          targetEvent: $event
+        })
+        .then(
+          (item) => {
+
+            // if and item was returned the action completed successfuly
+            if ( item ) {
+              console.log('Groups controller received edited item:')
+              console.log(item);
+
+              this.item = item;
+
+              // notify the user
+              var toast = this.$mdToast.simple()
+                .textContent("Saved" )
+                .position('bottom center')
+                .parent();
+              this.$mdToast.show(toast);
+            }
+        }, (error) => {
+            console.log('error');
+        });
   }
   
-  /**
-   * Save record
-   * @return {Promise}
-   */
-  save() {
-    this.GroupService.save(this.item).then(
-        (response) => {          
-          this.item = response.data;
-          this.$state.go('dashboard.groups');
-            var toast = this.$mdToast.simple()
-              .textContent('New group created')
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-          console.log('Saved');
-        },
-        (error) => {
-          console.log('Error saving item.');
-          console.log(error);
-            var toast = this.$mdToast.simple()
-              .textContent(error.statusText)
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-        }
-    );
-  }
+
   
 }
