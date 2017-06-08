@@ -37,7 +37,7 @@ export default class DashboardMemberDialogController {
    */
   save() {
 
-    console.log('Saving');
+    console.log('Saving is going on');
     console.log(this.item);
 
     return this.DashboardMemberService.save(this.item).then(

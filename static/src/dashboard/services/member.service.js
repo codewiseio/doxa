@@ -50,8 +50,10 @@ export default class DashboardMemberService {
     * @memberOf doxa.dashboard.services.members
     */
    save(data) {
+      console.log("HERE IT COMES")
       if ( data.id ) {
-         return this.$http.patch(`/api/v1/members/`, data );
+         console.log("id" + data.id);
+         return this.$http.patch(`/api/v1/members/${data.id}/`, data );
       }
       else {
          return this.$http.post(`/api/v1/members/`, data );

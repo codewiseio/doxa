@@ -38,7 +38,7 @@ urlpatterns = [
     
     url(r'^api/v1/member/(?P<pk>\d+)/$', MemberItemView.as_view(), name="member"),
     url(r'^api/v1/members/$', MembersListView.as_view(), name="members" ),
-    # url(r'^api/v1/members/(?P<pk>\d+)/$', MembersItemView.as_view(), name='membersItem'),
+    url(r'^api/v1/members/(?P<pk>\d+)/$', MemberItemView.as_view(), name='membersItem'),
     # url(r'^api/v1/members/(?P<owner>\w+:\d+)/$', MembersListView.as_view(), name='membersList'),
 
 

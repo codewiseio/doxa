@@ -121,7 +121,7 @@ export default class DashboardMembersController {
 
               // notify the user
               var toast = this.$mdToast.simple()
-                .textContent("New member created" )
+                .textContent(" Member Updated" )
                 .position('bottom center')
                 .parent();
               this.$mdToast.show(toast);
@@ -152,7 +152,7 @@ export default class DashboardMembersController {
 
   delete(item, event) {
       var confirm = this.$mdDialog.confirm()
-        .title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        .title(`Really delete ${item.person.first_name} ${item.person.last_name}?`)
         .textContent('This is permanent.')
         .ariaLabel('Really delete?')
         .targetEvent(event)
@@ -169,18 +169,28 @@ export default class DashboardMembersController {
 
   _deleteItem(item) {
     this.DashboardMemberService.delete(item.id).then(
-      () => {
+      (response) => {
           this.$mdDialog.hide();
 
           var toast = this.$mdToast.simple()
-              .textContent(`Deleted ${item.entity.first_name} ${item.entity.last_name}`)
+              //.textContent(`Deleted ${item.person.first_name} ${item.person.last_name}`)
+              .textContent(`Deleted Successfully`)
               .position('top right')
               .parent();
           this.$mdToast.show(toast);
 
           $(`#member-${item.id}`).remove();
           console.log($(`#member:${item.id}`));
-        }
+        },
+      (error) => {
+            //console.log('Could not add member to group.')
+            var message = error.data.message;
+            var toast = this.$mdToast.simple()
+              .textContent(message)
+              .position('top right')
+              .parent();
+            this.$mdToast.show(toast);
+          }
     );
   }
 

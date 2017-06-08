@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "repository": "git@gitlab.com:codewiseio/doxa.git",
   "devDependencies": {
+    "angular1-star-rating": "1.2.9",
     "angular-file-upload": "^2.5.0",
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.7.0",

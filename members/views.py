@@ -26,16 +26,15 @@ class MembersListView(generics.ListCreateAPIView):
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         data = request.data
+        print(data)
         data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
-
         # if a person data was sent, create a new person object
         if 'person' in data:
             person = Person.objects.create(**data['person'])
             data['person_id'] = person.id
             data.pop('person')
-
-        member = OrganizationMember.objects.create(**data)
-        serializer = OrganizationMemberSerializer(member)
+            member = OrganizationMember.objects.create(**data)
+            serializer = OrganizationMemberSerializer(member)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -62,11 +61,43 @@ class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
-        print( 'UPDATING' )
-        print( request.data )
-        partial = kwargs.pop('partial', False)
+
+        # partial = kwargs.pop('partial', False)
 
         data = request.data;
+        if 'id' in data:
+            Person.objects.filter(pk=data['id']).update(**data['person'])
+            data['person_id'] = data['id']
+            data['organization_id']=data['organization']
+            data.pop('person')
+            data.pop('organization')
+            member = OrganizationMember.objects.get(person_id=data['person_id'])
+            serializer = OrganizationMemberSerializer(member)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def delete(self, request,pk, *args, **kwargs):
+        print("Delete will be here")
+        person = Person.objects.get(id=pk)
+        member = OrganizationMember.objects.get(person_id=pk)
+        serializer = OrganizationMemberSerializer(member)
+        if person.user == None:
+            person.delete()
+        else:
+            return Response({'message':'This person can not be deleted'}, status=status.HTTP_400_BAD_REQUEST )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+
+
         
 
 
