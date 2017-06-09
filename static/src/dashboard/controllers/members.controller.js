@@ -38,7 +38,7 @@ export default class DashboardMembersController {
         (err) => {
           var toast = this.$mdToast.simple()
             .textContent(error.data.message)
-            .position('top right')
+            .position('bottom center')
             .parent();
 
           this.$mdToast.show(toast);
@@ -175,7 +175,7 @@ export default class DashboardMembersController {
           var toast = this.$mdToast.simple()
               //.textContent(`Deleted ${item.person.first_name} ${item.person.last_name}`)
               .textContent(`Deleted Successfully`)
-              .position('top right')
+              .position('bottom center')
               .parent();
           this.$mdToast.show(toast);
 
@@ -187,7 +187,7 @@ export default class DashboardMembersController {
             var message = error.data.message;
             var toast = this.$mdToast.simple()
               .textContent(message)
-              .position('top right')
+              .position('bottom center')
               .parent();
             this.$mdToast.show(toast);
           }

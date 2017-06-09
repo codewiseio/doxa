@@ -72,11 +72,11 @@ export default class GroupService {
    }
 
    updateMember(item) {
-      return this.$http.patch(`/api/v1/groups/${item.group}/members/`, item);
+      return this.$http.patch(`/api/v1/groups/${item.group}/member/`, item);
    }
 
-   removeMember(id) {
-    return this.$http.delete(`/api/v1/members/${id}`);
+   removeMember(item) {
+    return this.$http.delete(`/api/v1/groups/${item.id}/member/`);
    }
 }
 

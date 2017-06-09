@@ -99,6 +99,10 @@ class GroupMembersView(generics.ListCreateAPIView):
 
         # set the member data
         data = request.data
+
+        print("member add to group ")
+        print(data)
+
         data['group_id'] = self.kwargs.get('group')
         data['added_by_id'] = person.id
 
@@ -121,6 +125,31 @@ class GroupMembersView(generics.ListCreateAPIView):
         groupMember = GroupMember.objects.create(**data)
         serializer =  GroupMemberSerializer(groupMember)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class GroupMemberItemView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = GroupMemberSerializer
+    queryset = GroupMember.objects
+
+    def update(self,request, group, *args, **kwargs):
+
+        data = request.data;
+        if 'id' in data:
+            id = data['id']
+            role = data['role']
+            join_date = data['join_date']
+            groupMember = GroupMember.objects.get(pk=id)
+            groupMember.join_date=join_date
+            groupMember.role = role
+            groupMember.save()
+
+            serializer =  GroupMemberSerializer(groupMember)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def delete(self, request,group, *args, **kwargs):
+        id = group
+        GroupMember.objects.get(pk=id).delete()
+        return Response({ 'success':'true'}, status=status.HTTP_200_OK)
 
 
 

@@ -3,7 +3,7 @@
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
 <form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
   <main class="card-collection">
-    
+
     <div layout="column">        
           
 
@@ -42,9 +42,7 @@
     </md-grid-list> -->
 
          <md-list class="members-list" layout="column" flex>
-
-
-        <md-list-item ng-repeat="item in $ctrl.members" layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
+        <md-list-item ng-repeat="item in $ctrl.members " layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
           
           <!-- First initial icon -->
           <div flex="none" class="abstract-first-initial">
@@ -59,7 +57,7 @@
 
             <!-- Full display name -->
             <div class="display-name" flex>
-              <span>{{item.person.first_name}} {{item.person.last_name}}</span>
+              <span>{{item.person.first_name  }} {{item.person.last_name}}</span>
             </div>
 
             <div class="member-since" flex>

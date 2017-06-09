@@ -72,7 +72,7 @@ export default class DashboardGroupAddMembersController {
             var message = error.data.message;
             var toast = this.$mdToast.simple()
               .textContent(message)
-              .position('top right')
+              .position('bottom center')
               .parent();
             this.$mdToast.show(toast);
           }

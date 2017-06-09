@@ -128,16 +128,19 @@ export default class DashboardGroupController {
             console.log('Confirm ');
             console.log(this.item);
 
-            this.GroupService.removeMember(item.id).then(
+            this.GroupService.removeMember(item).then(
                     (response) => {   
                       console.log('Remove successful');
                       console.log(response.data);
 
                       // notify the user
                       var toast = this.$mdToast.simple()
-                        .textContent(`Removed ${item.person.first_name} from group`)
+                        .textContent(`Removed from group`)
                         .position('bottom center')
                         .parent();
+
+                      this.$mdToast.show(toast);
+                     $(`#member-${item.id}`).remove();
 
                     },
                     (error) => {
