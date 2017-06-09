@@ -168,7 +168,7 @@ export default class DashboardMembersController {
   }
 
   _deleteItem(item) {
-    this.DashboardMemberService.delete(item.id).then(
+    this.DashboardMemberService.delete(item.person.id).then(
       (response) => {
           this.$mdDialog.hide();
 

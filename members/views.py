@@ -60,14 +60,17 @@ class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
         return Response(member)
 
     @transaction.atomic
-    def update(self, request, *args, **kwargs):
+    def update(self,request, pk, *args, **kwargs):
 
         # partial = kwargs.pop('partial', False)
+        print("pk is")
+        print(pk)
 
         data = request.data;
         if 'id' in data:
-            Person.objects.filter(pk=data['id']).update(**data['person'])
-            data['person_id'] = data['id']
+            person = Person.objects.get(pk=pk)
+            Person.objects.filter(pk=pk).update(**data['person'])
+            data['person_id'] = person.id
             data['organization_id']=data['organization']
             data.pop('person')
             data.pop('organization')
@@ -77,9 +80,8 @@ class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
 
     @transaction.atomic
     def delete(self, request,pk, *args, **kwargs):
-        print("Delete will be here")
         person = Person.objects.get(id=pk)
-        member = OrganizationMember.objects.get(person_id=pk)
+        member = OrganizationMember.objects.get(person_id=person.id)
         serializer = OrganizationMemberSerializer(member)
         if person.user == None:
             person.delete()
