@@ -1,5 +1,5 @@
 export default class DashboardAppbarController {
-    constructor(AuthenticationService, AppDataService, $scope, $state, $location, $mdSidenav, $mdDialog, $rootScope) {
+    constructor(AuthenticationService, AppDataService, $parse, $scope, $state, $location, $mdSidenav, $mdDialog, $rootScope) {
       'ngInject';
       
 
@@ -7,6 +7,7 @@ export default class DashboardAppbarController {
       this.$location = $location;
       this.$rootScope = $rootScope;
       this.$mdDialog = $mdDialog;
+      this.$parse = $parse;
 
       this.AuthenticationService = AuthenticationService;
       this.$mdSidenav = $mdSidenav;
@@ -27,7 +28,14 @@ export default class DashboardAppbarController {
       ); 
       this.mode = AppDataService.pageType ?  AppDataService.pageType : 'dashboard';
 
-
+      // watch changes to the context menu
+      $scope.$watch( '$ctrl.AppDataService.contextMenu',
+        function (newValue) {
+          $scope.$ctrl.contextMenu = newValue;
+        }
+      ); 
+      this.contextMenu = AppDataService.contextMenu;
+      console.log(this.contextMenu);
     }
   
     /**
@@ -110,5 +118,12 @@ export default class DashboardAppbarController {
             window.history.back();
         //}
         
+    }
+
+
+    execute(command) {
+      console.log(command);
+      var $ctrl = this;
+      eval(command);
     }
 }

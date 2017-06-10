@@ -4,7 +4,9 @@
 <form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
   <main class="card-collection">
 
-    <div layout="column">        
+    <div layout="column">     
+
+
           
 
 <!--     <md-grid-list
@@ -46,8 +48,12 @@
           
           <!-- First initial icon -->
           <div flex="none" class="abstract-first-initial">
-            <span>{{item.person.first_name | InitialFilter }}</span>
+            <span>              
+                <md-checkbox ng-checked="$ctrl.isItemSelected(item)" ng-click="$ctrl.toggleItem(item)"></md-checkbox>
+              </span>
           </div>
+
+
 
           <md-button class="item-row md-button" flex="100" layout="row">
             <!-- Second initial icon -->

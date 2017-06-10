@@ -38,6 +38,25 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
+
+        <md-menu md-position-mode="target-right bottom" ng-show="$ctrl.contextMenu">
+
+          <md-button aria-label="Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-menu-origin="">more</md-icon>
+          </md-button>
+
+          <md-menu-content width="4" layout="column">
+            
+            <md-menu-item  ng-repeat="item in $ctrl.contextMenu.menuItems">
+              <md-button ng-click="$ctrl.execute(item.action)">
+                  <div layout="row" flex="">
+                    <p flex="">{{item.label}}</p>
+                  </div>
+              </md-button>
+            </md-menu-item>
+
+          </md-menu-content>
+        </md-menu>
       
 
     </div>

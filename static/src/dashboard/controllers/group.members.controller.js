@@ -1,4 +1,4 @@
-export default class DashboardGroupController {
+export default class DashboardGroupMembersController {
   constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http) {
     'ngInject';
     
@@ -13,8 +13,11 @@ export default class DashboardGroupController {
     
     this.context = "dashboard.group.members";
     this.errors = [];
+
+    this.selectedItems = [];
     
-    this.initPage();    
+    this.initPage();   
+    this.buildMenu(); 
   }
   
   initPage() {
@@ -56,6 +59,46 @@ export default class DashboardGroupController {
             this.$mdToast.show(toast);
           }
       );
+  }
+
+
+  buildMenu() {
+        this.contextMenu = {
+          controller: this,
+          menuItems: [
+            {
+                label: 'Remove Selected',
+                type: 'method',
+                icon: 'remove',
+                action: "$ctrl.contextMenu.controller.removeMembers()"
+            },
+            {
+                type: 'divider',
+            },
+            {
+                label: 'Name',
+                type: 'method',
+                icon: '',
+                action: "$ctrl.contextMenu.controller.sortyBy('name')"
+            },
+            {
+                label: 'Role',
+                type: 'method',
+                icon: '',
+                action: "$ctrl.contextMenu.controller.sortBy('role')"
+            },
+            {
+                label: 'Join Date',
+                type: 'method',
+                icon: '',
+                action: "$ctrl.contextMenu.controller.sortBy('join_date')"
+            },
+          ]
+        };
+
+
+
+        this.AppDataService.contextMenu = this.contextMenu;
   }
   
   /**
@@ -166,6 +209,41 @@ export default class DashboardGroupController {
             console.log('Cancelled delete item.');
           }
       );
+  }
+
+
+  removeMembers() {
+
+    // get selected items
+    
+    
+    // make ajax call to django
+    
+    // display toast
+
+    // remove items from the list
+  }
+
+  sortBy(field='first_name') {
+
+  }
+
+
+  isItemSelected(item) {
+    return this.selectedItems.indexOf(item) > -1;
+  }
+
+  toggleItem(item) {
+    var idx = this.selectedItems.indexOf(item);
+
+    if (idx > -1) {
+      this.selectedItems.splice(idx, 1);
+    }
+    else {
+      this.selectedItems.push(item);
+    }
+
+    console.log(this.selectedItems);
   }
   
 }
