@@ -67,16 +67,32 @@ export default class GroupService {
       );
    }
 
-   addMember(item) {
-      return this.$http.post(`/api/v1/groups/${item.group_id}/members/`, item);
+   addMember(member) {
+      return this.$http.post(`/api/v1/groups/${member.group_id}/members/`, member);
    }
 
-   updateMember(item) {
-      return this.$http.patch(`/api/v1/groups/${item.group}/member/`, item);
+   updateMember(member) {
+      return this.$http.patch(`/api/v1/groups/${member.group}/member/`, member);
    }
 
-   removeMember(item) {
-    return this.$http.delete(`/api/v1/groups/${item.id}/member/`);
+   removeMember(member) {
+    return this.$http.delete(`/api/v1/groups/${member.group}/member/${member.id}/`);
+   }
+
+   removeMembers(members) {
+    console.log('Removing members');
+    console.log(members);
+
+    // get ids from members array
+    var ids = [];
+    members.forEach( function(item) {
+      ids.push(item.id);
+    });
+    
+    console.log(ids);
+
+    // pass ids to the api
+    return this.$http.delete(`/api/v1/groups/${members[0].group}/members/`, { ids: ids } );
    }
 }
 

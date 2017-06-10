@@ -84,8 +84,19 @@ class GroupMembersView(generics.ListCreateAPIView):
         return members
 
 
-    def list(self, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
+
+        # get the sort order fromt te query
+        try:
+            sortOrder = request.GET.sortOrder[0]
+        except:
+            pass
+
         queryset = self.filter_queryset(self.get_queryset())
+        
+        # if sortOrder:
+        #     queryset = queryset.order_by(sortOrder)
+
         serializer = GroupMemberSerializer(queryset, many=True)
         members = serializer.data
         return Response(members, status=status.HTTP_200_OK)
@@ -126,6 +137,10 @@ class GroupMembersView(generics.ListCreateAPIView):
         serializer =  GroupMemberSerializer(groupMember)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def delete(self, request, group, *args, **kwargs):
+        # DELETE MULTIPLE MEMBERS CODE GOES HERE
+        pass
+
 class GroupMemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupMemberSerializer
     queryset = GroupMember.objects
@@ -146,9 +161,8 @@ class GroupMemberItemView(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-    def delete(self, request,group, *args, **kwargs):
-        id = group
-        GroupMember.objects.get(pk=id).delete()
+    def delete(self, request, group, member_id, *args, **kwargs):
+        GroupMember.objects.get(pk=member_id).delete()
         return Response({ 'success':'true'}, status=status.HTTP_200_OK)
 
 

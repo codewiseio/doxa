@@ -4,44 +4,50 @@
 <form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
   <main class="card-collection">
 
+
+    <div layout="row">
+
+      <div flex></div>
+
+      <div><md-button class="md-icon-button" ng-click="$ctrl.removeMembers()"><md-icon>delete</md-icon></md-button></div>
+        <md-menu md-position-mode="target-right bottom">
+
+          <md-button aria-label="Sort" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-menu-origin="">sort</md-icon>
+          </md-button>
+
+          <md-menu-content width="4" layout="column">
+            
+            <md-menu-item>
+              <md-button ng-click="$ctrl.sortBy('first_name')">
+                  <div layout="row" flex="">
+                    <p flex="">Name</p>
+                  </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item>
+              <md-button ng-click="$ctrl.sortBy('first_name')">
+                  <div layout="row" flex="">
+                    <p flex="">Role</p>
+                  </div>
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item>
+              <md-button ng-click="$ctrl.sortBy('first_name')">
+                  <div layout="row" flex="">
+                    <p flex="">Join date</p>
+                  </div>
+              </md-button>
+            </md-menu-item>
+
+          </md-menu-content>
+        </md-menu>
+
+    </div>
+
     <div layout="column">     
-
-
-          
-
-<!--     <md-grid-list
-          md-cols="4" md-cols-sm="2" md-cols-xs="1" md-cols-gt-lg="5"
-          md-row-height="160px"
-          md-gutter="8px" md-gutter-gt-sm="4px" 
-          class="group-members">
-
-      <md-grid-tile ng-repeat="member in $ctrl.members"
-                    md-rowspan="1"
-                    md-colspan="1"
-                    md-colspan-sm="1"
-                    md-colspan-xs="1"
-                    ng-class="white" 
-                    ng-layout="row"
-                    class="group-member"
-                    >
-
-        <div flex="none" class="abstract-profile-graphic abstract-profile-graphic-md">
-          <span>{{member.person.first_name | InitialFilter }}{{member.person.last_name | InitialFilter }}</span>
-        </div>
-
-        <div class="member-details" flex>
-          <h3>{{member.person.first_name}} {{member.person.last_name | InitialFilter }}</h3>
-          <div class="member-role">{{member.role}}</div>
-          <div class="member-added">Added by
-            <span class="member-added-by">{{member.added_by.first_name}} {{member.added_by.last_name}}</span><br/> on 
-            <span class="member-added-date">{{member.join_date | date : dd/mm/yyyy }}</span></div>
-          </div>
-        </div>
-
-      </md-grid-tile>
-
-
-    </md-grid-list> -->
 
          <md-list class="members-list" layout="column" flex>
         <md-list-item ng-repeat="item in $ctrl.members " layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">

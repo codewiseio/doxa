@@ -39,6 +39,9 @@ class MembersListView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, *args, **kwargs):
+
+
+
         queryset = self.filter_queryset(self.get_queryset())
         serializer = OrganizationMemberSerializer(queryset, many=True)
         

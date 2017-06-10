@@ -15,9 +15,10 @@ export default class DashboardGroupMembersController {
     this.errors = [];
 
     this.selectedItems = [];
+    this.members = [];
     
     this.initPage();   
-    this.buildMenu(); 
+    // this.buildMenu(); 
   }
   
   initPage() {
@@ -26,6 +27,7 @@ export default class DashboardGroupMembersController {
     this.organization = JSON.parse(this.$cookies.get('organization'));
 
     let id = this.$stateParams.id;
+    this.groupId = id;
 
       // Retrieve record data
       this.GroupService.get(id).then(
@@ -145,7 +147,7 @@ export default class DashboardGroupMembersController {
     })
     .then( 
       (item) => {
-        this.items.unshift(item);
+        
       },
       (error) => {
 
@@ -214,10 +216,10 @@ export default class DashboardGroupMembersController {
 
   removeMembers() {
 
-    // get selected items
-    
+    // confirm
     
     // make ajax call to django
+    this.GroupService.removeMembers(this.selectedItems);
     
     // display toast
 
@@ -226,6 +228,33 @@ export default class DashboardGroupMembersController {
 
   sortBy(field='first_name') {
 
+    console.log('Sorting by first_name');
+
+    this.sortOrder = field;
+    this.refreshResults();
+
+  }
+
+  refreshResults() {
+
+    var params = {};
+    params.sortOrder = this.sortOrder;
+
+
+    // Retrieve group members
+    this.GroupService.getMembers(this.item.id, params).then(
+        (response) => {
+          this.members = response.data;
+        },
+        (error) => {
+          console.log('Could not retrieve group members.');
+          var toast = this.$mdToast.simple()
+            .textContent(error.data.message)
+            .position('top right')
+            .parent();
+          this.$mdToast.show(toast);
+        }
+    );
   }
 
 

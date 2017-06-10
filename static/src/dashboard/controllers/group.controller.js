@@ -23,36 +23,30 @@ export default class DashboardGroupController {
 
     let id = this.$stateParams.id;
 
-    // if creating a new record
-    if( ! id ) {
-      // TODO: Go to 404
-      this.AppDataService.pageTitle = `New group`;
-      this.item = { 'organization' : this.organization.id };
-    }
-    // if editing a record
-    else {
-       this.AppDataService.pageTitle = `New group`;
+    this.AppDataService.pageType = 'component';
+    this.AppDataService.previousState = 'dashboard.home()';
+    this.AppDataService.contextMenu = null;
 
-      // Retrieve record data
-      this.GroupService.get(id, { context: this.context }).then(
-          (response) => {
-            console.log('Retrieved record');
-            console.log(response.data);
-            this.item = response.data;
-            this.AppDataService.pageTitle = `${this.item.name}`;
-          },
-          (err) => {
-            // TODO: Go to 404
-            console.log('Error fetching data.');
-            console.log(error);
-            var toast = this.$mdToast.simple()
-              .textContent(error.data.message)
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-          }
-      );
-    }
+    // Retrieve record data
+    this.GroupService.get(id, { context: this.context }).then(
+        (response) => {
+          console.log('Retrieved record');
+          console.log(response.data);
+          this.item = response.data;
+          this.AppDataService.pageTitle = `${this.item.name}`;
+        },
+        (err) => {
+          // TODO: Go to 404
+          console.log('Error fetching data.');
+          console.log(error);
+          var toast = this.$mdToast.simple()
+            .textContent(error.data.message)
+            .position('top right')
+            .parent();
+          this.$mdToast.show(toast);
+        }
+    );
+
   }
 
 
