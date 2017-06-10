@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser, FileUploadParser
 from groups.models import Group, GroupMember
 from groups.serializers import GroupSerializer, GroupMemberSerializer
-
+from rest_framework.decorators import  api_view
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 from people.models import Person
-
+import json
 
 class GroupViewSet(viewsets.ModelViewSet):
 
@@ -80,17 +80,26 @@ class GroupMembersView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         group = self.kwargs.get('group')
-        members = GroupMember.objects.filter(group=group)
+        try:
+            sortOrder = self.request.GET.get('sortOrder')
+        except:
+            pass
+
+        if sortOrder:
+
+            if sortOrder == 'first_name':
+               sortOrder = 'person__first_name'
+
+            members = GroupMember.objects.filter(group=group).order_by(sortOrder)
+        else:
+            members = GroupMember.objects.filter(group=group)
+
         return members
 
 
     def list(self, request, *args, **kwargs):
 
         # get the sort order fromt te query
-        try:
-            sortOrder = request.GET.sortOrder[0]
-        except:
-            pass
 
         queryset = self.filter_queryset(self.get_queryset())
         
@@ -137,9 +146,25 @@ class GroupMembersView(generics.ListCreateAPIView):
         serializer =  GroupMemberSerializer(groupMember)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete(self, request, group, *args, **kwargs):
-        # DELETE MULTIPLE MEMBERS CODE GOES HERE
-        pass
+    @api_view(['POST'])
+    def delete_bulk(request , group, *args, **kwargs):
+        ids = request.data["ids"]
+        ids = json.loads(ids)
+        group_members = GroupMember.objects.filter(id__in=ids)
+        for member in group_members:
+            member.delete()
+        return Response({'success':'true'}, status=status.HTTP_200_OK)
+
+
+    # def delete(self, request, group, *args, **kwargs):
+    #     # DELETE MULTIPLE MEMBERS CODE GOES HERE
+    #     print("OK HERE IS ME")
+    #     print(group)
+    #     print(kwargs)
+    #     data = request.data
+    #     for key, value in data:
+    #         print(key+''+value)
+    #     return Response(status=status.HTTP_201_CREATED)
 
 class GroupMemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupMemberSerializer

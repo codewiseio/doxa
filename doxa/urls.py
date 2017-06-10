@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^api/v1/groups/$', GroupListView.as_view(), name="groups"),
     url(r'^api/v1/groups/(?P<pk>\d+)/$', GroupItemView.as_view(), name="group"),
     url(r'^api/v1/groups/(?P<group>\d+)/members/$', GroupMembersView.as_view(), name="groupMembers" ),
+    url(r'^api/v1/groups/(?P<group>\d+)/members/delete_multiple/$', GroupMembersView.delete_bulk, name="bulkDeleteMember" ),
     url(r'^api/v1/groups/(?P<group>\d+)/member/(?P<member_id>\d+)/$', GroupMemberItemView.as_view(), name="groupMember" ),
 
     

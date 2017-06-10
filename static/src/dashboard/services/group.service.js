@@ -72,7 +72,9 @@ export default class GroupService {
    }
 
    updateMember(member) {
-      return this.$http.patch(`/api/v1/groups/${member.group}/member/`, member);
+      console.log("member")
+      console.log(member)
+      return this.$http.patch(`/api/v1/groups/${member.group}/member/${member.id}/`, member);
    }
 
    removeMember(member) {
@@ -88,11 +90,10 @@ export default class GroupService {
     members.forEach( function(item) {
       ids.push(item.id);
     });
-    
-    console.log(ids);
+
 
     // pass ids to the api
-    return this.$http.delete(`/api/v1/groups/${members[0].group}/members/`, { ids: ids } );
+    return this.$http.post(`/api/v1/groups/${members[0].group}/members/delete_multiple/`, { ids: JSON.stringify(ids) } );
    }
 }
 

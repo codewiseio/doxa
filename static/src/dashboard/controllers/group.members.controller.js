@@ -1,7 +1,7 @@
 export default class DashboardGroupMembersController {
   constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http) {
     'ngInject';
-    
+
     this.GroupService = GroupService;
     this.AppDataService = AppDataService;
     this.$mdDialog = $mdDialog;
@@ -10,17 +10,17 @@ export default class DashboardGroupMembersController {
     this.$stateParams = $stateParams;
     this.$cookies = $cookies;
     this.$http = $http;
-    
+
     this.context = "dashboard.group.members";
     this.errors = [];
 
     this.selectedItems = [];
     this.members = [];
-    
-    this.initPage();   
-    // this.buildMenu(); 
+
+    this.initPage();
+    // this.buildMenu();
   }
-  
+
   initPage() {
     this.AppDataService.pageType = "component";
 
@@ -46,7 +46,7 @@ export default class DashboardGroupMembersController {
             this.$mdToast.show(toast);
           }
       );
-    
+
       // Retrieve group members
       this.GroupService.getMembers(id).then(
           (response) => {
@@ -102,7 +102,7 @@ export default class DashboardGroupMembersController {
 
         this.AppDataService.contextMenu = this.contextMenu;
   }
-  
+
   /**
    * Display a dialog to add a member to the group
    */
@@ -120,7 +120,7 @@ export default class DashboardGroupMembersController {
           group: this.item
         }
     })
-    .then( 
+    .then(
       (item) => {
         if ( item ) this.members.unshift(item);
       },
@@ -145,9 +145,9 @@ export default class DashboardGroupMembersController {
           item: member
         }
     })
-    .then( 
+    .then(
       (item) => {
-        
+
       },
       (error) => {
 
@@ -174,7 +174,7 @@ export default class DashboardGroupMembersController {
             console.log(this.item);
 
             this.GroupService.removeMember(item).then(
-                    (response) => {   
+                    (response) => {
                       console.log('Remove successful');
                       console.log(response.data);
 
@@ -214,13 +214,70 @@ export default class DashboardGroupMembersController {
   }
 
 
-  removeMembers() {
+  removeMembers($event) {
 
     // confirm
-    
+    var confirm = this.$mdDialog.confirm()
+            .title(`Really remove members?`)
+            .ariaLabel('Really remove these member?')
+            .targetEvent($event)
+            .ok(`Yes, remove`)
+            .cancel('No, keep in group')
+            .multiple(true);
+
     // make ajax call to django
-    this.GroupService.removeMembers(this.selectedItems);
-    
+
+        this.$mdDialog.show(confirm).then(
+          // user confirmed delete
+          () => {
+
+            console.log('Confirm ');
+            console.log(this.item);
+
+            this.GroupService.removeMembers(this.selectedItems).then(
+                    (response) => {
+                      console.log('Remove successful');
+                      console.log(response.data);
+
+                      // notify the user
+                      var toast = this.$mdToast.simple()
+                        .textContent(`Removed from group`)
+                        .position('bottom center')
+                        .parent();
+
+                     this.$mdToast.show(toast);
+
+                     var deleted_items = this.selectedItems;
+                     deleted_items.forEach(function(member) {
+                           $(`#member-${member.id}`).remove();
+                     });
+
+
+
+                    },
+                    (error) => {
+
+                      message = error.data.message;
+
+                      // notify the user operation failed
+                      var toast = this.$mdToast.simple()
+                        .textContent(message)
+                        .position('bottom center')
+                        .parent();
+
+                      this.$mdToast.show(toast);
+
+                      console.log('Error removing group.');
+                      console.log(error);
+                    }
+                );
+
+          },
+          // user canceled delete
+          () => {
+            console.log('Cancelled delete item.');
+          }
+      );
     // display toast
 
     // remove items from the list
@@ -228,7 +285,7 @@ export default class DashboardGroupMembersController {
 
   sortBy(field='first_name') {
 
-    console.log('Sorting by first_name');
+    console.log('Sorting by '+field);
 
     this.sortOrder = field;
     this.refreshResults();
@@ -272,9 +329,9 @@ export default class DashboardGroupMembersController {
       this.selectedItems.push(item);
     }
 
-    console.log(this.selectedItems);
+    //console.log(this.selectedItems);
   }
-  
+
 }
 
 
