@@ -1,15 +1,24 @@
-<!-- form-profile.html -->
-
-<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
 <form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
   <main class="card-collection">
 
 
-    <div layout="row">
+    <div layout="row" style="padding: 8px 16px 0px">
 
-      <div flex></div>
+      <div flex="none" class="list-item-select">
+        <span>              
+            <md-checkbox ng-checked="$ctrl.allItemsSelected" ng-click="$ctrl.toggleAll()"></md-checkbox>
+          </span>
+      </div>
 
-      <div><md-button class="md-icon-button" ng-click="$ctrl.removeMembers()"><md-icon>delete</md-icon></md-button></div>
+      <div flex>
+          <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
+            <input name="search" type="text" placeholder="Member search" style="width: 300px; max-width: 100%;"
+                     ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()" />
+          </md-input-container>
+      </div>
+
+      <div>
+        <md-button class="md-icon-button" ng-click="$ctrl.removeMembers()" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
         <md-menu md-position-mode="target-right bottom">
 
           <md-button aria-label="Sort" class="md-icon-button" ng-click="$mdOpenMenu($event)">
@@ -19,7 +28,7 @@
           <md-menu-content width="4" layout="column">
             
             <md-menu-item>
-              <md-button ng-click="$ctrl.sortBy('first_name')">
+              <md-button ng-click="$ctrl.sortBy('person__first_name')">
                   <div layout="row" flex="">
                     <p flex="">Name</p>
                   </div>
@@ -53,7 +62,7 @@
         <md-list-item ng-repeat="item in $ctrl.members " layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
           
           <!-- First initial icon -->
-          <div flex="none" class="abstract-first-initial">
+          <div flex="none" class="list-item-select">
             <span>              
                 <md-checkbox ng-checked="$ctrl.isItemSelected(item)" ng-click="$ctrl.toggleItem(item)"></md-checkbox>
               </span>
@@ -77,7 +86,7 @@
             </div>
 
             <div class="member-since" flex>
-              <span>{{item.join_date | date:'MMM, yyyy'}}
+              <span>{{item.join_date | date:'MMM dd, yyyy'}}
             </div>
 
             <div class="item-actions" flex="none">
@@ -96,7 +105,6 @@
   </main>
   
   <input type="hidden" name="context" value="$ctrl.context"/>
-
   <md-button class="md-primary md-fab md-fab-br md-whiteframe-12dp" ng-click="$ctrl.addMember()"><md-icon>add</md-icon></md-button>
   
 </form>

@@ -17,6 +17,12 @@ export default class DashboardMembersController {
 
     this.AppDataService = AppDataService
     this.AppDataService.pageTitle = `Members`;
+
+    this.selectedItems = [];
+    this.allItemsSelected = false;
+    this.items = [];
+
+    this.filter = {};
     
     this.initPage();    
   }
@@ -198,5 +204,45 @@ export default class DashboardMembersController {
     console.log('Canceled');
     this.$mdDialog.cancel();
   }
+
+  isItemSelected(item) {
+      return this.selectedItems.indexOf(item) > -1;
+    }
+
+    toggleItem(item) {
+      var idx = this.selectedItems.indexOf(item);
+
+      if (idx > -1) {
+        this.selectedItems.splice(idx, 1);
+      }
+      else {
+        this.selectedItems.push(item);
+      }
+      this.checkAllItemsSelected();
+    }
+
+    checkAllItemsSelected() {
+      if ( this.items.length && this.selectedItems.length == this.items.length ) {
+        this.allItemsSelected = true;
+      }
+      else {
+        this.allItemsSelected = false;
+      }
+    }
+
+    toggleAll() {
+      var selectedItems = [];
+
+      // select all items
+      if ( ! this.allItemsSelected ) {
+        this.items.forEach( function(member) {
+          selectedItems.push(member);
+        });
+      }
+
+      this.selectedItems = selectedItems;
+      this.checkAllItemsSelected();
+
+    }
   
 }

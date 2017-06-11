@@ -5,8 +5,10 @@ from rest_framework.parsers import FormParser, MultiPartParser, FileUploadParser
 from groups.models import Group, GroupMember
 from groups.serializers import GroupSerializer, GroupMemberSerializer
 from rest_framework.decorators import  api_view
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 
 from people.models import Person
 import json
@@ -31,9 +33,6 @@ class GroupListView(generics.ListCreateAPIView):
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         queryset.order_by('name')
-
-
-
         serializer = GroupSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -80,31 +79,32 @@ class GroupMembersView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         group = self.kwargs.get('group')
-        try:
-            sortOrder = self.request.GET.get('sortOrder')
-        except:
-            pass
 
+        queryset = GroupMember.objects.filter(group=group)
+
+        # filter results
+        filters = self.request.GET.get('filter')
+        if filters:
+            filters = json.loads(filters);
+
+            if filters.get('search'):
+                print('Searching with query.');
+                searchString = filters.get('search')
+                queryset = queryset.filter(Q(person__first_name__icontains=searchString) | Q(person__last_name__icontains=searchString))
+
+        # handle sorting
+        sortOrder = self.request.GET.get('sortOrder')
         if sortOrder:
-
             if sortOrder == 'first_name':
                sortOrder = 'person__first_name'
 
-            members = GroupMember.objects.filter(group=group).order_by(sortOrder)
-        else:
-            members = GroupMember.objects.filter(group=group)
+            queryset = queryset.order_by(sortOrder)
 
-        return members
+        return queryset
 
 
     def list(self, request, *args, **kwargs):
-
-        # get the sort order fromt te query
-
         queryset = self.filter_queryset(self.get_queryset())
-        
-        # if sortOrder:
-        #     queryset = queryset.order_by(sortOrder)
 
         serializer = GroupMemberSerializer(queryset, many=True)
         members = serializer.data
@@ -119,10 +119,6 @@ class GroupMembersView(generics.ListCreateAPIView):
 
         # set the member data
         data = request.data
-
-        print("member add to group ")
-        print(data)
-
         data['group_id'] = self.kwargs.get('group')
         data['added_by_id'] = person.id
 
@@ -147,24 +143,12 @@ class GroupMembersView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @api_view(['POST'])
-    def delete_bulk(request , group, *args, **kwargs):
+    def delete(request , group, *args, **kwargs):
         ids = request.data["ids"]
-        ids = json.loads(ids)
-        group_members = GroupMember.objects.filter(id__in=ids)
-        for member in group_members:
-            member.delete()
+        group_members = GroupMember.objects.filter(id__in=ids).delete()
         return Response({'success':'true'}, status=status.HTTP_200_OK)
 
 
-    # def delete(self, request, group, *args, **kwargs):
-    #     # DELETE MULTIPLE MEMBERS CODE GOES HERE
-    #     print("OK HERE IS ME")
-    #     print(group)
-    #     print(kwargs)
-    #     data = request.data
-    #     for key, value in data:
-    #         print(key+''+value)
-    #     return Response(status=status.HTTP_201_CREATED)
 
 class GroupMemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GroupMemberSerializer

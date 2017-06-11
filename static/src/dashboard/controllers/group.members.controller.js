@@ -1,5 +1,5 @@
 export default class DashboardGroupMembersController {
-  constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http) {
+  constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http, $scope) {
     'ngInject';
 
     this.GroupService = GroupService;
@@ -10,15 +10,30 @@ export default class DashboardGroupMembersController {
     this.$stateParams = $stateParams;
     this.$cookies = $cookies;
     this.$http = $http;
+    this.$scope = $scope;
 
     this.context = "dashboard.group.members";
     this.errors = [];
 
-    this.selectedItems = [];
     this.members = [];
+    this.selectedItems = [];
+    this.allItemsSelected = false;
+
+    console.log(this.$scope);
+
+    var $this = this;
+    this.$scope.$watch('$ctrl.selectedItems', function (newValue, oldValue, scope) {
+        $this.checkAllItemsSelected();
+    }, true);
+    this.$scope.$watch('$ctrl.members', function (newValue, oldValue, scope) {
+        $this.checkAllItemsSelected();
+    }, true);
+
+
+
+    this.filter = {};
 
     this.initPage();
-    // this.buildMenu();
   }
 
   initPage() {
@@ -122,7 +137,18 @@ export default class DashboardGroupMembersController {
     })
     .then(
       (item) => {
-        if ( item ) this.members.unshift(item);
+        if ( item ) {
+          // add member to the list
+          this.members.unshift(item);
+
+          // display notice
+          var toast = this.$mdToast.simple()
+            .textContent(`${item.person.first_name} ${item.person.last_name} added to the group`)
+            .position('bottom center')
+            .parent();
+
+          this.$mdToast.show(toast);
+        }
       },
       (error) => {
 
@@ -180,7 +206,7 @@ export default class DashboardGroupMembersController {
 
                       // notify the user
                       var toast = this.$mdToast.simple()
-                        .textContent(`Removed from group`)
+                        .textContent(`${item.person.first_name} removed from group`)
                         .position('bottom center')
                         .parent();
 
@@ -227,56 +253,55 @@ export default class DashboardGroupMembersController {
 
     // make ajax call to django
 
-        this.$mdDialog.show(confirm).then(
-          // user confirmed delete
-          () => {
+      this.$mdDialog.show(confirm).then(
+        // user confirmed delete
+        () => {
 
-            console.log('Confirm ');
-            console.log(this.item);
+          nMembers = this.selectedItems.length;
 
-            this.GroupService.removeMembers(this.selectedItems).then(
-                    (response) => {
-                      console.log('Remove successful');
-                      console.log(response.data);
+          this.GroupService.removeMembers(this.selectedItems).then(
+                  (response) => {
+                    console.log('Remove successful');
+                    console.log(response.data);
 
-                      // notify the user
-                      var toast = this.$mdToast.simple()
-                        .textContent(`Removed from group`)
-                        .position('bottom center')
-                        .parent();
+                    // notify the user
+                    var toast = this.$mdToast.simple()
+                      .textContent(`Removed ${nMembers} from group`)
+                      .position('bottom center')
+                      .parent();
 
-                     this.$mdToast.show(toast);
+                   this.$mdToast.show(toast);
 
-                     var deleted_items = this.selectedItems;
-                     deleted_items.forEach(function(member) {
-                           $(`#member-${member.id}`).remove();
-                     });
-
+                   var deleted_items = this.selectedItems;
+                   deleted_items.forEach(function(member) {
+                         $(`#member-${member.id}`).remove();
+                   });
 
 
-                    },
-                    (error) => {
 
-                      message = error.data.message;
+                  },
+                  (error) => {
 
-                      // notify the user operation failed
-                      var toast = this.$mdToast.simple()
-                        .textContent(message)
-                        .position('bottom center')
-                        .parent();
+                    message = error.data.message;
 
-                      this.$mdToast.show(toast);
+                    // notify the user operation failed
+                    var toast = this.$mdToast.simple()
+                      .textContent(message)
+                      .position('bottom center')
+                      .parent();
 
-                      console.log('Error removing group.');
-                      console.log(error);
-                    }
-                );
+                    this.$mdToast.show(toast);
 
-          },
-          // user canceled delete
-          () => {
-            console.log('Cancelled delete item.');
-          }
+                    console.log('Error removing group.');
+                    console.log(error);
+                  }
+              );
+
+        },
+        // user canceled delete
+        () => {
+          console.log('Cancelled delete item.');
+        }
       );
     // display toast
 
@@ -294,8 +319,13 @@ export default class DashboardGroupMembersController {
 
   refreshResults() {
 
+    console.log('Refreshing');
+
+
     var params = {};
     params.sortOrder = this.sortOrder;
+    params.filter = this.filter;
+    console.log(params);
 
 
     // Retrieve group members
@@ -328,8 +358,28 @@ export default class DashboardGroupMembersController {
     else {
       this.selectedItems.push(item);
     }
+  }
 
-    //console.log(this.selectedItems);
+  checkAllItemsSelected() {
+    if ( this.members.length && this.selectedItems.length == this.members.length ) {
+      this.allItemsSelected = true;
+    }
+    else {
+      this.allItemsSelected = false;
+    }
+  }
+
+  toggleAll() {
+    var selectedItems = [];
+
+    // select all items
+    if ( ! this.allItemsSelected ) {
+      this.members.forEach( function(member) {
+        selectedItems.push(member);
+      });
+    }
+
+    this.selectedItems = selectedItems;
   }
 
 }

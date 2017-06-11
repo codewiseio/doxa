@@ -93,7 +93,7 @@ export default class GroupService {
 
 
     // pass ids to the api
-    return this.$http.post(`/api/v1/groups/${members[0].group}/members/delete_multiple/`, { ids: JSON.stringify(ids) } );
+    return this.$http.post(`/api/v1/groups/${members[0].group}/members/remove/`, { ids: ids } );
    }
 }
 
