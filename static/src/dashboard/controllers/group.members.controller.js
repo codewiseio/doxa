@@ -257,7 +257,7 @@ export default class DashboardGroupMembersController {
         // user confirmed delete
         () => {
 
-          nMembers = this.selectedItems.length;
+          var nMembers = this.selectedItems.length;
 
           this.GroupService.removeMembers(this.selectedItems).then(
                   (response) => {
