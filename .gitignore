@@ -8,3 +8,8 @@ __pycache__/
 *.pyc
 doxa/settings_local.py
 .idea/*
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
