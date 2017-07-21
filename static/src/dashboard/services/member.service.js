@@ -37,7 +37,16 @@ export default class DashboardMemberService {
     */
    list(id) {
       return this.$http.get(`/api/v1/organizations/${id}/members/`, {
-         
+    });
+   }
+
+   /**
+    * Get members for sorting
+    * @param  {[type]} moniker [description]
+    * @return {[type]}         [description]
+    */
+   sort(id,filter) {
+      return this.$http.get(`/api/v1/sortMembers/${id}/${filter}/`, { 
       });
    }
    

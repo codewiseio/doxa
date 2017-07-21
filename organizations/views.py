@@ -8,15 +8,13 @@ from contacts.managers import ContactManager
 from organizations.models import Organization, OrganizationMember
 from organizations.permissions import IsAdministratorOfOrganization
 from organizations.serializers import OrganizationSerializer, OrganizationMemberSerializer
-from groups.models import GroupMember
+from groups.models import GroupMember,Group
 from contacts.serializers import ContactSerializer
 from django.db import transaction
 from django.db.models import Q
 
 from doxa.exceptions import StorageException
 from django.conf import settings
-
-
 
 
 class OrganizationViewSet(viewsets.ModelViewSet):
@@ -114,18 +112,33 @@ class OrganizationViewSet(viewsets.ModelViewSet):
             raise StorageException( 'Could not update contact information', errors );
         else:
             return serialized_data;
-    
+            
+#####Sort members as per filter######
+class MembersSortListView(generics.ListCreateAPIView): 
+    serializer_class = OrganizationMemberSerializer
+    lookup_url_kwarg = "organization","filter_name"
+
+    def get_queryset(self):
+
+        filter_name = self.kwargs.get('filter_name')
+        organization_id  = self.kwargs.get('organization')
+        members = OrganizationMember.objects.filter(organization=organization_id).order_by(filter_name)
+        return members
+
 
 class OrganizationMembersView(generics.ListCreateAPIView): 
     serializer_class = OrganizationMemberSerializer
-    lookup_url_kwarg = "organization"
+    lookup_url_kwarg = "organization",
 
     def get_queryset(self):
         organization = self.kwargs.get('organization')
+        
         members = OrganizationMember.objects.filter(organization=organization)
         return members
 
+
     def list(self, *args, **kwargs):
+
         queryset = self.get_queryset()
 
         # filter query set by name

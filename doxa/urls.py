@@ -9,8 +9,9 @@ from registration.views import RegisterView
 
 from members.views import MemberItemView, MembersListView
 
-from organizations.views import OrganizationViewSet, OrganizationMembersView
+from organizations.views import OrganizationViewSet, OrganizationMembersView,MembersSortListView
 from groups.views import GroupViewSet, GroupListView, GroupItemView, GroupMembersView,GroupMemberItemView
+
 
 router = routers.SimpleRouter()
 # router.register(r'users', UserViewSet )
@@ -30,7 +31,7 @@ urlpatterns = [
 
 
     url(r'^api/v1/organizations/(?P<organization>\d+)/members/$', OrganizationMembersView.as_view(), name="organizationMembers" ),
-    
+    url(r'^api/v1/sortMembers/(?P<organization>\d+)/(?P<filter_name>\w+)/', MembersSortListView.as_view(), name="test" ),
     url(r'^api/v1/groups/$', GroupListView.as_view(), name="groups"),
     url(r'^api/v1/groups/(?P<pk>\d+)/$', GroupItemView.as_view(), name="group"),
     url(r'^api/v1/groups/(?P<group>\d+)/members/$', GroupMembersView.as_view(), name="groupMembers" ),
