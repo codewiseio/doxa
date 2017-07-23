@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'contacts',
     'people',
     'members',
-    'groups'
+    'groups',
+    'events'
 ]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -92,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'doxa-dev',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'doxa-dev',
+        'PASSWORD': 'weareheretosaveyou',
         'HOST': 'localhost'
     }
 }
