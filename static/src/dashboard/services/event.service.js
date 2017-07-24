@@ -39,6 +39,18 @@ export default class EventService {
         }
       );
    }
+
+   /**
+    * sort events
+    * @param  {int} id and filter_name
+    * @return {Promise}
+    */
+   sort(id,filter_name){
+      return this.$http.get(`/api/v1/events/org/${id}/filter/${filter_name}/`,        
+        {
+        }
+      );
+   }
    
    /**
     * Save record
