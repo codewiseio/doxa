@@ -24,11 +24,11 @@ class GroupListView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         organization = self.kwargs.get('organization')
-        # if organization:
-        #     members = Group.objects.filter(organization=organization)
-        # else:
-        members = Group.objects.filter()
-        return members
+        if organization:
+            items = Group.objects.filter(organization=organization)
+        else:
+            items = Group.objects.filter()
+        return items
 
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

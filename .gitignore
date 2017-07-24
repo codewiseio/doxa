@@ -9,7 +9,11 @@ __pycache__/
 doxa/settings_local.py
 .idea/*
 
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+venv/*
+

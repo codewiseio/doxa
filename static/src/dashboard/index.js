@@ -25,6 +25,11 @@ import DashboardOrganizationService from './services/organization.service';
 import DashboardMemberService from './services/member.service';
 import GroupService from './services/group.service';
 
+
+import EventService from './services/event.service';
+import EventsController from './controllers/events.controller';
+import EventEditDialogController from './controllers/event.edit.dialog.controller';
+
 let dashboardModule = angular.module('doxa.dashboard', [])
     .config(DashboardConfig)
     .controller('DashboardController', DashboardController)
@@ -48,6 +53,12 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .service('AppDataService', AppDataService )
     .service('DashboardMemberService',DashboardMemberService)
     .service('DashboardOrganizationService',DashboardOrganizationService)
+
+    /* Events */
+    .service('EventService', EventService)
+    .controller('EventsController', EventsController)
+    .controller('EventEditDialogController', EventEditDialogController)
+
     .service('GroupService', GroupService)
     .service('UserService',UserService);
 

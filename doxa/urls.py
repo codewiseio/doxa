@@ -11,6 +11,7 @@ from members.views import MemberItemView, MembersListView
 
 from organizations.views import OrganizationViewSet, OrganizationMembersView
 from groups.views import GroupViewSet, GroupListView, GroupItemView, GroupMembersView,GroupMemberItemView
+from events.views import EventListView, EventItemView
 
 router = routers.SimpleRouter()
 # router.register(r'users', UserViewSet )
@@ -36,6 +37,9 @@ urlpatterns = [
     url(r'^api/v1/groups/(?P<group>\d+)/members/$', GroupMembersView.as_view(), name="groupMembers" ),
     url(r'^api/v1/groups/(?P<group>\d+)/members/remove/$', GroupMembersView.delete, name="removeMembers" ),
     url(r'^api/v1/groups/(?P<group>\d+)/member/(?P<member_id>\d+)/$', GroupMemberItemView.as_view(), name="groupMember" ),
+
+    url(r'^api/v1/events/$', EventListView.as_view(), name="events"),
+    url(r'^api/v1/events/(?P<pk>\d+)$',EventItemView.as_view(), name="event"),
 
     
     url(r'^api/v1/member/(?P<pk>\d+)/$', MemberItemView.as_view(), name="member"),

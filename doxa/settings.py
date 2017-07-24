@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'contacts',
     'people',
     'members',
-    'groups'
+    'groups',
+    'events'
 ]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -86,25 +87,25 @@ WSGI_APPLICATION = 'doxa.wsgi.application'
 
 
 #https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['RDS_DB_NAME'],
-        'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': os.environ['RDS_PASSWORD'],
-        'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],
-    }
-}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'doxa-dev',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost'
+#         'NAME': os.environ['RDS_DB_NAME'],
+#         'USER': os.environ['RDS_USERNAME'],
+#         'PASSWORD': os.environ['RDS_PASSWORD'],
+#         'HOST': os.environ['RDS_HOSTNAME'],
+#         'PORT': os.environ['RDS_PORT'],
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'doxa-dev',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost'
+    }
+}
 
 
 # Password validation
@@ -156,3 +157,5 @@ USER_FILES = '/static/files'
 
 # APPEND_SLASH = False
 FILE_UPLOAD_DIR = 'static/files/upload';
+
+#from .settings_local import *
