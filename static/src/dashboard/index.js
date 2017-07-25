@@ -60,6 +60,6 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('EventEditDialogController', EventEditDialogController)
 
     .service('GroupService', GroupService)
-    .service('UserService',UserService);
+    .service('UserService',UserService)
 
 export default dashboardModule;

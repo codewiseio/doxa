@@ -23,6 +23,7 @@ export default class DashboardMembersController {
     this.items = [];
 
     this.filter = {};
+    this.propertyName = ''
     
     this.initPage();    
   }
@@ -37,8 +38,9 @@ export default class DashboardMembersController {
     this.organization = this.AppDataService.organization;
 
     // Retrieve record data
-    this.DashboardMemberService.list( this.organization.id ).then(
+    this.DashboardMemberService.list( this.organization.id).then(
         (response) => {
+          console.log('response>>',response.data)
           this.items = response.data;
         },
         (err) => {
@@ -51,6 +53,31 @@ export default class DashboardMembersController {
         }
     );   
   }
+
+  /**
+   * Sorting of members.
+   */
+  sortBy = function(propertyName) {
+    console.log('pro',propertyName)
+    this.propertyName = propertyName
+    // Retrieve record data
+    this.DashboardMemberService.sort( this.organization.id,this.propertyName ).then(
+        (response) => {
+          console.log('response>>',response.data)
+          this.items = response.data;
+        },
+        (err) => {
+          var toast = this.$mdToast.simple()
+            .textContent(error.data.message)
+            .position('bottom center')
+            .parent();
+
+          this.$mdToast.show(toast);
+        }
+    );
+      
+      
+  };
 
   /**
    * Opens a dialog to edit member.
@@ -244,5 +271,6 @@ export default class DashboardMembersController {
       this.checkAllItemsSelected();
 
     }
-  
+
+
 }
