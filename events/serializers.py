@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
 
-        fields = ('id','organization', 'group', 'name', 'description', 'start_time','start_date','end_time','end_date')
+        fields = ('id','organization', 'group', 'location', 'name', 'description', 'start_time','start_date','end_time','end_date')
         read_only_fields = ['id']
 
     def perform_create(self, serializer):

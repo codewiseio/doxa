@@ -51,7 +51,7 @@ export default class EventEditDialogController {
             .parent();
           this.$mdToast.show(toast);
 
-          console.log('Error saving member data.');
+          console.log('Error saving event data.');
           console.log(error);
         }
     );

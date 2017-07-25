@@ -41,16 +41,22 @@
               <textarea ng-model="$ctrl.item.description" md-maxlength="400" rows="3" md-select-on-focus></textarea>
             </md-input-container>
 
+            <md-input-container>
+              <label>Location</label>
+              <input required name="location" ng-model="$ctrl.item.location" type="text" />
+            </md-input-container>
+
+
             <div layout="row">
 
               <md-input-container>
                 <label>Start Date</label>
-                <input name="meeting_times" ng-model="$ctrl.item.meeting_times" type="text" />
+                <input name="meeting_times" placeholder="YYYY-MM-DD" ng-model="$ctrl.item.start_date" type="text" />
               </md-input-container>
 
               <md-input-container >
-                <label>Time</label>
-                <input name="location" ng-model="$ctrl.item.location" type="text" />
+                <label>Start Time</label>
+                <input name="start_time" placeholder="HH:MM" ng-model="$ctrl.item.start_time" type="text" />
               </md-input-container>
 
               <md-input-container flex>
@@ -63,12 +69,12 @@
 
               <md-input-container>
                 <label>End Date</label>
-                <input name="meeting_times" ng-model="$ctrl.item.meeting_times" type="text" />
+                <input name="meeting_times" placeholder="YYYY-MM-DD" ng-model="$ctrl.item.end_date" type="text" />
               </md-input-container>
 
               <md-input-container >
-                <label>Time</label>
-                <input name="location" ng-model="$ctrl.item.location" type="text" />
+                <label>End Time</label>
+                <input name="end_time" placeholder="HH:MM" ng-model="$ctrl.item.end_time" type="text" />
               </md-input-container>
 
               <md-input-container flex>

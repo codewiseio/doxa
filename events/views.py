@@ -8,6 +8,15 @@ from events.serializers import EventSerializer
 from django.db.models import Q
 
 # Create your views here.
+################Sort Events#######################
+class SortEventListView(generics.ListCreateAPIView):
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        organization = self.kwargs.get('organization')
+        sort_filter = self.kwargs.get('filter_name')
+        items = Event.objects.filter(organization=organization).order_by(sort_filter)
+        return items
 
 
 class EventListView(generics.ListCreateAPIView):
@@ -62,3 +71,8 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
         data['count_attended'] = EventInvitations.objects.filter(event=instance, status='declined').count()
 
         return Response(data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
