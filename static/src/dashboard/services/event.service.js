@@ -32,8 +32,8 @@ export default class EventService {
     * @param  {int} id
     * @return {Promise}
     */
-   list( params={} ) {
-      return this.$http.get(`/api/v1/events/`,        
+   list(id, params={} ) {
+      return this.$http.get(`/api/v1/events/organization/${id}/`,        
         {
           params: params
         }

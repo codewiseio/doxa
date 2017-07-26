@@ -1,16 +1,16 @@
 <!-- form-profile.html -->
  <div layout="row" style="padding: 0px 16px">
 
-      <!--div flex="none" class="list-item-select">
+      <div flex="none" class="list-item-select">
         <span>              
             <md-checkbox ng-checked="$ctrl.allItemsSelected" ng-click="$ctrl.toggleAll()"></md-checkbox>
           </span>
-      </div-->
+      </div>
 
       <div flex>
           <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
-            <!--input name="search" type="text" placeholder="Event search" style="width: 300px; max-width: 100%;"
-                     ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()" /-->
+            <input name="search" type="text" placeholder="Event search" style="width: 300px; max-width: 100%;"
+                     ng-model="" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()"/>
           </md-input-container>
       </div>
 
@@ -55,9 +55,9 @@
         <md-list-item ng-repeat="item in $ctrl.items" layout="row" flex data-item-id="{{item.id}}" id="event-{{item.id}}">
 
         <div flex="none" class="list-item-select">
-            <!--span>              
+            <span>              
                 <md-checkbox ng-checked="$ctrl.isItemSelected(item)" ng-click="$ctrl.toggleItem(item)"></md-checkbox>
-              </span-->
+              </span>
           </div>
           
           <!-- First initial icon -->

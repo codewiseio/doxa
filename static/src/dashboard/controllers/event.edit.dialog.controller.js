@@ -23,6 +23,7 @@ export default class EventEditDialogController {
     this.$mdDialog.cancel();
   }
 
+ 
 
 
   /**
@@ -61,7 +62,8 @@ export default class EventEditDialogController {
    * Delete this item
    */
   remove(item=null, $event) {
-      console.log('Confirm remove.');
+
+      console.log('Confirm remove event.');
       console.log(item);
 
       if ( ! item ) item = this.item;
@@ -94,7 +96,7 @@ export default class EventEditDialogController {
                         .textContent(`Deleted event ${item.name}`)
                         .position('bottom center')
                         .parent();
-
+                      $(`#event-${item.id}`).remove();
                       this.$mdToast.show(toast);
                       this.$state.go('dashboard.events');
 
@@ -148,5 +150,6 @@ export default class EventEditDialogController {
         }
     );
   }
- 
+  
+  
 }

@@ -28,8 +28,8 @@ export default class DashboardGroupEditDialogController {
    */
   save() {
 
-    console.log('Saving');
-    console.log(this.item);
+    console.log('Saving group');
+    console.log('item',this.item);
 
     return this.GroupService.save(this.item).then(
         (response) => {   

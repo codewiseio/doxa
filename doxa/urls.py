@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^api/v1/groups/(?P<group>\d+)/member/(?P<member_id>\d+)/$', GroupMemberItemView.as_view(), name="groupMember" ),
 
     url(r'^api/v1/events/$', EventListView.as_view(), name="events"),
+    url(r'^api/v1/events/organization/(?P<organization>\d+)/$', EventListView.as_view(), name="events"),
     url(r'^api/v1/events/(?P<pk>\d+)/$',EventItemView.as_view(), name="event"),
     url(r'^api/v1/events/org/(?P<organization>\d+)/filter/(?P<filter_name>\w+)/$',SortEventListView.as_view(), name="event"),
 

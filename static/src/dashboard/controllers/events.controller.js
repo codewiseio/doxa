@@ -35,8 +35,9 @@ export default class EventsController {
     let id = this.$stateParams.id;
 
     // Retrieve record data
-    this.EventService.list( { organization: this.organization.id } ).then(
+    this.EventService.list(this.organization.id).then(
         (response) => {
+          console.log('res',response)
           this.items = response.data;
         },
         (err) => {
@@ -191,12 +192,11 @@ export default class EventsController {
         })
         .then(
           (item) => {
-
             // if and item was returned the action completed successfuly
             if ( item ) {
               console.log('Events Controller Received edited item:')
-              console.log(item);
-
+              console.log('item',item);
+              return false;
               // add it to the beginning of list
               // this.items.unshift(item);
 
@@ -206,10 +206,62 @@ export default class EventsController {
                 .position('bottom center')
                 .parent();
               this.$mdToast.show(toast);
+
             }
         }, (error) => {
             console.log('error');
         });
   }
-  
+
+  isItemSelected(item) {
+    if (item === undefined){
+      console.log('undefined')
+    }
+    else{
+      return this.selectedItems.indexOf(item) > -1;
+    }
+  }
+
+    toggleItem(item) {
+      var idx = this.selectedItems.indexOf(item);
+
+      if (idx > -1) {
+        this.selectedItems.splice(idx, 1);
+      }
+      else {
+        this.selectedItems.push(item);
+      }
+      this.checkAllItemsSelected();
+    }
+
+    checkAllItemsSelected() {
+      if ( this.items.length && this.selectedItems.length == this.items.length ) {
+        this.allItemsSelected = true;
+      }
+      else {
+        this.allItemsSelected = false;
+      }
+    }
+
+    toggleAll() {
+      var selectedItems = [];
+
+      // select all items
+      if ( ! this.allItemsSelected ) {
+        this.items.forEach( function(event) {
+          selectedItems.push(event);
+        });
+      }
+
+      this.selectedItems = selectedItems;
+      this.checkAllItemsSelected();
+
+    }
+
+     /** Remove End Time while editing an event
+    *
+    */
+    removeEndDateTime(){
+      console.log('end');
+    }
 }

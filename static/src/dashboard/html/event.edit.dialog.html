@@ -1,4 +1,4 @@
-<md-dialog aria-label="Edit event" class="edit-event">
+<md-dialog aria-label="Edit group" class="edit-group">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -44,7 +44,7 @@
             <md-input-container>
               <label>Location</label>
               <input required name="location" ng-model="$ctrl.item.location" type="text" />
-            </md-input-container>
+            </md-input-container><br>
 
 
             <div layout="row">
@@ -63,7 +63,7 @@
                   <md-button ng-hide="$ctrl.displayEndTime" ng-click="$ctrl.displayEndTime = true">+ End time </md-button>
               </md-input-container>
 
-            </div>
+            </div><br>
 
             <div layout="row" ng-show="$ctrl.displayEndTime">
 

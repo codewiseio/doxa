@@ -47,10 +47,10 @@ export default class GroupService {
     */
    save(data) {
       if ( data.id ) {
-         return this.$http.patch(`/api/v1/events/${data.id}/`, data );
+         return this.$http.patch(`/api/v1/groups/${data.id}/`, data );
       }
       else {
-         return this.$http.post(`/api/v1/events/`, data );
+         return this.$http.post(`/api/v1/groups/`, data );
       }
    }
 
