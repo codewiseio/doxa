@@ -66,5 +66,21 @@ export default class EventService {
       }
    }
 
+   //Remove selected events
+   removeEvents(events,id) {
+    console.log('Removing events');
+    console.log(events);
+
+    // get ids from groups array
+    var ids = [];
+    events.forEach( function(item) {
+      ids.push(item.id);
+    });
+    console.log('ids',ids)
+
+    // pass ids to the api
+    return this.$http.post(`/api/v1/events/remove/`, { ids: ids,org: id } );
+   }
+
 }
 

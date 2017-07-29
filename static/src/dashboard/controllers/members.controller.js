@@ -272,5 +272,41 @@ export default class DashboardMembersController {
 
     }
 
+    /**
+    *Remove all or selected members collectively
+    */
+    removeMembers(items,event){
+      var confirm = this.$mdDialog.confirm()
+        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        .title(`Really delete all selected members ?`)
+        .textContent('This is permanent.')
+        .ariaLabel('Really delete?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      this.$mdDialog.show(confirm).then(
+        () => {
+          this.DashboardMemberService.removeMembers(items,this.organization.id).then(
+            (response) => {
+              console.log('response',response)
+                this.items = response.data;
+                var toast = this.$mdToast.simple()
+                  .textContent('deleted successfully')
+                  .position('bottom left')
+                  .parent();
+                  this.$mdToast.show(toast);
+            },
+            (err) => {
+              var toast = this.$mdToast.simple()
+              .textContent('error')
+              .position('bottom left')
+              .parent();
+              this.$mdToast.show(toast);
+            }
+          ); 
+        }
+      );
+    }
 
 }

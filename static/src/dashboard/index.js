@@ -49,7 +49,7 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     .controller('DashboardHomeController', DashboardHomeController)
     .controller('UserController', UserController)  
     .controller('SidenavController', SidenavController )
-
+    
     .service('AppDataService', AppDataService )
     .service('DashboardMemberService',DashboardMemberService)
     .service('DashboardOrganizationService',DashboardOrganizationService)

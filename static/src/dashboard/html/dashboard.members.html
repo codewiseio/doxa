@@ -19,7 +19,7 @@
       </div>
 
       <div>
-        <md-button class="md-icon-button" ng-click="$ctrl.removeMembers()" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
+        <md-button class="md-icon-button" ng-click="$ctrl.removeMembers($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
         <md-menu md-position-mode="target-right bottom">
 
           <md-button aria-label="Sort" class="md-icon-button" ng-click="$mdOpenMenu($event)">

@@ -11,7 +11,6 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 
 from people.models import Person
-import json
 
 class GroupViewSet(viewsets.ModelViewSet):
 
@@ -28,6 +27,7 @@ class GroupListView(generics.ListCreateAPIView):
             items = Group.objects.filter(organization=organization)
         else:
             items = Group.objects.filter()
+        print ('items',items)
         return items
 
     def list(self, *args, **kwargs):
@@ -52,6 +52,15 @@ class GroupListView(generics.ListCreateAPIView):
         serializer =  GroupSerializer(groupMember)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @api_view(['POST'])
+    def delete(request , *args, **kwargs):
+        ids = request.data["ids"]
+        organization_id = request.data["org"]
+        groups = Group.objects.filter(organization_id = organization_id).filter(id__in=ids).delete()
+        groups_data = Group.objects.filter(organization_id = organization_id)
+        serializer =  GroupSerializer(groups_data,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class GroupItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
@@ -70,7 +79,13 @@ class GroupItemView(generics.RetrieveUpdateDestroyAPIView):
         print(data)
 
         return Response(data)
-    
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 class GroupMembersView(generics.ListCreateAPIView): 
@@ -208,3 +223,16 @@ class FileUploadView(views.APIView):
     #     item = get_object_or_404(queryset, pk=pk)
     #     serializer = GroupSerializer(item)
     #     return Response(serializer.data)
+
+
+#####Sort groups as per filter######
+class GroupsSortListView(generics.ListCreateAPIView): 
+    serializer_class = GroupSerializer
+    lookup_url_kwarg = "organization","filter_name"
+
+    def get_queryset(self):
+
+        filter_name = self.kwargs.get('filter_name')
+        organization_id  = self.kwargs.get('organization')
+        groups = Group.objects.filter(organization=organization_id).order_by(filter_name)
+        return groups

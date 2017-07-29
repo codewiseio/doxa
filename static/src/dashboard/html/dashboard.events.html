@@ -10,12 +10,12 @@
       <div flex>
           <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
             <input name="search" type="text" placeholder="Event search" style="width: 300px; max-width: 100%;"
-                     ng-model="" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()"/>
+                     ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()"/>
           </md-input-container>
       </div>
 
       <div>
-        <md-button class="md-icon-button" ng-click="$ctrl.removeEvents()" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
+        <md-button class="md-icon-button" ng-click="$ctrl.removeEvents($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
         <md-menu md-position-mode="target-right bottom">
 
           <md-button aria-label="Sort" class="md-icon-button" ng-click="$mdOpenMenu($event)">

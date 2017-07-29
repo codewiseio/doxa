@@ -148,7 +148,6 @@ export default class EventsController {
               .position('bottom center')
               .parent();
           this.$mdToast.show(toast);
-          console.log('sfsdfsd',$(`#event:${item.id}`));
           $(`#event-${item.id}`).remove();
           console.log($(`#event:${item.id}`));
         },
@@ -214,8 +213,7 @@ export default class EventsController {
   }
 
   isItemSelected(item) {
-    if (item === undefined){
-      console.log('undefined')
+    if (this.selectedItems === undefined){
     }
     else{
       return this.selectedItems.indexOf(item) > -1;
@@ -223,23 +221,27 @@ export default class EventsController {
   }
 
     toggleItem(item) {
-      var idx = this.selectedItems.indexOf(item);
+      if(this.selectedItems){
+        var idx = this.selectedItems.indexOf(item);
 
-      if (idx > -1) {
-        this.selectedItems.splice(idx, 1);
+        if (idx > -1) {
+          this.selectedItems.splice(idx, 1);
+        }
+        else {
+          this.selectedItems.push(item);
+        }
+        this.checkAllItemsSelected();
       }
-      else {
-        this.selectedItems.push(item);
-      }
-      this.checkAllItemsSelected();
     }
 
     checkAllItemsSelected() {
-      if ( this.items.length && this.selectedItems.length == this.items.length ) {
-        this.allItemsSelected = true;
-      }
-      else {
-        this.allItemsSelected = false;
+      if(this.selectedItems){
+        if ( this.items.length && this.selectedItems.length == this.items.length ) {
+          this.allItemsSelected = true;
+        }
+        else {
+          this.allItemsSelected = false;
+        }
       }
     }
 
@@ -258,10 +260,40 @@ export default class EventsController {
 
     }
 
-     /** Remove End Time while editing an event
-    *
+    /**
+    *Remove all or selected groups collectively
     */
-    removeEndDateTime(){
-      console.log('end');
+    removeEvents(items,event){
+      var confirm = this.$mdDialog.confirm()
+        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        .title(`Really delete all selected events ?`)
+        .textContent('This is permanent.')
+        .ariaLabel('Really delete?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      this.$mdDialog.show(confirm).then(
+        () => {
+          this.EventService.removeEvents(items,this.organization.id).then(
+            (response) => {
+              console.log('response',response)
+                this.items = response.data;
+                var toast = this.$mdToast.simple()
+                  .textContent('deleted successfully')
+                  .position('bottom left')
+                  .parent();
+                  this.$mdToast.show(toast);
+            },
+            (err) => {
+              var toast = this.$mdToast.simple()
+              .textContent('error')
+              .position('bottom left')
+              .parent();
+              this.$mdToast.show(toast);
+            }
+          ); 
+        }
+      );
     }
 }

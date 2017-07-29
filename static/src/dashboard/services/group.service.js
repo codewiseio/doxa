@@ -6,6 +6,18 @@ export default class GroupService {
    }
 
    /**
+    * sort events
+    * @param  {int} id and filter_name
+    * @return {Promise}
+    */
+   sort(id,filter_name){
+      return this.$http.get(`/api/v1/sortGroups/org/${id}/filter/${filter_name}/`,        
+        {
+        }
+      );
+   }
+
+   /**
     * Delete the group
     * @param  {Int} id Record ID
     * @return {Promise} 
@@ -32,8 +44,8 @@ export default class GroupService {
     * @param  {int} id
     * @return {Promise}
     */
-   list( params={} ) {
-      return this.$http.get(`/api/v1/groups/`,        
+   list( id,params={} ) {
+      return this.$http.get(`/api/v1/getgroups/${id}/`,        
         {
           params: params
         }
@@ -94,6 +106,23 @@ export default class GroupService {
 
     // pass ids to the api
     return this.$http.post(`/api/v1/groups/${members[0].group}/members/remove/`, { ids: ids } );
+   }
+
+
+   //Remove groups
+   removeGroups(groups,id) {
+    console.log('Removing groups');
+    console.log(groups);
+
+    // get ids from groups array
+    var ids = [];
+    groups.forEach( function(item) {
+      ids.push(item.id);
+    });
+    console.log('ids',ids)
+
+    // pass ids to the api
+    return this.$http.post(`/api/v1/groups/remove/`, { ids: ids,org: id } );
    }
 }
 

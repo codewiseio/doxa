@@ -33,9 +33,12 @@ export default class DashboardGroupEditDialogController {
 
     return this.GroupService.save(this.item).then(
         (response) => {   
-          console.log('Save successful');
-          console.log(response);
           var savedItem = response.data;
+          var toast = this.$mdToast.simple()
+            .textContent('Update successfull')
+            .position('bottom center')
+            .parent();
+          this.$mdToast.show(toast);
           this.$mdDialog.hide(savedItem);
         },
         (error) => {
@@ -92,7 +95,7 @@ export default class DashboardGroupEditDialogController {
                         .textContent(`Deleted group ${item.name}`)
                         .position('bottom center')
                         .parent();
-
+                      $(`#group-${item.id}`).remove();
                       this.$mdToast.show(toast);
                       this.$state.go('dashboard.groups');
 

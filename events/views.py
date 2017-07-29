@@ -6,6 +6,8 @@ from events.models import Event
 from events.serializers import EventSerializer
 
 from django.db.models import Q
+from rest_framework.decorators import  api_view
+from django.db import transaction
 
 # Create your views here.
 ################Sort Events#######################
@@ -37,8 +39,23 @@ class EventListView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-
         data = request.data
+        print('data',data['start_date'],data['end_date'])
+        start_date = data['start_date'].split('T')[0]
+        start_date_split=start_date.split('-')
+        start_date_year = start_date_split[0]
+        start_date_month = start_date_split[1]
+        start_date_day = int(start_date_split[2]) + int(1)
+        final_start_date = str(start_date_year)+'-'+str(start_date_month)+'-'+str(start_date_day)
+        end_date = data['end_date'].split('T')[0]
+        end_date_split=end_date.split('-')
+        end_date_year = end_date_split[0]
+        end_date_month = end_date_split[1]
+        end_date_day = int(end_date_split[2]) + int(1)
+        final_end_date = str(end_date_year)+'-'+str(end_date_month)+'-'+str(end_date_day)
+        print('final',final_start_date,final_end_date)
+        data['start_date'] = final_start_date
+        data['end_date'] = final_end_date
         errors = {}
 
         if not data.get('name'):
@@ -50,6 +67,14 @@ class EventListView(generics.ListCreateAPIView):
         serializer =  EventSerializer(event)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @api_view(['POST'])
+    def delete(request , *args, **kwargs):
+        ids = request.data["ids"]
+        organization_id = request.data["org"]
+        events = Event.objects.filter(organization_id = organization_id).filter(id__in=ids).delete()
+        events_data = Event.objects.filter(organization_id = organization_id)
+        serializer =  EventSerializer(events_data,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class EventItemView(generics.RetrieveUpdateDestroyAPIView):
@@ -76,3 +101,20 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+    @transaction.atomic
+    def update(self,request, pk, *args, **kwargs):
+
+        # partial = kwargs.pop('partial', False)
+        print("pk is")
+        print(pk)
+
+        data = request.data;
+        print('data',data)
+        if 'id' in data:
+            event = Event.objects.get(pk=pk)
+            Event.objects.filter(pk=pk).update(**data)
+            events_data = Event.objects.filter(organization_id = data['organization'])
+            serializer =  EventSerializer(events_data,many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)

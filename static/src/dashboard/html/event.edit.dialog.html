@@ -49,39 +49,76 @@
 
             <div layout="row">
 
-              <md-input-container>
+              <!--md-input-container>
                 <label>Start Date</label>
                 <input name="meeting_times" placeholder="YYYY-MM-DD" ng-model="$ctrl.item.start_date" type="text" />
-              </md-input-container>
+              </md-input-container-->
 
-              <md-input-container >
+              <md-input-container  flex-gt-xs="33" class="date-picker">
+                <label>Start Date</label>
+                <md-datepicker 
+                  ng-model="$ctrl.item.start_date" 
+                  md-current-view="year"
+                  id="date"
+                  name='date'
+                  md-placeholder="Date*"
+                  required >
+                </md-datepicker>
+
+              </md-input-container>
+        
+              
+
+              <!-- <md-input-container >
                 <label>Start Time</label>
                 <input name="start_time" placeholder="HH:MM" ng-model="$ctrl.item.start_time" type="text" />
+              </md-input-container> -->
+
+              <md-input-container
+                   moment-picker="$ctrl.item.start_time"
+                   format="HH:mm:ss">
+                  <!-- <span class="input-group-addon">
+                      <i class="octicon octicon-clock"></i>
+                  </span> -->
+                  <input placeholder="Select start time"
+                         ng-model="$ctrl.item.start_time"
+                         ng-model-options="{ updateOn: 'blur' }">
               </md-input-container>
 
-              <md-input-container flex>
-                  <md-button ng-hide="$ctrl.displayEndTime" ng-click="$ctrl.displayEndTime = true">+ End time </md-button>
+              <md-input-container  flex>
+                  <md-button ng-hide="$ctrl.ShowEndDateDialog" ng-click="$ctrl.ShowEndDateDialog = true;">+ End time </md-button>
               </md-input-container>
 
             </div><br>
 
-            <div layout="row" ng-show="$ctrl.displayEndTime">
-
-              <md-input-container>
+            <div layout="row" ng-show="$ctrl.ShowEndDateDialog">
+              <md-input-container  flex-gt-xs="33" class="date-picker">
                 <label>End Date</label>
-                <input name="meeting_times" placeholder="YYYY-MM-DD" ng-model="$ctrl.item.end_date" type="text" />
+                <md-datepicker ng-model="$ctrl.item.end_date" md-current-view="year"></md-datepicker>
               </md-input-container>
 
-              <md-input-container >
+              <!-- <md-input-container >
                 <label>End Time</label>
                 <input name="end_time" placeholder="HH:MM" ng-model="$ctrl.item.end_time" type="text" />
+              </md-input-container> -->
+
+              <md-input-container
+                   moment-picker="$ctrl.item.end_time"
+                   format="HH:mm:ss">
+                  <!-- <span class="input-group-addon">
+                      <i class="octicon octicon-clock"></i>
+                  </span> -->
+                  <input placeholder="Select end time"
+                         ng-model="$ctrl.item.end_time"
+                         ng-model-options="{ updateOn: 'blur' }">
               </md-input-container>
 
               <md-input-container flex>
-                  <md-button ng-click="$ctrl.displayEndTime = false;">Remove</md-button>
+                  <md-button ng-click="$ctrl.removeEndDate();">Remove</md-button>
               </md-input-container>
 
             </div>  
+
 
         </div>
 

@@ -9,7 +9,7 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
 
-        fields = ('id','organization', 'name','description','meeting_times','meeting_location')
+        fields = ('id','organization_id', 'name','description','meeting_times','meeting_location')
         read_only_fields = ['id']
 
     def perform_create(self, serializer):

@@ -16,7 +16,7 @@ from organizations.serializers import OrganizationMemberSerializer
 
 from django.db import transaction
 from doxa.exceptions import HttpException, StorageException
-
+from rest_framework.decorators import  api_view
 
 class MembersListView(generics.ListCreateAPIView):
     queryset = OrganizationMember.objects.order_by('id')
@@ -50,7 +50,14 @@ class MembersListView(generics.ListCreateAPIView):
 
         return Response(members, status=status.HTTP_201_CREATED)
 
-
+    @api_view(['POST'])
+    def delete(request , *args, **kwargs):
+        ids = request.data["ids"]
+        organization_id = request.data["org"]
+        orgmembers = OrganizationMember.objects.filter(organization_id = organization_id).filter(id__in=ids).delete()
+        orgmembers_data = OrganizationMember.objects.filter(organization_id = organization_id)
+        serializer =  OrganizationMemberSerializer(orgmembers_data,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer

@@ -38,7 +38,7 @@ export default class DashboardGroupsController {
     let id = this.$stateParams.id;
 
     // Retrieve record data
-    this.GroupService.list( { organization: this.organization.id } ).then(
+    this.GroupService.list(this.organization.id).then(
         (response) => {
           this.items = response.data;
         },
@@ -109,14 +109,36 @@ export default class DashboardGroupsController {
   }
 
 
+  /**
+   * Sorting of Groups
+   * 
+   */
+   sortBy(filter){
+    this.filter = filter
+    console.log(this.organization.id,this.filter)
+    this.GroupService.sort(this.organization.id,this.filter).then(
+     (response) => {
+          console.log('res>>',response)
+          this.items = response.data;
+        },
+        (err) => {
+          var toast = this.$mdToast.simple()
+            .textContent(error.data.message)
+            .position('top right')
+            .parent();
 
+          this.$mdToast.show(toast);
+        }
+    ); 
+   }
 
   
 
 
   delete(item, event) {
       var confirm = this.$mdDialog.confirm()
-        .title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        .title(`Really delete ${item.name}?`)
         .textContent('This is permanent.')
         .ariaLabel('Really delete?')
         .targetEvent(event)
@@ -131,22 +153,153 @@ export default class DashboardGroupsController {
   }
 
   _deleteItem(item) {
-    this.DashboardMemberService.delete(item.id).then(
+    this.GroupService.delete(item.id).then(
       () => {
           this.$mdDialog.hide();
 
           var toast = this.$mdToast.simple()
-              .textContent(`Deleted ${item.entity.first_name} ${item.entity.last_name}`)
-              .position('top right')
+              //.textContent(`Deleted ${item.entity.first_name} ${item.entity.last_name}`)
+              .textContent(`Deleted Successfully`)
+              .position('bottom center')
               .parent();
           this.$mdToast.show(toast);
 
-          $(`#member-${item.id}`).remove();
-          console.log($(`#member:${item.id}`));
+          $(`#group-${item.id}`).remove();
+          console.log($(`#group:${item.id}`));
         }
     );
   }
 
+  cancel() {
+    console.log('Canceled');
+    this.$mdDialog.cancel();
+  }
 
-  
+  /**
+   * Opens a dialog to edit group.
+   * @param  {object} $item   The item to be edited
+   * @param  {event} $event   The event triggering the dialog to open
+   */
+  edit(item, $event=null) {
+    $event.stopPropagation();
+    // $event.preventDefault();
+    
+
+
+    return this.$mdDialog.show({
+          controller: 'DashboardGroupEditDialogController as $ctrl',
+          templateUrl: 'dashboard.group.edit.dialog.html',
+          locals: { "item": item },
+          clickOutsideToClose:true,
+          fullscreen: true,
+          parent: angular.element(document.body),
+          targetEvent: $event
+        })
+        .then(
+          (item) => {
+            // if and item was returned the action completed successfuly
+            if ( item ) {
+              console.log('Group Controller Received edited item:')
+              console.log('item',item);
+              return false;
+              // add it to the beginning of list
+              // this.items.unshift(item);
+
+              // notify the user
+              var toast = this.$mdToast.simple()
+                .textContent(" Group Updated" )
+                .position('bottom center')
+                .parent();
+              this.$mdToast.show(toast);
+
+            }
+        }, (error) => {
+            console.log('error');
+        });
+  }
+
+  isItemSelected(item) {
+    if (this.selectedItems === undefined){
+    }
+    else{
+      return this.selectedItems.indexOf(item) > -1;
+    }
+  }
+
+    toggleItem(item) {
+      if(this.selectedItems){
+        var idx = this.selectedItems.indexOf(item);
+
+        if (idx > -1) {
+          this.selectedItems.splice(idx, 1);
+        }
+        else {
+          this.selectedItems.push(item);
+        }
+        this.checkAllItemsSelected();
+      }
+    }
+
+    checkAllItemsSelected() {
+      if(this.selectedItems){
+        if ( this.items.length && this.selectedItems.length == this.items.length ) {
+          this.allItemsSelected = true;
+        }
+        else {
+          this.allItemsSelected = false;
+        }
+      }
+    }
+
+    toggleAll() {
+      var selectedItems = [];
+
+      // select all items
+      if ( ! this.allItemsSelected ) {
+        this.items.forEach( function(event) {
+          selectedItems.push(event);
+        });
+      }
+
+      this.selectedItems = selectedItems;
+      this.checkAllItemsSelected();
+
+    }
+
+    /**
+    *Remove all or selected groups collectively
+    */
+    removeGroups(items,event){
+      var confirm = this.$mdDialog.confirm()
+        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+        .title(`Really delete all selected groups ?`)
+        .textContent('This is permanent.')
+        .ariaLabel('Really delete?')
+        .targetEvent(event)
+        .ok('Yes')
+        .cancel('No');
+
+      this.$mdDialog.show(confirm).then(
+        () => {
+          this.GroupService.removeGroups(items,this.organization.id).then(
+            (response) => {
+              console.log('response',response)
+                this.items = response.data;
+                var toast = this.$mdToast.simple()
+                  .textContent('deleted successfully')
+                  .position('bottom left')
+                  .parent();
+                  this.$mdToast.show(toast);
+            },
+            (err) => {
+              var toast = this.$mdToast.simple()
+              .textContent('error')
+              .position('bottom left')
+              .parent();
+              this.$mdToast.show(toast);
+            }
+          ); 
+        }
+      );
+    }
 }

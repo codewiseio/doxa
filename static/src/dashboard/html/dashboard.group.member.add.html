@@ -25,7 +25,7 @@
                         md-selected-item="$ctrl.selectedItem"
                         md-search-text="$ctrl.searchText"
                         md-items="item in $ctrl.querySearch($ctrl.searchText)"
-                        md-item-text="item.person.first_name"
+                        md-item-text="item.person.first_name + item.person.last_name"
                         md-selected-item-change="$ctrl.selectedItemChange($ctrl.selectedItem)"
                         md-input-minlength="2"
                         md-input-maxlength="18"

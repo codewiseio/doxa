@@ -71,6 +71,21 @@ export default class DashboardMemberService {
       
    }
 
+    //Remove selected members
+   removeMembers(members,id) {
+    console.log('Removing members');
+    console.log(members);
+
+    // get ids from groups array
+    var ids = [];
+    members.forEach( function(item) {
+      ids.push(item.id);
+    });
+    console.log('ids',ids)
+
+    // pass ids to the api
+    return this.$http.post(`/api/v1/members/remove/`, { ids: ids,org: id } );
+   }
 
    
 }

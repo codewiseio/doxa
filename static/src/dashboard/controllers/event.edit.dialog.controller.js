@@ -1,6 +1,6 @@
 export default class EventEditDialogController {
   
-  constructor(EventService, $mdDialog,  $mdToast, $state, locals) {
+  constructor(EventService, $mdDialog, $mdToast, $state, locals) {
     'ngInject';
     
     this.EventService = EventService;
@@ -10,12 +10,27 @@ export default class EventEditDialogController {
     
     this.context = "dashboard.event.edit";
     this.item = locals.item;
+    
+    this.currentDate =  moment();
 
     this.displayEndTime = false;
 
     if ( ! this.item ) this.item = {  };
+
+
+    if(!locals.item.end_date){
+      this.ShowEndDateDialog = false;
+    }else{
+      this.ShowEndDateDialog = true;
+    }
+  
   }
   
+  removeEndDate(){
+    this.item.end_time = '';
+    this.ShowEndDateDialog = false;
+  }
+
   /**
    * Close the dialog without making changes.
    */
@@ -40,6 +55,11 @@ export default class EventEditDialogController {
           console.log(response);
           var savedItem = response.data;
           this.$mdDialog.hide(savedItem);
+          var toast = this.$mdToast.simple()
+            .textContent('Event Updated successfully')
+            .position('bottom center')
+            .parent();
+          this.$mdToast.show(toast);
         },
         (error) => {
 
