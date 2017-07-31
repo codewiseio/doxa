@@ -14,7 +14,8 @@ import 'angular-file-upload';
 import 'angular1-star-rating';
 import 'angular-material-picker';
 import 'moment';
-import 'angular-moment-picker';
+import 'ng-material-datetimepicker';
+import 'ng-material-datetimepicker/css/material-datetimepicker.css';
 
 // import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
 import 'roboto-npm-webfont';
@@ -36,7 +37,8 @@ import './filters';
 
 require('./assets/css/paper-dashboard.css');
 require('./assets/css/default.less');
-require('./assets/css/angular-moment-picker.min.css');
+
+
 /* App Dependencies */
 angular.module( "doxa", [
                 'ui.router',
@@ -50,7 +52,7 @@ angular.module( "doxa", [
                 'doxa.filters',
                 'doxa.foo',
                 'doxa.organization',
-                'moment-picker',
+                'ngMaterialDatePicker',
                 ngMessages,
                 ngCookies
     ])

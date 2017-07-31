@@ -39,8 +39,8 @@ class GroupListView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
 
         data = request.data
-        # data['created_by_id']  = Person.objects.filter(user=request.user.id)[:1][0].id
-
+        groupMemberData = {'role':'admin','group_id':'','person_id':'','added_by_id':''}
+        groupMemberData['person_id']  = Person.objects.filter(user=request.user.id)[:1][0].id
         # check data validity
         errors = {}
         if not data.get('name'):
@@ -50,6 +50,10 @@ class GroupListView(generics.ListCreateAPIView):
 
         groupMember = Group.objects.create(**data)
         serializer =  GroupSerializer(groupMember)
+        groupMemberData['group_id'] = serializer.data['id']
+        #groupMemberData['person_id'] =request.user.id
+        groupMemberData['added_by_id'] =request.user.id
+        groupMemberdata = GroupMember.objects.create(**groupMemberData)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @api_view(['POST'])

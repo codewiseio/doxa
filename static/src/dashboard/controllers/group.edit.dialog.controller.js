@@ -34,11 +34,11 @@ export default class DashboardGroupEditDialogController {
     return this.GroupService.save(this.item).then(
         (response) => {   
           var savedItem = response.data;
-          var toast = this.$mdToast.simple()
-            .textContent('Update successfull')
-            .position('bottom center')
-            .parent();
-          this.$mdToast.show(toast);
+          // var toast = this.$mdToast.simple()
+          //   .textContent('Update successfull')
+          //   .position('bottom center')
+          //   .parent();
+          // this.$mdToast.show(toast);
           this.$mdDialog.hide(savedItem);
         },
         (error) => {

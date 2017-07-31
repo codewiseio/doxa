@@ -16,6 +16,15 @@ export default class DashboardGroupsController {
     this.context = "dashboard.groups";
     this.errors = [];
 
+    this.AppDataService = AppDataService
+    this.AppDataService.pageTitle = `Groups`;
+
+    this.selectedItems = [];
+    this.allItemsSelected = false;
+    this.items = [];
+
+    this.filter = {};
+    this.propertyName = ''
    
 
     this.initPage();    
@@ -98,7 +107,7 @@ export default class DashboardGroupsController {
 
               // notify the user
               var toast = this.$mdToast.simple()
-                .textContent("New group created" )
+                .textContent("Group Data Saved Successfuly" )
                 .position('bottom center')
                 .parent();
               this.$mdToast.show(toast);
@@ -219,15 +228,10 @@ export default class DashboardGroupsController {
   }
 
   isItemSelected(item) {
-    if (this.selectedItems === undefined){
-    }
-    else{
       return this.selectedItems.indexOf(item) > -1;
-    }
   }
 
     toggleItem(item) {
-      if(this.selectedItems){
         var idx = this.selectedItems.indexOf(item);
 
         if (idx > -1) {
@@ -237,7 +241,6 @@ export default class DashboardGroupsController {
           this.selectedItems.push(item);
         }
         this.checkAllItemsSelected();
-      }
     }
 
     checkAllItemsSelected() {
@@ -286,7 +289,7 @@ export default class DashboardGroupsController {
               console.log('response',response)
                 this.items = response.data;
                 var toast = this.$mdToast.simple()
-                  .textContent('deleted successfully')
+                  .textContent('Deleted Successfully')
                   .position('bottom left')
                   .parent();
                   this.$mdToast.show(toast);

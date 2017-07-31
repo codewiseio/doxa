@@ -56,7 +56,7 @@ export default class EventEditDialogController {
           var savedItem = response.data;
           this.$mdDialog.hide(savedItem);
           var toast = this.$mdToast.simple()
-            .textContent('Event Updated successfully')
+            .textContent('Event Saved Successfully')
             .position('bottom center')
             .parent();
           this.$mdToast.show(toast);

@@ -40,22 +40,29 @@ class EventListView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        print('data',data['start_date'],data['end_date'])
+        print('data',data)
+        ####Get Start and End time########
+        start_time = data['start_time'].split('T')[1]
+        end_time = data['end_time'].split('T')[1]
+        print('start',start_time,end_time)
+        ###########Ends here##############
         start_date = data['start_date'].split('T')[0]
         start_date_split=start_date.split('-')
         start_date_year = start_date_split[0]
         start_date_month = start_date_split[1]
-        start_date_day = int(start_date_split[2]) + int(1)
+        start_date_day = int(start_date_split[2])
         final_start_date = str(start_date_year)+'-'+str(start_date_month)+'-'+str(start_date_day)
         end_date = data['end_date'].split('T')[0]
         end_date_split=end_date.split('-')
         end_date_year = end_date_split[0]
         end_date_month = end_date_split[1]
-        end_date_day = int(end_date_split[2]) + int(1)
+        end_date_day = int(end_date_split[2])
         final_end_date = str(end_date_year)+'-'+str(end_date_month)+'-'+str(end_date_day)
         print('final',final_start_date,final_end_date)
         data['start_date'] = final_start_date
         data['end_date'] = final_end_date
+        data['start_time'] = start_time
+        data['end_time'] = end_time
         errors = {}
 
         if not data.get('name'):
@@ -112,6 +119,10 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
 
         data = request.data;
         print('data',data)
+        start_time = data['start_time'].split('T')[1]
+        end_time = data['end_time'].split('T')[1]
+        data['start_time'] = start_time
+        data['end_time'] = end_time
         if 'id' in data:
             event = Event.objects.get(pk=pk)
             Event.objects.filter(pk=pk).update(**data)

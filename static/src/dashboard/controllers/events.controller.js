@@ -16,6 +16,16 @@ export default class EventsController {
     this.context = "dashboard.events";
     this.errors = [];
 
+    this.AppDataService = AppDataService
+    this.AppDataService.pageTitle = `Events`;
+
+    this.selectedItems = [];
+    this.allItemsSelected = false;
+    this.items = [];
+
+    this.filter = {};
+    this.propertyName = ''
+
     this.initPage();    
   }
   
@@ -82,11 +92,11 @@ export default class EventsController {
               this.items.unshift(item);
 
               // notify the user
-              var toast = this.$mdToast.simple()
-                .textContent("New event created" )
-                .position('bottom center')
-                .parent();
-              this.$mdToast.show(toast);
+              // var toast = this.$mdToast.simple()
+              //   .textContent("New event created" )
+              //   .position('bottom center')
+              //   .parent();
+              // this.$mdToast.show(toast);
             }
         }, (error) => {
             console.log('error');
@@ -213,15 +223,10 @@ export default class EventsController {
   }
 
   isItemSelected(item) {
-    if (this.selectedItems === undefined){
-    }
-    else{
       return this.selectedItems.indexOf(item) > -1;
-    }
   }
 
     toggleItem(item) {
-      if(this.selectedItems){
         var idx = this.selectedItems.indexOf(item);
 
         if (idx > -1) {
@@ -231,7 +236,6 @@ export default class EventsController {
           this.selectedItems.push(item);
         }
         this.checkAllItemsSelected();
-      }
     }
 
     checkAllItemsSelected() {
@@ -280,7 +284,7 @@ export default class EventsController {
               console.log('response',response)
                 this.items = response.data;
                 var toast = this.$mdToast.simple()
-                  .textContent('deleted successfully')
+                  .textContent('Deleted Successfully')
                   .position('bottom left')
                   .parent();
                   this.$mdToast.show(toast);

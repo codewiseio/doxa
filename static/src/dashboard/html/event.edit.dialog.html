@@ -38,51 +38,32 @@
 
             <md-input-container>
               <label>Description</label>
-              <textarea ng-model="$ctrl.item.description" md-maxlength="400" rows="3" md-select-on-focus></textarea>
+              <textarea ng-model="$ctrl.item.description" md-maxlength="400" rows="1" md-select-on-focus></textarea>
             </md-input-container>
 
             <md-input-container>
               <label>Location</label>
-              <input required name="location" ng-model="$ctrl.item.location" type="text" />
+              <input name="location" ng-model="$ctrl.item.location" type="text" />
             </md-input-container><br>
 
 
             <div layout="row">
 
-              <!--md-input-container>
-                <label>Start Date</label>
-                <input name="meeting_times" placeholder="YYYY-MM-DD" ng-model="$ctrl.item.start_date" type="text" />
-              </md-input-container-->
-
               <md-input-container  flex-gt-xs="33" class="date-picker">
                 <label>Start Date</label>
-                <md-datepicker 
-                  ng-model="$ctrl.item.start_date" 
-                  md-current-view="year"
-                  id="date"
-                  name='date'
-                  md-placeholder="Date*"
-                  required >
-                </md-datepicker>
+                <md-datepicker ng-model="$ctrl.item.start_date" md-current-view="year"></md-datepicker>
 
               </md-input-container>
         
-              
 
-              <!-- <md-input-container >
-                <label>Start Time</label>
-                <input name="start_time" placeholder="HH:MM" ng-model="$ctrl.item.start_time" type="text" />
-              </md-input-container> -->
-
-              <md-input-container
-                   moment-picker="$ctrl.item.start_time"
-                   format="HH:mm:ss">
-                  <!-- <span class="input-group-addon">
-                      <i class="octicon octicon-clock"></i>
-                  </span> -->
-                  <input placeholder="Select start time"
-                         ng-model="$ctrl.item.start_time"
-                         ng-model-options="{ updateOn: 'blur' }">
+              <md-input-container>
+                <input mdc-datetime-picker date="false" time="true" type="text" id="time" short-time="true"
+                       show-todays-date
+                       placeholder="Time"
+                       min-date="minDate"
+                       format="hh:mm a"
+                       ng-change="vm.saveChange()"
+                       ng-model="$ctrl.item.start_time">
               </md-input-container>
 
               <md-input-container  flex>
@@ -97,21 +78,17 @@
                 <md-datepicker ng-model="$ctrl.item.end_date" md-current-view="year"></md-datepicker>
               </md-input-container>
 
-              <!-- <md-input-container >
-                <label>End Time</label>
-                <input name="end_time" placeholder="HH:MM" ng-model="$ctrl.item.end_time" type="text" />
-              </md-input-container> -->
 
-              <md-input-container
-                   moment-picker="$ctrl.item.end_time"
-                   format="HH:mm:ss">
-                  <!-- <span class="input-group-addon">
-                      <i class="octicon octicon-clock"></i>
-                  </span> -->
-                  <input placeholder="Select end time"
-                         ng-model="$ctrl.item.end_time"
-                         ng-model-options="{ updateOn: 'blur' }">
+              <md-input-container>
+                <input mdc-datetime-picker date="false" time="true" type="text" id="time" short-time="true"
+                       show-todays-date
+                       placeholder="Time"
+                       min-date="minDate"
+                       format="hh:mm a"
+                       ng-change="vm.saveChange()"
+                       ng-model="$ctrl.item.end_time">
               </md-input-container>
+
 
               <md-input-container flex>
                   <md-button ng-click="$ctrl.removeEndDate();">Remove</md-button>

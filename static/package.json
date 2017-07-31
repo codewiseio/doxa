@@ -36,9 +36,11 @@
     "angular": "^1.6.5",
     "angular-animate": "1.6.4",
     "angular-aria": "1.5.8",
+    "angular-bootstrap3-datepicker": "^0.4.0",
     "angular-cookies": "1.6.1",
     "angular-material": "^1.1.3",
     "angular-messages": "^1.6.5",
+    "angular-moment-picker": "^0.10.1",
     "angular-ui-router": "^0.4.2",
     "angularjs-compare-to-directive": "^1.0.0",
     "autoprefixer": "^6.6.0",
@@ -52,10 +54,10 @@
     "material-ui": "^0.17.0",
     "mdPickers": "^0.7.5",
     "ng-cache-loader": "0.0.21",
+    "ng-material-datetimepicker": "^1.7.2",
     "required-loader": "^1.1.11",
     "roboto-fontface": "^0.6.0",
     "roboto-npm-webfont": "0.0.2",
-    "sass-loader": "^4.1.1",
-    "angular-moment-picker":"^0.10.1"
+    "sass-loader": "^4.1.1"
   }
 }
