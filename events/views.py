@@ -8,6 +8,7 @@ from events.serializers import EventSerializer
 from django.db.models import Q
 from rest_framework.decorators import  api_view
 from django.db import transaction
+import sys
 
 # Create your views here.
 ################Sort Events#######################
@@ -41,34 +42,43 @@ class EventListView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         data = request.data
         print('data',data)
-        ####Get Start and End time########
-        start_time = data['start_time'].split('T')[1]
-        end_time = data['end_time'].split('T')[1]
-        print('start',start_time,end_time)
-        ###########Ends here##############
+        errors = {}
+        if not data.get('name'):
+            errors['name'] = ['Event name  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if not data.get('start_date'):
+            errors['name'] = ['Event Start Date  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if not data.get('start_time'):
+            errors['name'] = ['Event Start Time  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
         start_date = data['start_date'].split('T')[0]
         start_date_split=start_date.split('-')
         start_date_year = start_date_split[0]
         start_date_month = start_date_split[1]
         start_date_day = int(start_date_split[2])
         final_start_date = str(start_date_year)+'-'+str(start_date_month)+'-'+str(start_date_day)
-        end_date = data['end_date'].split('T')[0]
-        end_date_split=end_date.split('-')
-        end_date_year = end_date_split[0]
-        end_date_month = end_date_split[1]
-        end_date_day = int(end_date_split[2])
-        final_end_date = str(end_date_year)+'-'+str(end_date_month)+'-'+str(end_date_day)
+        try:
+            end_date = data['end_date'].split('T')[0]
+            try:
+                end_time = data['end_time']
+            except Exception as e:
+                errors['name'] = ['End Time  is required with End Date.']
+                return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+            end_date_split=end_date.split('-')
+            end_date_year = end_date_split[0]
+            end_date_month = end_date_split[1]
+            end_date_day = int(end_date_split[2])
+            final_end_date = str(end_date_year)+'-'+str(end_date_month)+'-'+str(end_date_day)
+        except Exception as e:
+            final_end_date = None
         print('final',final_start_date,final_end_date)
         data['start_date'] = final_start_date
         data['end_date'] = final_end_date
-        data['start_time'] = start_time
-        data['end_time'] = end_time
-        errors = {}
-
-        if not data.get('name'):
-            errors['name'] = ['This field is required.']
-        if errors:
-            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
         event = Event.objects.create(**data)
         serializer =  EventSerializer(event)
@@ -119,13 +129,47 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
 
         data = request.data;
         print('data',data)
-        start_time = data['start_time'].split('T')[1]
-        end_time = data['end_time'].split('T')[1]
-        data['start_time'] = start_time
-        data['end_time'] = end_time
+        errors={}
+        if not data.get('name'):
+            errors['name'] = ['Event name  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if not data.get('start_date'):
+            errors['name'] = ['Event Start Date  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if not data.get('start_time'):
+            errors['name'] = ['Event Start Time  is required.']
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        start_date = data['start_date'].split('T')[0]
+        start_date_split=start_date.split('-')
+        start_date_year = start_date_split[0]
+        start_date_month = start_date_split[1]
+        start_date_day = int(start_date_split[2])
+        final_start_date = str(start_date_year)+'-'+str(start_date_month)+'-'+str(start_date_day)
+        try:
+            end_date = data['end_date'].split('T')[0]
+            try:
+                end_time = data['end_time']
+            except Exception as e:
+                errors['name'] = ['End Time  is required with End Date.']
+                return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+            end_date_split=end_date.split('-')
+            end_date_year = end_date_split[0]
+            end_date_month = end_date_split[1]
+            end_date_day = int(end_date_split[2])
+            final_end_date = str(end_date_year)+'-'+str(end_date_month)+'-'+str(end_date_day)
+        except Exception as e:
+            final_end_date = None
+        print('final',final_start_date,final_end_date)
+        data['start_date'] = final_start_date
+        data['end_date'] = final_end_date
         if 'id' in data:
             event = Event.objects.get(pk=pk)
             Event.objects.filter(pk=pk).update(**data)
             events_data = Event.objects.filter(organization_id = data['organization'])
             serializer =  EventSerializer(events_data,many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+

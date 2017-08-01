@@ -1,12 +1,13 @@
 export default class EventEditDialogController {
   
-  constructor(EventService, $mdDialog, $mdToast, $state, locals) {
+  constructor(EventService, $mdDialog, $mdToast, $state, $filter, locals) {
     'ngInject';
     
     this.EventService = EventService;
     this.$mdDialog = $mdDialog;
     this.$mdToast = $mdToast;
     this.$state = $state;
+    this.$filter = $filter;
     
     this.context = "dashboard.event.edit";
     this.item = locals.item;
@@ -14,6 +15,7 @@ export default class EventEditDialogController {
     this.currentDate =  moment();
 
     this.displayEndTime = false;
+    this.event_name = true;
 
     if ( ! this.item ) this.item = {  };
 
@@ -44,11 +46,31 @@ export default class EventEditDialogController {
   /**
    * Save changes to the item
    */
-  save() {
-
+  save(id) {
+  
     console.log('Saving');
-    console.log(this.item);
-
+    console.log('item',this.item);
+    if(id === undefined){
+      if(this.item.start_time){
+        var start_time = this.$filter('date')(this.item.start_time, 'HH:mm:ss');
+      }
+      if(this.item.end_time){
+        var end_time = this.$filter('date')(this.item.end_time, 'HH:mm:ss');
+      }
+    }else{
+      var start_time = this.$filter('date')(this.item.start_time._i, 'HH:mm:ss');
+      var end_time = this.$filter('date')(this.item.end_time._i, 'HH:mm:ss');
+      if(start_time === undefined){
+        var start_time = this.$filter('date')(this.item.start_time, 'HH:mm:ss');
+      }
+      if(end_time === undefined){
+        var end_time = this.$filter('date')(this.item.end_time, 'HH:mm:ss');
+      }
+    }
+    console.log('start',start_time,'end',end_time)
+    this.item.start_time = start_time
+    this.item.end_time = end_time
+    console.log('new_item',this.item)
     return this.EventService.save(this.item).then(
         (response) => {   
           console.log('Save successful');
@@ -62,12 +84,11 @@ export default class EventEditDialogController {
           this.$mdToast.show(toast);
         },
         (error) => {
-
-          message = error.data.message;
-
+          console.log('error',error);
+          var message = error.data.name;
           // notify the user operation failed
           var toast = this.$mdToast.simple()
-            .textContent(message)
+            .textContent(String(message))
             .position('bottom center')
             .parent();
           this.$mdToast.show(toast);

@@ -61,7 +61,7 @@
                        show-todays-date
                        placeholder="Time"
                        min-date="minDate"
-                       format="hh:mm a"
+                       format="hh:mm"
                        ng-change="vm.saveChange()"
                        ng-model="$ctrl.item.start_time">
               </md-input-container>
@@ -117,7 +117,7 @@
       <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope">
        Cancel
       </span></button>
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.save()"><span class="ng-scope">
+      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.save($ctrl.item.id)"><span class="ng-scope">
         Save
       </span></button>
     </md-dialog-actions>
