@@ -20,6 +20,7 @@ export default class EventService {
     * @return {Promise}
     */
    get(id, params={} ) {
+      console.log(`/api/v1/events/${id}/`);
       return this.$http.get(`/api/v1/events/${id}/`,
         {
           params: params

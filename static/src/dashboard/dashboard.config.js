@@ -154,6 +154,21 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
             }
           }
       })
+      .state('dashboard.event', {
+          url: '/event/:id',
+          title: 'Event',
+          views : {
+            'appbar': {
+              templateUrl: 'dashboard.appbar.html',
+              controller: 'DashboardAppbarController as $ctrl',
+            },
+            '': {
+              templateUrl: 'dashboard.event.view.html',
+              controller: 'EventController as $ctrl',
+            }
+          }
+      })
+
       ;
 
     /**

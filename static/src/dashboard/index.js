@@ -28,6 +28,7 @@ import GroupService from './services/group.service';
 
 import EventService from './services/event.service';
 import EventsController from './controllers/events.controller';
+import EventController from './controllers/event.controller';
 import EventEditDialogController from './controllers/event.edit.dialog.controller';
 
 let dashboardModule = angular.module('doxa.dashboard', [])
@@ -57,6 +58,7 @@ let dashboardModule = angular.module('doxa.dashboard', [])
     /* Events */
     .service('EventService', EventService)
     .controller('EventsController', EventsController)
+    .controller('EventController', EventController)
     .controller('EventEditDialogController', EventEditDialogController)
 
     .service('GroupService', GroupService)

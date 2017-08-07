@@ -1,0 +1,44 @@
+<!-- form-profile.html -->
+
+<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
+<form external-submit id="primaryForm" name="primaryForm" ng-submit="$ctrl.upload()" enctype='multipart/form-data'>
+  <main class="card-collection">
+
+    <md-card class="event-profile">
+      <md-card-content>
+      
+      <div layout="column">        
+            
+          <div layout="row">           
+              
+              <!-- First initial icon -->
+              <div flex="none" class="abstract-profile-graphic abstract-profile-graphic-lg">
+                <span>{{$ctrl.item.name | InitialFilter }}</span>
+              </div>
+
+              <div flex class="profile-content">
+                <h2 class="event-name">{{$ctrl.item.name}}</h2>
+                <div class="meeting-times">{{$ctrl.item.start_date | date  }} {{$ctrl.item.start_time |  date : 'h:mm' }}</div>
+
+                <div class="meeting-location">{{$ctrl.item.location}}</div>
+
+                <div class="description event-description">{{$ctrl.item.description}}</div>
+              </div>
+
+              <md-card-actions layout="row" layout-align="end">
+                <md-button class="md-icon-button" aria-label="Share" ng-click="$ctrl.edit(item);">
+                  <md-icon>edit</md-icon>
+                </md-button>
+              </md-card-actions>
+
+          </div>
+      </md-card-content>
+    </md-card>
+
+    
+  
+  </main>
+  
+  <input type="hidden" name="context" value="$ctrl.context"/>
+  
+</form>

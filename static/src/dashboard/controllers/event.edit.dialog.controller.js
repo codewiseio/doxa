@@ -50,6 +50,7 @@ export default class EventEditDialogController {
   
     console.log('Saving');
     console.log('item',this.item);
+
     if(id === undefined){
       if(this.item.start_time){
         var start_time = this.$filter('date')(this.item.start_time, 'HH:mm:ss');
@@ -57,16 +58,16 @@ export default class EventEditDialogController {
       if(this.item.end_time){
         var end_time = this.$filter('date')(this.item.end_time, 'HH:mm:ss');
       }
-    }else{
-      var start_time = this.$filter('date')(this.item.start_time._i, 'HH:mm:ss');
-      var end_time = this.$filter('date')(this.item.end_time._i, 'HH:mm:ss');
-      if(start_time === undefined){
-        var start_time = this.$filter('date')(this.item.start_time, 'HH:mm:ss');
+    }
+    else{
+      if(this.item.start_time){
+        var start_time = this.item.start_time.format('HH:mm:ss');
       }
-      if(end_time === undefined){
-        var end_time = this.$filter('date')(this.item.end_time, 'HH:mm:ss');
+      if(this.item.end_time){
+        var end_time = this.item.start_time.format('HH:mm:ss');
       }
     }
+
     console.log('start',start_time,'end',end_time)
     this.item.start_time = start_time
     this.item.end_time = end_time

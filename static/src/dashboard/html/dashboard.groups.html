@@ -9,7 +9,7 @@
 
       <div flex>
           <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
-            <input name="search" type="text" placeholder="Group search" style="width: 300px; max-width: 100%;"
+            <input name="search" type="text" placeholder="Search" style="width: 300px; max-width: 100%;"
                      ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()"/>
           </md-input-container>
       </div>
@@ -32,22 +32,13 @@
               </md-button>
             </md-menu-item>
 
-            <!-- <md-menu-item>
-              <md-button ng-click="$ctrl.sortBy('start_date')">
-                  <div layout="row" flex="">
-                    <p flex="">Date</p>
-                  </div>
-              </md-button>
-            </md-menu-item> -->
-
-
           </md-menu-content>
         </md-menu>
 
     </div>
 
 <!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-  <main class="organization-groups list-view-page" layout="column" flex>
+  <main class="organization-groups list-view-page" layout="column">
   
      <md-list class="members-list" layout="column" flex>
 

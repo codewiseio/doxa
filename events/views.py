@@ -107,10 +107,10 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
         data = serializer.data
 
         # count number of items
-        data['count_invited'] = EventInvitations.objects.filter(event=instance, status='invited').count()
-        data['count_attending'] = EventInvitations.objects.filter(event=instance, status='attending').count()
-        data['count_declined'] = EventInvitations.objects.filter(event=instance, status='declined').count()
-        data['count_attended'] = EventInvitations.objects.filter(event=instance, status='declined').count()
+        # data['count_invited']   = EventInvitations.objects.filter(event=instance, status='invited').count()
+        # data['count_attending'] = EventInvitations.objects.filter(event=instance, status='attending').count()
+        # data['count_declined']  = EventInvitations.objects.filter(event=instance, status='declined').count()
+        # data['count_attended']  = EventInvitations.objects.filter(event=instance, status='attended').count()
 
         return Response(data)
 
@@ -165,11 +165,10 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
         print('final',final_start_date,final_end_date)
         data['start_date'] = final_start_date
         data['end_date'] = final_end_date
+
         if 'id' in data:
             event = Event.objects.get(pk=pk)
-            Event.objects.filter(pk=pk).update(**data)
-            events_data = Event.objects.filter(organization_id = data['organization'])
-            serializer =  EventSerializer(events_data,many=True)
+            serializer =  EventSerializer(event)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
