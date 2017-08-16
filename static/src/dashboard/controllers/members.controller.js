@@ -1,12 +1,15 @@
 
-
-export default class DashboardMembersController {
-  constructor(AppDataService, DashboardMemberService, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
+import ListViewController from '../../common/list.view.controller.js';
+export default class DashboardMembersController extends ListViewController {
+  constructor(AppDataService, DashboardMemberService, $cookies, $state, $scope, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
-    
+
+    super();
+
     this.DashboardMemberService = DashboardMemberService;
     this.$mdToast = $mdToast;
     this.$mdDialog = $mdDialog;
+    this.$scope = $scope;
 
     this.$state = $state;
     this.$stateParams = $stateParams;
@@ -18,12 +21,19 @@ export default class DashboardMembersController {
     this.AppDataService = AppDataService
     this.AppDataService.pageTitle = `Members`;
 
+    this.items = [];
     this.selectedItems = [];
     this.allItemsSelected = false;
-    this.items = [];
 
-    this.filter = {};
-    this.propertyName = ''
+    console.log(this.$scope);
+
+    var $this = this;
+    this.$scope.$watch('$ctrl.selectedItems', function (newValue, oldValue, scope) {
+        $this.checkAllItemsSelected();
+    }, true);
+    this.$scope.$watch('$ctrl.items', function (newValue, oldValue, scope) {
+        $this.checkAllItemsSelected();
+    }, true);
     
     this.initPage();    
   }
@@ -36,11 +46,18 @@ export default class DashboardMembersController {
     // get currently set organization
     let id = this.$stateParams.id;
     this.organization = this.AppDataService.organization;
+    this.refreshResults();
+  }
+
+  refreshResults() {
+    console.log('refreshing');
+
+    var params = this.getFilterParams();
 
     // Retrieve record data
-    this.DashboardMemberService.list( this.organization.id).then(
+    this.DashboardMemberService.list( this.organization.id, params ).then(
         (response) => {
-          console.log('response>>',response.data)
+          console.log('retrieved members: ',response.data)
           this.items = response.data;
         },
         (err) => {
@@ -53,31 +70,7 @@ export default class DashboardMembersController {
         }
     );   
   }
-
-  /**
-   * Sorting of members.
-   */
-  sortBy = function(propertyName) {
-    console.log('pro',propertyName)
-    this.propertyName = propertyName
-    // Retrieve record data
-    this.DashboardMemberService.sort( this.organization.id,this.propertyName ).then(
-        (response) => {
-          console.log('response>>',response.data)
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('bottom center')
-            .parent();
-
-          this.$mdToast.show(toast);
-        }
-    );
       
-      
-  };
 
   /**
    * Opens a dialog to edit member.
@@ -86,7 +79,7 @@ export default class DashboardMembersController {
    */
   new(item=null, $event=null) {
 
-    if ( ! item ) item = { person: {}, organization_id: this.AppDataService.organization.id };
+    if ( ! item ) item = { person: {}, organization_id: this.AppDataService.organization.id, role: 'Member' };
 
     return this.$mdDialog.show({
           controller: 'DashboardMemberDialogController as $ctrl',
@@ -232,81 +225,43 @@ export default class DashboardMembersController {
     this.$mdDialog.cancel();
   }
 
-  isItemSelected(item) {
-      return this.selectedItems.indexOf(item) > -1;
-    }
+  
 
-    toggleItem(item) {
-      var idx = this.selectedItems.indexOf(item);
+  /**
+  *Remove all or selected members collectively
+  */
+  removeMembers(items,event){
+    var confirm = this.$mdDialog.confirm()
+      //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
+      .title(`Really delete all selected members ?`)
+      .textContent('This is permanent.')
+      .ariaLabel('Really delete?')
+      .targetEvent(event)
+      .ok('Yes')
+      .cancel('No');
 
-      if (idx > -1) {
-        this.selectedItems.splice(idx, 1);
-      }
-      else {
-        this.selectedItems.push(item);
-      }
-      this.checkAllItemsSelected();
-    }
-
-    checkAllItemsSelected() {
-      if ( this.items.length && this.selectedItems.length == this.items.length ) {
-        this.allItemsSelected = true;
-      }
-      else {
-        this.allItemsSelected = false;
-      }
-    }
-
-    toggleAll() {
-      var selectedItems = [];
-
-      // select all items
-      if ( ! this.allItemsSelected ) {
-        this.items.forEach( function(member) {
-          selectedItems.push(member);
-        });
-      }
-
-      this.selectedItems = selectedItems;
-      this.checkAllItemsSelected();
-
-    }
-
-    /**
-    *Remove all or selected members collectively
-    */
-    removeMembers(items,event){
-      var confirm = this.$mdDialog.confirm()
-        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
-        .title(`Really delete all selected members ?`)
-        .textContent('This is permanent.')
-        .ariaLabel('Really delete?')
-        .targetEvent(event)
-        .ok('Yes')
-        .cancel('No');
-
-      this.$mdDialog.show(confirm).then(
-        () => {
-          this.DashboardMemberService.removeMembers(items,this.organization.id).then(
-            (response) => {
-              console.log('response',response)
-                this.items = response.data;
-                var toast = this.$mdToast.simple()
-                  .textContent('deleted successfully')
-                  .position('bottom left')
-                  .parent();
-                  this.$mdToast.show(toast);
-            },
-            (err) => {
+    this.$mdDialog.show(confirm).then(
+      () => {
+        this.DashboardMemberService.removeMembers(items,this.organization.id).then(
+          (response) => {
+            console.log('response',response)
+              this.items = response.data;
               var toast = this.$mdToast.simple()
-              .textContent('error')
-              .position('bottom left')
-              .parent();
-              this.$mdToast.show(toast);
-            }
-          ); 
-        }
-      );
-    }
+                .textContent('Deleted successfully')
+                .position('bottom left')
+                .parent();
+                this.$mdToast.show(toast);
+          },
+          (err) => {
+            var toast = this.$mdToast.simple()
+            .textContent('error')
+            .position('bottom left')
+            .parent();
+            this.$mdToast.show(toast);
+          }
+        ); 
+      }
+    );
+  }
 
 }

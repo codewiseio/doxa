@@ -9,35 +9,47 @@ from django.db.models import Q
 from rest_framework.decorators import  api_view
 from django.db import transaction
 import sys
+import json
 
 # Create your views here.
-################Sort Events#######################
-class SortEventListView(generics.ListCreateAPIView):
-    serializer_class = EventSerializer
-
-    def get_queryset(self):
-        organization = self.kwargs.get('organization')
-        sort_filter = self.kwargs.get('filter_name')
-        items = Event.objects.filter(organization=organization).order_by(sort_filter)
-        return items
-
-
 class EventListView(generics.ListCreateAPIView):
     serializer_class = EventSerializer
+    lookup_url_kwarg = "organization"
 
     def get_queryset(self):
         organization = self.kwargs.get('organization')
-        if organization:
-            items = Event.objects.filter(organization=organization)
+        queryset = Event.objects.filter(organization=organization)
+
+        # filter results
+        filters = self.request.GET.get('filter')
+        print(filters);
+
+        if filters:
+            filters = json.loads(filters);
         else:
-        	items = Event.objects.filter()
-        return items
+            filters = {}
+        query = self.request.GET.get('query')
+        if query:
+            filters['search'] = query
+
+        if filters:
+            if filters.get('search'):
+                print('Searching with query.');
+                searchString = filters.get('search')
+                queryset = queryset.filter(name__icontains=searchString)
+
+        # handle sorting
+        sortOrder = self.request.GET.get('sortOrder')
+        if sortOrder:
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
 
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        queryset.order_by('name')
         serializer = EventSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        items = serializer.data
+        return Response(items, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         data = request.data

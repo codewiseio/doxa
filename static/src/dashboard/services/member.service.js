@@ -24,7 +24,7 @@ export default class DashboardMemberService {
     * @return {Promise}
     */
    get(id, params={}) {
-      return this.$http.get(`/api/v1/memberS/${id}/`,{
+      return this.$http.get(`/api/v1/members/${id}/`,{
          params: params
       });
 
@@ -35,21 +35,14 @@ export default class DashboardMemberService {
     * @param  {[type]} moniker [description]
     * @return {[type]}         [description]
     */
-   list(id) {
-      return this.$http.get(`/api/v1/organizations/${id}/members/`, {
-    });
+   list(id, params={} ) {
+      return this.$http.get(`/api/v1/organizations/${id}/members/`,
+        {
+          params: params
+        }
+      );
    }
 
-   /**
-    * Get members for sorting
-    * @param  {[type]} moniker [description]
-    * @return {[type]}         [description]
-    */
-   sort(id,filter) {
-      return this.$http.get(`/api/v1/sortMembers/${id}/${filter}/`, { 
-      });
-   }
-   
    /**
     * @name save
     * @description Save data for an organization

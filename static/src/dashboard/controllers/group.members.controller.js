@@ -1,7 +1,8 @@
-export default class DashboardGroupMembersController {
+import ListViewController from '../../common/list.view.controller.js';
+export default class DashboardGroupMembersController extends ListViewController {
   constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http, $scope) {
     'ngInject';
-
+    super();
     this.GroupService = GroupService;
     this.AppDataService = AppDataService;
     this.$mdDialog = $mdDialog;
@@ -15,22 +16,9 @@ export default class DashboardGroupMembersController {
     this.context = "dashboard.group.members";
     this.errors = [];
 
-    this.members = [];
+    this.items = [];
     this.selectedItems = [];
     this.allItemsSelected = false;
-
-    console.log(this.$scope);
-
-    var $this = this;
-    this.$scope.$watch('$ctrl.selectedItems', function (newValue, oldValue, scope) {
-        $this.checkAllItemsSelected();
-    }, true);
-    this.$scope.$watch('$ctrl.members', function (newValue, oldValue, scope) {
-        $this.checkAllItemsSelected();
-    }, true);
-
-
-
     this.filter = {};
 
     this.initPage();
@@ -42,40 +30,27 @@ export default class DashboardGroupMembersController {
     this.organization = JSON.parse(this.$cookies.get('organization'));
 
     let id = this.$stateParams.id;
-    this.groupId = id;
+    this.itemId = id;
 
-      // Retrieve record data
-      this.GroupService.get(id).then(
-          (response) => {
-            this.item = response.data;
-            this.AppDataService.pageTitle = `${this.item.name} Members`;
-            this.AppDataService.previousState = `dashboard.members({id: ${this.item.id}})`;
-          },
-          (err) => {
-            console.log('Error fetching group.');
-            console.log(error);
-            var toast = this.$mdToast.simple()
-              .textContent(error.data.message)
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-          }
-      );
+    // Retrieve record data
+    this.GroupService.get(id).then(
+        (response) => {
+          this.item = response.data;
+          this.AppDataService.pageTitle = `${this.item.name} Members`;
+          this.AppDataService.previousState = `dashboard.members({id: ${this.item.id}})`;
+          this.refreshResults();
+        },
+        (err) => {
+          console.log('Error fetching group.');
+          console.log(error);
+          var toast = this.$mdToast.simple()
+            .textContent(error.data.message)
+            .position('top right')
+            .parent();
+          this.$mdToast.show(toast);
+        }
+    );
 
-      // Retrieve group members
-      this.GroupService.getMembers(id).then(
-          (response) => {
-            this.members = response.data;
-          },
-          (error) => {
-            console.log('Could not retrieve group members.');
-            var toast = this.$mdToast.simple()
-              .textContent(error.data.message)
-              .position('top right')
-              .parent();
-            this.$mdToast.show(toast);
-          }
-      );
   }
 
 
@@ -139,7 +114,7 @@ export default class DashboardGroupMembersController {
       (item) => {
         if ( item ) {
           // add member to the list
-          this.members.unshift(item);
+          this.items.unshift(item);
 
           // display notice
           var toast = this.$mdToast.simple()
@@ -308,19 +283,9 @@ export default class DashboardGroupMembersController {
     // remove items from the list
   }
 
-  sortBy(field='first_name') {
-
-    console.log('Sorting by '+field);
-
-    this.sortOrder = field;
-    this.refreshResults();
-
-  }
-
   refreshResults() {
 
     console.log('Refreshing');
-
 
     var params = {};
     params.sortOrder = this.sortOrder;
@@ -329,9 +294,12 @@ export default class DashboardGroupMembersController {
 
 
     // Retrieve group members
-    this.GroupService.getMembers(this.item.id, params).then(
+    this.GroupService.getMembers(this.itemId, params).then(
         (response) => {
-          this.members = response.data;
+          console.log('Retrieved members.');
+          console.log(response.data);
+          this.items = response.data;
+          console.log(this.items);
         },
         (error) => {
           console.log('Could not retrieve group members.');
@@ -344,44 +312,7 @@ export default class DashboardGroupMembersController {
     );
   }
 
-
-  isItemSelected(item) {
-    return this.selectedItems.indexOf(item) > -1;
-  }
-
-  toggleItem(item) {
-    var idx = this.selectedItems.indexOf(item);
-
-    if (idx > -1) {
-      this.selectedItems.splice(idx, 1);
-    }
-    else {
-      this.selectedItems.push(item);
-    }
-  }
-
-  checkAllItemsSelected() {
-    if ( this.members.length && this.selectedItems.length == this.members.length ) {
-      this.allItemsSelected = true;
-    }
-    else {
-      this.allItemsSelected = false;
-    }
-  }
-
-  toggleAll() {
-    var selectedItems = [];
-
-    // select all items
-    if ( ! this.allItemsSelected ) {
-      this.members.forEach( function(member) {
-        selectedItems.push(member);
-      });
-    }
-
-    this.selectedItems = selectedItems;
-  }
-
+  
 }
 
 

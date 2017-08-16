@@ -1,5 +1,5 @@
 <md-dialog aria-label="View Member" class="edit-member">
-  <form>
+  <form ng-submit="$ctrl.save()">
     <md-toolbar>
       <div class="md-toolbar-tools">
           <div class="profile-graphic abstract-profile-graphic" flex="none">
@@ -24,13 +24,11 @@
 
     <md-dialog-content flex>
 
-        <form>
-
         <div  layout="column" layout-gt-xs="row" >
           <md-input-container  flex-gt-xs="33">
             <label>Title</label>
             
-              <md-select name="type" ng-model="$ctrl.data.entity.title">
+              <md-select name="type" ng-model="$ctrl.item.person.title">
                 <md-option value=""></md-option>
                 <md-option ng-repeat="item in $ctrl.personTitleOptions" value="{{item}}">
                   {{item}}
@@ -75,10 +73,28 @@
             <md-datepicker ng-model="$ctrl.item.person.birthday" md-current-view="year"></md-datepicker>
           </md-input-container>
 
+
+        </div>
+
+
+      <div layout="column" layout-gt-xs="row" layout-align="start" >
+
+
+          <md-input-container  flex-gt-xs="33">
+          <label>Role</label>
+            <md-select required name="type" ng-model="$ctrl.item.role">
+              <md-option value=""></md-option>
+              <md-option ng-repeat="item in $ctrl.memberRoleOptions" value="{{item}}">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+
           <md-input-container  flex-gt-xs="33" class="date-picker">
             <label>Member since</label>
             <md-datepicker ng-model="$ctrl.item.join_date" md-current-view="year"></md-datepicker>
           </md-input-container>
+
         </div>
 
 
@@ -88,12 +104,12 @@
       <div layout="column" layout-gt-xs="row">
         <md-input-container flex-gt-xs="50">
           <label>Email</label>
-          <input name="name" ng-model="$ctrl.contacts[0].address" type="text" />
+          <input required name="name" ng-model="$ctrl.item.person.email" type="text" />
         </md-input-container>
       
         <md-input-container  flex-gt-xs="50">
           <label>Phone</label>
-          <input name="name" ng-model="$ctrl.contacts[1].address" type="text" />
+          <input required name="name" ng-model="$ctrl.item.person.telephone" type="text" />
         </md-input-container>
         <div class="action-icons"></div>
       </div>
@@ -103,31 +119,30 @@
         <div layout="column" flex>
         <md-input-container flex="auto" class="md-block">
           <label>Street</label>
-          <input  name="address" ng-model="$ctrl.data.contacts[2].street"/>
+          <input  name="address" ng-model="$ctrl.item.person.address"/>
         </md-input-container>
 
               
           <div layout="column" layout-gt-xs="row">
               <md-input-container flex-gt-xs="50" class="md-block">
-                <label>Municipality</label>
-                <input name="municipality" ng-model="$ctrl.data.contacts[2].municipality"/>
+                <label>Town</label>
+                <input name="municipality" ng-model="$ctrl.item.person.municipality"/>
               </md-input-container>
               
              <md-input-container flex-gt-xs="25" class="md-block">
                 <label>Region</label>
-                <input name="region" ng-model="$ctrl.data.contacts[2].region"/>
+                <input name="region" ng-model="$ctrl.item.person.region"/>
               </md-input-container>
                 
               <md-input-container flex-gt-xs="25" class="md-block">
-                <label>Postalcode</label>
-                <input name="postalcode" ng-model="$ctrl.data.contacts[2].postcode"/>
+                <label>Post code</label>
+                <input name="postalcode" ng-model="$ctrl.item.person.postcode"/>
               </md-input-container>
           </div>
         </div>
         <div class="action-icons"></div>
       </div>
 
-      </form>
     </md-dialog-content>
 
 
@@ -140,7 +155,7 @@
       <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope">
        Cancel
       </span></button>
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.save()"><span class="ng-scope">
+      <button class="md-button md-ink-ripple" type="submit"><span class="ng-scope">
         Save
       </span></button>
     </md-dialog-actions>

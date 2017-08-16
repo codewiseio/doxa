@@ -1,4 +1,7 @@
 import personTitleOptions from '../../assets/json/formOptions/person.title.json';
+import memberRoleOptions from '../../assets/json/formOptions/organization.member.role.json';
+
+
 
 export default class DashboardMemberDialogController {
   
@@ -12,6 +15,7 @@ export default class DashboardMemberDialogController {
     this.$mdDialog = $mdDialog;
     
     this.personTitleOptions = personTitleOptions;
+    this.memberRoleOptions = memberRoleOptions;
     
     this.context = "dashboard.member";
     this.item = locals.item;

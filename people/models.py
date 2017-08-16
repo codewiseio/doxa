@@ -4,6 +4,8 @@ from authentication.models import User
 
 # Create your models here.
 class Person (models.Model, CreatedModifiedMixin):
+    title = models.CharField(max_length=16,null=True,blank=True)
+
     first_name = models.CharField(max_length=32,null=False,blank=False)
     middle_name = models.CharField(max_length=32,null=True,blank=True)
     last_name = models.CharField(max_length=255,null=True,blank=True)
@@ -13,6 +15,14 @@ class Person (models.Model, CreatedModifiedMixin):
     number_of_children =  models.PositiveSmallIntegerField(blank=True,null=True)
     
     birthday = models.DateTimeField(blank=True,null=True)
+
+    email = models.CharField(max_length=64,null=True,blank=True)
+    telephone = models.CharField(max_length=64,null=True,blank=True)
+
+    address = models.CharField(max_length=255,null=True,blank=True)
+    municipality = models.CharField(max_length=64,null=True,blank=True)
+    region = models.CharField(max_length=64,null=True,blank=True)
+    postcode = models.CharField(max_length=16,null=True,blank=True)
 
     user  = models.ForeignKey(User,  on_delete=models.SET_NULL, blank=True, null=True)
 

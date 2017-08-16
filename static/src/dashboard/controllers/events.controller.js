@@ -1,8 +1,9 @@
 
-
-export default class EventsController {
+import ListViewController from '../../common/list.view.controller.js';
+export default class EventsController extends ListViewController {
   constructor(EventService, AppDataService, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
+    super();
     
     this.EventService = EventService;
     this.AppDataService = AppDataService;
@@ -41,24 +42,8 @@ export default class EventsController {
 
     // get currently set organization
     this.organization = JSON.parse(this.$cookies.get('organization'));
-
-    let id = this.$stateParams.id;
-
-    // Retrieve record data
-    this.EventService.list(this.organization.id).then(
-        (response) => {
-          console.log('res',response)
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('top right')
-            .parent();
-
-          this.$mdToast.show(toast);
-        }
-    );   
+    this.refreshResults();
+ 
   }
 
   
@@ -102,29 +87,6 @@ export default class EventsController {
             console.log('error');
         });
   }
-
-  /**
-   * Sorting of Events
-   * 
-   */
-   sortBy(filter){
-    this.filter = filter
-    console.log(this.organization.id,this.filter)
-    this.EventService.sort(this.organization.id,this.filter).then(
-     (response) => {
-          console.log('res>>',response)
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('top right')
-            .parent();
-
-          this.$mdToast.show(toast);
-        }
-    ); 
-   }
 
    /**
    * Delete an Events
@@ -173,10 +135,6 @@ export default class EventsController {
     );
   }
 
-  cancel() {
-    console.log('Canceled');
-    this.$mdDialog.cancel();
-  }
 
   /**
    * Opens a dialog to edit event.
@@ -187,8 +145,6 @@ export default class EventsController {
 
     $event.stopPropagation();
     // $event.preventDefault();
-    
-
 
     return this.$mdDialog.show({
           controller: 'EventEditDialogController as $ctrl',
@@ -220,49 +176,48 @@ export default class EventsController {
         }, (error) => {
             console.log('error');
         });
-  }
-
-  isItemSelected(item) {
-      return this.selectedItems.indexOf(item) > -1;
-  }
-
-    toggleItem(item) {
-        var idx = this.selectedItems.indexOf(item);
-
-        if (idx > -1) {
-          this.selectedItems.splice(idx, 1);
-        }
-        else {
-          this.selectedItems.push(item);
-        }
-        this.checkAllItemsSelected();
     }
 
-    checkAllItemsSelected() {
-      if(this.selectedItems){
-        if ( this.items.length && this.selectedItems.length == this.items.length ) {
-          this.allItemsSelected = true;
-        }
-        else {
-          this.allItemsSelected = false;
-        }
-      }
+    duplicate(item, $event=null) {
+      console.log('Duplicating item.');
+      console.log(item);
+
+      var itemCopy = {};
+      angular.copy(item, itemCopy);
+      itemCopy.id = null;
+      itemCopy.organization_id = itemCopy.organization;
+      delete itemCopy.organization;
+
+
+      this.new(itemCopy);
     }
 
-    toggleAll() {
-      var selectedItems = [];
+    /**
+     * Refresh the currently displayed results. Called after filter changes and page load.
+     */
+    refreshResults() {
 
-      // select all items
-      if ( ! this.allItemsSelected ) {
-        this.items.forEach( function(event) {
-          selectedItems.push(event);
-        });
-      }
+      var params = this.getFilterParams();
+      console.log(params);
 
-      this.selectedItems = selectedItems;
-      this.checkAllItemsSelected();
+      // Retrieve record data
+      this.EventService.list(this.organization.id, params).then(
+          (response) => {
+            console.log('Retrieved events:',response)
+            this.items = response.data;
+          },
+          (err) => {
+            var toast = this.$mdToast.simple()
+              .textContent(error.data.message)
+              .position('top right')
+              .parent();
 
+            this.$mdToast.show(toast);
+          }
+      );  
     }
+
+  
 
     /**
     *Remove all or selected groups collectively

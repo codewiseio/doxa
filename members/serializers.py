@@ -22,13 +22,3 @@ class MemberSerializer(serializers.ModelSerializer):
     def get_validation_exclusions(self, *args, **kwargs):
         exclusions = super(MemberSerializer, self).get_validation_exclusions()
         return exclusions
-
-    # def update(self, instance, validated_data):
-    #     print('Updating in serializer');
-    #     # instance.owner = validated_data.get('owner', instance.owner)
-    #     # print(instance.owner);
-
-    #     # instance.content = validated_data.get('content', instance.content)
-    #     # instance.created = validated_data.get('created', instance.created)
-    #     return instance
-

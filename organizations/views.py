@@ -9,13 +9,14 @@ from organizations.models import Organization, OrganizationMember
 from organizations.permissions import IsAdministratorOfOrganization
 from organizations.serializers import OrganizationSerializer, OrganizationMemberSerializer
 from groups.models import GroupMember,Group
+from people.models import Person
 from contacts.serializers import ContactSerializer
 from django.db import transaction
 from django.db.models import Q
 
 from doxa.exceptions import StorageException
 from django.conf import settings
-
+import json
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.order_by('id')
@@ -114,60 +115,121 @@ class OrganizationViewSet(viewsets.ModelViewSet):
             return serialized_data;
             
 #####Sort members as per filter######
-class MembersSortListView(generics.ListCreateAPIView): 
+class OrganizationMembersListView(generics.ListCreateAPIView): 
     serializer_class = OrganizationMemberSerializer
-    lookup_url_kwarg = "organization","filter_name"
-
-    def get_queryset(self):
-
-        filter_name = self.kwargs.get('filter_name')
-        organization_id  = self.kwargs.get('organization')
-        members = OrganizationMember.objects.filter(organization=organization_id).order_by(filter_name)
-        return members
-
-
-class OrganizationMembersView(generics.ListCreateAPIView): 
-    serializer_class = OrganizationMemberSerializer
-    lookup_url_kwarg = "organization",
+    lookup_url_kwarg = "organization"
 
     def get_queryset(self):
         organization = self.kwargs.get('organization')
         
-        members = OrganizationMember.objects.filter(organization=organization)
-        return members
+        queryset = OrganizationMember.objects.filter(organization=organization)
+        
+        # filter results
+        filters = self.request.GET.get('filter')
+        if filters:
+            filters = json.loads(filters);
+        else:
+            filters = {}
 
-
-    def list(self, *args, **kwargs):
-
-        queryset = self.get_queryset()
-
-        # filter query set by name
-        query = self.request.GET.get('query', '')
+        query = self.request.GET.get('query')
         if query:
-            print("Filtering list on " + query)
-            queryset = queryset.filter(Q(person__first_name__icontains=query) | Q(person__last_name__icontains=query)).order_by('person__first_name','person__last_name')
+            filters['search'] = query
 
-            # subquery to filter out members already in group
-            # groupid = self.request.GET.get('group', '')
-            # if groupid:
-            #     print("Filtering out members of group " + groupid)
-            #     existing_member_query = GroupMember.objects.filter(group=groupid).only('person').all()
-            #     queryset = queryset.filter(person__in=existing_member_query)
+        if filters:
+            if filters.get('search'):
+                print('Searching with query.');
+                searchString = filters.get('search')
+                queryset = queryset.filter(Q(person__first_name__icontains=searchString) | Q(person__last_name__icontains=searchString))
 
-            queryset = queryset[:10]
+        # handle sorting
+        sortOrder = self.request.GET.get('sortOrder')
+        if sortOrder:
+            if sortOrder == 'first_name':
+               sortOrder = 'person__first_name'
+
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
 
 
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = OrganizationMemberSerializer(queryset, many=True)
         members = serializer.data
-
         return Response(members, status=status.HTTP_200_OK)
 
+
+    # def create(self, request, *args, **kwargs):
+    #     data = request.data
+    #     data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
+
+    #     serializer = self.get_serializer(data=data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         data = request.data
+        print(data)
         data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
+        
+        # if a person data was sent, create a new person object
+        if 'person' in data:
+            person = Person.objects.create(**data['person'])
+            data['person_id'] = person.id
+            data['role'] = "Administrator"
+            data.pop('person')
+            member = OrganizationMember.objects.create(**data)
+            serializer = OrganizationMemberSerializer(member)
 
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class OrganizationMemberItemView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = OrganizationMemberSerializer
+    queryset = OrganizationMember.objects
+
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(self.object)
+        member = serializer.data
+        return Response(member)
+
+    @transaction.atomic
+    def update(self,request, pk, *args, **kwargs):
+
+        # partial = kwargs.pop('partial', False)
+        print ("Updating organization member " + pk )
+
+        data = request.data
+        data.pop('added_by')
+        print(data)
+
+        # get the member object
+        member = OrganizationMember.objects.get(pk=pk)
+
+        # apply data changes
+        Person.objects.filter(pk=member.person.id).update(**data['person'])
+        data['person'] = member.person.id
+
+        OrganizationMember.objects.filter(pk=pk).update(**data)
+
+        # return the organization member
+        member = OrganizationMember.objects.get(pk=pk)
+        serializer = OrganizationMemberSerializer(member)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def delete(self, request,pk, *args, **kwargs):
+        person = Person.objects.get(id=pk)
+        member = OrganizationMember.objects.get(person_id=person.id)
+        serializer = OrganizationMemberSerializer(member)
+        if person.user == None:
+            person.delete()
+        else:
+            return Response({'message':'This person can not be deleted'}, status=status.HTTP_400_BAD_REQUEST )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

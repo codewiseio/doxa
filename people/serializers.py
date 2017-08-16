@@ -10,8 +10,9 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
 
         fields = (
-            'id','first_name','middle_name','last_name',
-            'gender','marital_status','number_of_children','birthday','user')
+            'id','title','first_name','middle_name','last_name',
+            'gender','marital_status','number_of_children','birthday','user','email','telephone',
+            'address','municipality','region','postcode')
         
         read_only_fields = ['id']
 

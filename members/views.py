@@ -28,6 +28,7 @@ class MembersListView(generics.ListCreateAPIView):
         data = request.data
         print(data)
         data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
+        
         # if a person data was sent, create a new person object
         if 'person' in data:
             person = Person.objects.create(**data['person'])
@@ -39,9 +40,6 @@ class MembersListView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, *args, **kwargs):
-
-
-
         queryset = self.filter_queryset(self.get_queryset())
         serializer = OrganizationMemberSerializer(queryset, many=True)
         
@@ -49,6 +47,31 @@ class MembersListView(generics.ListCreateAPIView):
         members = self.get_entity_data(members)
 
         return Response(members, status=status.HTTP_201_CREATED)
+
+    def get_queryset(self):
+        organization = self.kwargs.get('organization')
+        queryset = OrganizationMember.objects.filter(organization=organization)
+
+        # filter results
+        filters = self.request.GET.get('filter')
+        if filters:
+            filters = json.loads(filters);
+
+            if filters.get('search'):
+                print('Searching with query.');
+                searchString = filters.get('search')
+                queryset = queryset.filter(Q(person__first_name__icontains=searchString) | Q(person__last_name__icontains=searchString))
+
+        # handle sorting
+        sortOrder = self.request.GET.get('sortOrder')
+        if sortOrder:
+            if sortOrder == 'first_name':
+               sortOrder = 'person__first_name'
+
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
+
 
     @api_view(['POST'])
     def delete(request , *args, **kwargs):

@@ -19,8 +19,5 @@ export default class DoxaCommon {
         
         this.$mdToast.show(toast);
     }
-    
-
-      
 
 }

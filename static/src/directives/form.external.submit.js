@@ -4,12 +4,6 @@ export default class externalSubmit {
         this.restrict = 'A';
         this.scope = {};
         this.$timeout = $timeout;
-
-        // console.log('Timeout');
-        // console.log( $timeout );
-        // $timeout( function() {
-        //     alert('timeout');
-        // }, 0 );
     }
   
     link($scope, $element, $attrs, $ctrl ) {      
@@ -22,6 +16,9 @@ export default class externalSubmit {
             if( data.id === $attrs.id ) {
               let formName = $attrs.name;
 
+              /**
+               * Make sure validation happens before submitting the form
+               **/
               setTimeout(function() {
                 
                 var $formScope = angular.element($element).scope();

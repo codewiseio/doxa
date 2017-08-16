@@ -80,7 +80,10 @@
 
             <div class="item-actions" flex="none">
               <md-button class="md-icon-button" ng-click="$ctrl.edit(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>edit</md-icon></md-button>
-              <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button>
+
+              <md-button class="md-icon-button" ng-click="$ctrl.duplicate(item,$event);$event.stopPropagation();$event.preventDefault();"><md-icon>content_copy</md-icon></md-button>
+
+<!--               <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button> -->
             </div>
           </md-button>
 

@@ -11,6 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 
 from people.models import Person
+import json
 
 class GroupViewSet(viewsets.ModelViewSet):
 
@@ -23,12 +24,32 @@ class GroupListView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         organization = self.kwargs.get('organization')
-        if organization:
-            items = Group.objects.filter(organization=organization)
+        queryset = Group.objects.filter(organization=organization)
+
+        # filter results
+        filters = self.request.GET.get('filter')
+        print(filters);
+
+        if filters:
+            filters = json.loads(filters);
         else:
-            items = Group.objects.filter()
-        print ('items',items)
-        return items
+            filters = {}
+        query = self.request.GET.get('query')
+        if query:
+            filters['search'] = query
+
+        if filters:
+            if filters.get('search'):
+                print('Searching with query.');
+                searchString = filters.get('search')
+                queryset = queryset.filter(name__icontains=searchString)
+
+        # handle sorting
+        sortOrder = self.request.GET.get('sortOrder')
+        if sortOrder:
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
 
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -36,11 +57,11 @@ class GroupListView(generics.ListCreateAPIView):
         serializer = GroupSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, *args, **kwargs):
 
+
+    def create(self, request, *args, **kwargs):
         data = request.data
-        groupMemberData = {'role':'admin','group_id':'','person_id':'','added_by_id':''}
-        groupMemberData['person_id']  = Person.objects.filter(user=request.user.id)[:1][0].id
+
         # check data validity
         errors = {}
         if not data.get('name'):
@@ -48,12 +69,17 @@ class GroupListView(generics.ListCreateAPIView):
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-        groupMember = Group.objects.create(**data)
-        serializer =  GroupSerializer(groupMember)
-        groupMemberData['group_id'] = serializer.data['id']
-        #groupMemberData['person_id'] =request.user.id
-        groupMemberData['added_by_id'] =request.user.id
-        groupMemberdata = GroupMember.objects.create(**groupMemberData)
+        # create the group
+        group = Group.objects.create(**data)
+        serializer =  GroupSerializer(group)
+ 
+        # add the current user as the primary member of the group
+        defaultMember  = {'role':'Administrator','group_id':'','person_id':'','added_by_id':''}
+        defaultMember['person_id']  = Person.objects.filter(user=request.user.id)[:1][0].id        
+        defaultMember['group_id'] = serializer.data['id']
+        defaultMember['added_by_id'] =request.user.id
+        defaultMember = GroupMember.objects.create(**defaultMember)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @api_view(['POST'])

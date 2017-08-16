@@ -1,8 +1,10 @@
 
-
-export default class DashboardGroupsController {
+import ListViewController from '../../common/list.view.controller.js';
+export default class DashboardGroupsController extends ListViewController {
   constructor(GroupService, AppDataService, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
+
+    super();
     
     this.GroupService = GroupService;
     this.AppDataService = AppDataService;
@@ -24,7 +26,6 @@ export default class DashboardGroupsController {
     this.items = [];
 
     this.filter = {};
-    this.propertyName = ''
    
 
     this.initPage();    
@@ -42,24 +43,9 @@ export default class DashboardGroupsController {
 
     // get currently set organization
     this.organization = JSON.parse(this.$cookies.get('organization'));
-
-
     let id = this.$stateParams.id;
+    this.refreshResults();
 
-    // Retrieve record data
-    this.GroupService.list(this.organization.id).then(
-        (response) => {
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('top right')
-            .parent();
-
-          this.$mdToast.show(toast);
-        }
-    );   
   }
 
   /**
@@ -116,32 +102,6 @@ export default class DashboardGroupsController {
             console.log('error');
         });
   }
-
-
-  /**
-   * Sorting of Groups
-   * 
-   */
-   sortBy(filter){
-    this.filter = filter
-    console.log(this.organization.id,this.filter)
-    this.GroupService.sort(this.organization.id,this.filter).then(
-     (response) => {
-          console.log('res>>',response)
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('top right')
-            .parent();
-
-          this.$mdToast.show(toast);
-        }
-    ); 
-   }
-
-  
 
 
   delete(item, event) {
@@ -227,47 +187,7 @@ export default class DashboardGroupsController {
         });
   }
 
-  isItemSelected(item) {
-      return this.selectedItems.indexOf(item) > -1;
-  }
-
-    toggleItem(item) {
-        var idx = this.selectedItems.indexOf(item);
-
-        if (idx > -1) {
-          this.selectedItems.splice(idx, 1);
-        }
-        else {
-          this.selectedItems.push(item);
-        }
-        this.checkAllItemsSelected();
-    }
-
-    checkAllItemsSelected() {
-      if(this.selectedItems){
-        if ( this.items.length && this.selectedItems.length == this.items.length ) {
-          this.allItemsSelected = true;
-        }
-        else {
-          this.allItemsSelected = false;
-        }
-      }
-    }
-
-    toggleAll() {
-      var selectedItems = [];
-
-      // select all items
-      if ( ! this.allItemsSelected ) {
-        this.items.forEach( function(event) {
-          selectedItems.push(event);
-        });
-      }
-
-      this.selectedItems = selectedItems;
-      this.checkAllItemsSelected();
-
-    }
+  
 
     /**
     *Remove all or selected groups collectively
@@ -303,6 +223,32 @@ export default class DashboardGroupsController {
             }
           ); 
         }
+      );
+    }
+
+    refreshResults() {
+
+      console.log('Refreshing');
+
+      var params = {};
+      params.sortOrder = this.sortOrder;
+      params.filter = this.filter;
+      console.log(params);
+
+
+      // Retrieve group members
+      this.GroupService.list(this.organization.id, params).then(
+          (response) => {
+            this.items = response.data;
+          },
+          (error) => {
+            console.log('Could not retrieve group members.');
+            var toast = this.$mdToast.simple()
+              .textContent(error.data.message)
+              .position('top right')
+              .parent();
+            this.$mdToast.show(toast);
+          }
       );
     }
 }

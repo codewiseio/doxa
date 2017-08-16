@@ -12,7 +12,7 @@
 
       <div flex>
           <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
-            <input name="search" type="text" placeholder="Member search" style="width: 300px; max-width: 100%;"
+            <input name="search" type="text" placeholder="Search" style="width: 300px; max-width: 100%;"
                      ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()" />
           </md-input-container>
       </div>
@@ -59,7 +59,7 @@
     <div layout="column">     
 
          <md-list class="members-list" layout="column" flex>
-        <md-list-item ng-repeat="item in $ctrl.members " layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
+        <md-list-item ng-repeat="item in $ctrl.items" layout="row" flex data-item-id="{{item.id}}" id="member-{{item.id}}">
           
           <!-- First initial icon -->
           <div flex="none" class="list-item-select">
@@ -81,7 +81,7 @@
               <span>{{item.person.first_name  }} {{item.person.last_name}}</span>
             </div>
 
-            <div class="member-since" flex>
+            <div class="member-role" flex>
               <span>{{item.role}}
             </div>
 

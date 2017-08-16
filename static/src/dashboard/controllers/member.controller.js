@@ -12,6 +12,7 @@ export default class DashboardMemberController {
     this.$cookies = $cookies;
     
     this.personTitleOptions = personTitleOptions;
+    this.memberRoleOptions = memberRoleOptions;
     
     this.context = "dashboard.member.edit";
     this.errors = [];
