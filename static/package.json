@@ -45,6 +45,7 @@
     "angular-moment-picker": "^0.10.1",
     "angular-ui-router": "^0.4.2",
     "angularjs-compare-to-directive": "^1.0.0",
+    "arrive": "^2.4.1",
     "autoprefixer": "^6.6.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",

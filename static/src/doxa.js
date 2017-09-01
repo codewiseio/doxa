@@ -6,6 +6,7 @@ import routing from './doxa.config';
 import uirouter from 'angular-ui-router';
 import ngCookies from 'angular-cookies';
 
+import 'arrive';
 import 'angular-animate';
 import 'angular-aria';
 import 'angular-material';
