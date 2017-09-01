@@ -1,12 +1,13 @@
 
 import ListViewController from '../../common/list.view.controller.js';
 export default class EventsController extends ListViewController {
-  constructor(EventService, AppDataService, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
+  constructor(EventService, AppDataService, SweetAlert, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
     super();
     
     this.EventService = EventService;
     this.AppDataService = AppDataService;
+    this.SweetAlert = SweetAlert;
     this.$mdToast = $mdToast;
     this.$mdDialog = $mdDialog;
 
@@ -56,83 +57,65 @@ export default class EventsController extends ListViewController {
 
     if ( ! item ) item = { organization_id: this.AppDataService.organization.id };
 
-    return this.$mdDialog.show({
-          controller: 'EventEditDialogController as $ctrl',
-          templateUrl: 'event.edit.dialog.html',
-          locals: { "item": item },
-          clickOutsideToClose:true,
-          fullscreen: true,
-          parent: angular.element(document.body),
-          targetEvent: $event
-        })
-        .then(
-          (item) => {
-
-            // if and item was returned the action completed successfuly
-            if ( item ) {
-              console.log('Events controller received edited item:')
-              console.log(item);
-
-              // add it to the beginning of list
-              this.items.unshift(item);
-
-              // notify the user
-              // var toast = this.$mdToast.simple()
-              //   .textContent("New event created" )
-              //   .position('bottom center')
-              //   .parent();
-              // this.$mdToast.show(toast);
-            }
-        }, (error) => {
-            console.log('error');
-        });
+    this.edit(item, $event);
   }
 
-   /**
-   * Delete an Events
-   * 
+
+  /**
+   * Delete an event
+   * @param  {[type]} item  [description]
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
    */
-   delete(item, event) {
-      var confirm = this.$mdDialog.confirm()
-        .title(`Really delete ${item.name}?`)
-        .textContent('This is permanent.')
-        .ariaLabel('Really delete?')
-        .targetEvent(event)
-        .ok('Yes')
-        .cancel('No');
+  delete(item, event) {
 
-      this.$mdDialog.show(confirm).then(
-        () => {
-          this._deleteItem(item);
+    this.SweetAlert.swal({
+            title: `Really delete ${item.name}?`,
+            text: 'You will not be able to undo this action!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'No, keep',
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger",
+            buttonsStyling: false
+        }).then(
+          () => {
+            // perform the delete operation
+            this.EventService.delete(item.id).then(
+                (response) => {
+                    // remove the item from the list
+                    var idx = this.items.indexOf(item);
+                    this.items.splice(idx, 1);
 
-        }
-      );
-  }
+                    // display a message to the user
+                    this.SweetAlert.swal({
+                      title: 'Deleted!',
+                      text: `${item.name} has been deleted.`,
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
+                    })
+                },
+                (error) => {
+                    var message = error.data.message;
+                    this.SweetAlert.swal({
+                      title: `Could not delete ${item.name}`,
+                      text: message,
+                      type: 'error',
+                      confirmButtonClass: "btn btn-info",
+                      buttonsStyling: false
+                    })
+                }
+            );
+          },
+          (dismiss) => {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
 
-  _deleteItem(item) {
-    this.EventService.delete(item.id).then(
-      (response) => {
-          this.$mdDialog.hide();
-
-          var toast = this.$mdToast.simple()
-              //.textContent(`Deleted ${item.person.first_name} ${item.person.last_name}`)
-              .textContent(`Deleted Successfully`)
-              .position('bottom center')
-              .parent();
-          this.$mdToast.show(toast);
-          $(`#event-${item.id}`).remove();
-          console.log($(`#event:${item.id}`));
-        },
-      (error) => {
-            //console.log('Could not add member to group.')
-            var message = error.data.message;
-            var toast = this.$mdToast.simple()
-              .textContent(message)
-              .position('bottom center')
-              .parent();
-            this.$mdToast.show(toast);
+            }
           }
-    );
+        );
   }
 
 
@@ -143,8 +126,7 @@ export default class EventsController extends ListViewController {
    */
   edit(item, $event=null) {
 
-    $event.stopPropagation();
-    // $event.preventDefault();
+    let newItem = item.id ? false : true;
 
     return this.$mdDialog.show({
           controller: 'EventEditDialogController as $ctrl',
@@ -159,15 +141,11 @@ export default class EventsController extends ListViewController {
           (item) => {
             // if and item was returned the action completed successfuly
             if ( item ) {
-              console.log('Events Controller Received edited item:')
-              console.log('item',item);
-              return false;
-              // add it to the beginning of list
-              // this.items.unshift(item);
+               if ( newItem) this.items.unshift(item);
 
               // notify the user
               var toast = this.$mdToast.simple()
-                .textContent(" Event Updated" )
+                .textContent("Saved" )
                 .position('bottom center')
                 .parent();
               this.$mdToast.show(toast);

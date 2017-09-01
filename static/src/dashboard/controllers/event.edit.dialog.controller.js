@@ -46,12 +46,12 @@ export default class EventEditDialogController {
   /**
    * Save changes to the item
    */
-  save(id) {
+  save() {
   
     console.log('Saving');
     console.log('item',this.item);
 
-    if(id === undefined){
+    if(this.item.id === undefined){
       if(this.item.start_time){
         var start_time = this.$filter('date')(this.item.start_time, 'HH:mm:ss');
       }
@@ -78,24 +78,9 @@ export default class EventEditDialogController {
           console.log(response);
           var savedItem = response.data;
           this.$mdDialog.hide(savedItem);
-          var toast = this.$mdToast.simple()
-            .textContent('Event Saved Successfully')
-            .position('bottom center')
-            .parent();
-          this.$mdToast.show(toast);
         },
         (error) => {
           console.log('error',error);
-          var message = error.data.name;
-          // notify the user operation failed
-          var toast = this.$mdToast.simple()
-            .textContent(String(message))
-            .position('bottom center')
-            .parent();
-          this.$mdToast.show(toast);
-
-          console.log('Error saving event data.');
-          console.log(error);
         }
     );
   }

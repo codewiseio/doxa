@@ -1,163 +1,196 @@
 <md-dialog aria-label="View Member" class="edit-member">
   <form ng-submit="$ctrl.save()">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-          <div class="profile-graphic abstract-profile-graphic" flex="none">
-            <span ng-show="$ctrl.item.person.first_name">{{ $ctrl.item.person.first_name | InitialFilter }}
-            </span>
-          </div>
-          <h2>
-            <span ng-hide="$ctrl.item.id">
-              New Member
-            </span>
-            <span ng-show="$ctrl.item.id">
-              {{ $ctrl.item.person.first_name }} {{ $ctrl.item.person.last_name }}
-            </span>
 
-          </h2>
-        <span flex="" class="flex"></span>
-
-        <md-button class="md-icon-button" aria-label="Close" md-dialog-close ng-click="$ctrl.cancel()"><md-icon>close</md-icon></md-button>
-
-      </div>
-    </md-toolbar>
 
     <md-dialog-content flex>
 
-        <div  layout="column" layout-gt-xs="row" >
-          <md-input-container  flex-gt-xs="33">
-            <label>Title</label>
-            
-              <md-select name="type" ng-model="$ctrl.item.person.title">
-                <md-option value=""></md-option>
-                <md-option ng-repeat="item in $ctrl.personTitleOptions" value="{{item}}">
-                  {{item}}
-                </md-option>
-              </md-select>
-    
-          </md-input-container>
-          
-          <div flex="66" hide-xs></div>
+<!--       <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group label-floating is-empty">
+            <label class="control-label">First</label>
+            <input type="email" class="form-control">
+          </div>
         </div>
-        
-          
-        <div layout="column" layout-gt-xs="row">           
-            
-            <md-input-container flex-gt-xs="33">
+
+         <div class="col-sm-4">
+          <div class="form-group label-floating is-empty">
+            <label class="control-label">Middle</label>
+            <input type="email" class="form-control">
+            <span class="material-input"></span>
+          </div>
+        </div>
+
+         <div class="col-sm-4">
+          <div class="form-group label-floating is-empty">
+            <label class="control-label">Last</label>
+            <input type="email" class="form-control">
+            <span class="material-input"></span>
+          </div>
+        </div>
+      </div> -->
+
+<!--       <div class="row">
+        <div class="col-sm-4">
+            <md-input-container>
               <label>First</label>
               <input required name="first_name" ng-model="$ctrl.item.person.first_name" type="text" />
             </md-input-container>
-            <md-input-container flex-gt-xs="33">
+        </div>
+
+         <div class="col-sm-4">
+            <md-input-container>
               <label>Middle</label>
               <input name="middle_name" ng-model="$ctrl.item.person.middle_name" type="text" />
             </md-input-container>
-            <md-input-container flex-gt-xs="33">
+        </div>
+
+         <div class="col-sm-4">
+            <md-input-container>
               <label>Last</label>
               <input required name="title" ng-model="$ctrl.item.person.last_name" type="text" />
             </md-input-container>
-
         </div>
-        
-      <div layout="column" layout-gt-xs="row" layout-align="start" >
-            <md-input-container  flex-gt-xs="33">
-              <label>Gender</label>
-               <md-select ng-model="$ctrl.item.person.gender" placeholder="Gender">
-                <md-option value=""></md-option>
-                <md-option value="f">Female</md-option>
-                <md-option value="m">Male</md-option>
-              </md-select>
-            </md-input-container>
-               
-          <md-input-container  flex-gt-xs="33" class="date-picker">
-            <label>Birthday</label>
-            <md-datepicker ng-model="$ctrl.item.person.birthday" md-current-view="year"></md-datepicker>
-          </md-input-container>
-
-
-        </div>
-
-
-      <div layout="column" layout-gt-xs="row" layout-align="start" >
-
-
-          <md-input-container  flex-gt-xs="33">
-          <label>Role</label>
-            <md-select required name="type" ng-model="$ctrl.item.role">
-              <md-option value=""></md-option>
-              <md-option ng-repeat="item in $ctrl.memberRoleOptions" value="{{item}}">
-                {{item}}
-              </md-option>
-            </md-select>
-          </md-input-container>
-
-          <md-input-container  flex-gt-xs="33" class="date-picker">
-            <label>Member since</label>
-            <md-datepicker ng-model="$ctrl.item.join_date" md-current-view="year"></md-datepicker>
-          </md-input-container>
-
-        </div>
-
-
-
-      
-
-      <div layout="column" layout-gt-xs="row">
-        <md-input-container flex-gt-xs="50">
-          <label>Email</label>
-          <input required name="name" ng-model="$ctrl.item.person.email" type="text" />
-        </md-input-container>
-      
-        <md-input-container  flex-gt-xs="50">
-          <label>Phone</label>
-          <input required name="name" ng-model="$ctrl.item.person.telephone" type="text" />
-        </md-input-container>
-        <div class="action-icons"></div>
       </div>
+ -->
 
-      <div layout="row" flex style="margin-top: 1em;">
-        <div class="field-icon"></div>
-        <div layout="column" flex>
-        <md-input-container flex="auto" class="md-block">
-          <label>Street</label>
-          <input  name="address" ng-model="$ctrl.item.person.address"/>
-        </md-input-container>
 
-              
-          <div layout="column" layout-gt-xs="row">
-              <md-input-container flex-gt-xs="50" class="md-block">
+        <div layout="column" layout-gt-xs="row">   
+
+            <div class="input-wrapper" flex-gt-xs="33" >
+              <md-input-container>
+                <label>First</label>
+                <input required name="first_name" ng-model="$ctrl.item.person.first_name" type="text" />
+              </md-input-container>
+            </div> 
+
+            <div class="input-wrapper" flex-gt-xs="33" >
+              <md-input-container>
+              <label>Middle</label>
+              <input name="middle_name" ng-model="$ctrl.item.person.middle_name" type="text" />
+              </md-input-container>
+            </div> 
+
+            <div class="input-wrapper" flex-gt-xs="33" >
+              <md-input-container>
+              <label>Last</label>
+              <input required name="title" ng-model="$ctrl.item.person.last_name" type="text" />
+              </md-input-container>
+            </div> 
+
+        </div>
+
+        <div layout="column" layout-gt-xs="row">   
+
+            <div class="input-wrapper" flex-gt-xs="40" >
+              <md-input-container>
+                <label>Gender</label>
+                 <md-select ng-model="$ctrl.item.person.gender" placeholder="Gender">
+                  <md-option value=""></md-option>
+                  <md-option value="f">Female</md-option>
+                  <md-option value="m">Male</md-option>
+                </md-select>
+              </md-input-container>   
+            </div> 
+
+            <div class="input-wrapper" flex-gt-xs="40" >
+              <md-input-container class="date-picker">
+                <label>Birthday</label>
+                <md-datepicker ng-model="$ctrl.item.person.birthday" md-current-view="year"></md-datepicker>
+              </md-input-container>
+            </div> 
+
+        </div>
+
+
+        <div layout="column" layout-gt-xs="row">   
+
+            <div class="input-wrapper" flex-gt-xs="40" >
+              <md-input-container>
+                <label>Role</label>
+                <md-select required name="type" ng-model="$ctrl.item.role">
+                  <md-option value=""></md-option>
+                  <md-option ng-repeat="item in $ctrl.organizationMemberRoleOptions" value="{{item}}">
+                    {{item}}
+                  </md-option>
+                </md-select>
+              </md-input-container>   
+            </div> 
+
+            <div class="input-wrapper" flex-gt-xs="40" >
+              <md-input-container class="date-picker">
+                <label>Member since</label>
+                <md-datepicker ng-model="$ctrl.item.join_date" md-current-view="year"></md-datepicker>
+              </md-input-container>
+            </div> 
+
+        </div>
+
+
+        <div layout="column" layout-gt-xs="row">   
+
+            <div class="input-wrapper" flex-gt-xs="50" >
+              <md-input-container>
+                <label>Email</label>
+                <input required name="name" ng-model="$ctrl.item.person.email" type="text" />
+              </md-input-container>   
+            </div> 
+
+            <div class="input-wrapper" flex-gt-xs="50" >
+              <md-input-container>
+                <label>Phone</label>
+                <input required name="name" ng-model="$ctrl.item.person.telephone" type="text" />
+              </md-input-container>
+            </div> 
+
+        </div>
+
+
+        <div layout="column" layout-gt-xs="row">   
+            <div class="input-wrapper" flex>
+               <md-input-container>
+                  <label>Street</label>
+                  <input  name="address" ng-model="$ctrl.item.person.address"/>
+                </md-input-container>
+            </div> 
+        </div>
+
+
+        <div layout="column" layout-gt-xs="row">
+            <div class="input-wrapper" flex-gt-xs="50" >
+              <md-input-container>
                 <label>Town</label>
                 <input name="municipality" ng-model="$ctrl.item.person.municipality"/>
               </md-input-container>
-              
-             <md-input-container flex-gt-xs="25" class="md-block">
+            </div>
+            
+            <div class="input-wrapper" flex-gt-xs="50" >
+              <md-input-container>
                 <label>Region</label>
                 <input name="region" ng-model="$ctrl.item.person.region"/>
               </md-input-container>
-                
-              <md-input-container flex-gt-xs="25" class="md-block">
+            </div>
+              
+            <div class="input-wrapper" flex-gt-xs="50" >
+              <md-input-container>
                 <label>Post code</label>
                 <input name="postalcode" ng-model="$ctrl.item.person.postcode"/>
               </md-input-container>
-          </div>
+            </div>
         </div>
-        <div class="action-icons"></div>
-      </div>
 
     </md-dialog-content>
 
 
     <md-dialog-actions layout="row" class="layout-row">
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.displayMore()" ng-hide="1"><span class="ng-scope">
-       More
-      </span></button>
+
       <span flex="" class="flex"></span>
 
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope">
-       Cancel
-      </span></button>
-      <button class="md-button md-ink-ripple" type="submit"><span class="ng-scope">
-        Save
-      </span></button>
+      <button class="swal2-confirm btn btn-danger md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope"> Cancel </span> </button>
+      
+      <button class="swal2-cancel btn btn-success md-ink-ripple" type="submit"><span class="ng-scope"> Save </span></button>
+
+      <span flex="" class="flex"></span>
+
     </md-dialog-actions>
   </form>
 </md-dialog>

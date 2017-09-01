@@ -13,12 +13,13 @@ import 'angular-material/angular-material.css';
 import 'angular-file-upload';
 import 'angular1-star-rating';
 import 'angular-material-picker';
+import relativeDate from 'angular-relative-date'
 import 'moment';
 import 'ng-material-datetimepicker';
 import 'ng-material-datetimepicker/css/material-datetimepicker.css';
 
 // import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
-import 'roboto-npm-webfont';
+// import 'roboto-npm-webfont';
 import ngMessages from 'angular-messages';
 
 import 'jquery';
@@ -36,9 +37,12 @@ import './directives/index';
 import './filters';
 
 
-
-require('./assets/css/paper-dashboard.css');
+// import 'angular-sweetalert-2/dist/angular-sweetalert2.min.js';
+// require('sweetalert2/dist/sweetalert2.min.css')
 require('./assets/css/default.less');
+
+import './common/sweetalert';
+
 
 
 /* App Dependencies */
@@ -55,8 +59,11 @@ angular.module( "doxa", [
                 'doxa.foo',
                 'doxa.organization',
                 'ngMaterialDatePicker',
+                'SweetAlert',
+                // 'socialbase.sweetAlert',
                 ngMessages,
-                ngCookies
+                ngCookies,
+                'relativeDate'
     ])
     .config(routing);
 

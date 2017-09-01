@@ -79,4 +79,54 @@ export default class ListViewController {
     return params;
   }
 
+  promptAndDelete(item, params) {
+    this.SweetAlert.swal({
+                title: params.title,
+                // text: params.text,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete',
+                cancelButtonText: 'No, keep',
+                confirmButtonClass: "btn btn-success",
+                cancelButtonClass: "btn btn-danger",
+                buttonsStyling: false
+            }).then(
+              () => {
+                // perform the delete operation
+                this.GroupService.removeMember(item).then(
+                    (response) => {
+                        // remove the item from the list
+                        var idx = this.items.indexOf(item);
+                        this.items.splice(idx, 1);
+
+                        // display a message to the user
+                        this.SweetAlert.swal({
+                          title: 'Removed!',
+                          text: `${item.person.first_name} ${item.person.last_name} has been removed.`,
+                          type: 'success',
+                          confirmButtonClass: "btn btn-success",
+                          buttonsStyling: false
+                        })
+                    },
+                    (error) => {
+                        var message = error.data.message;
+                        this.SweetAlert.swal({
+                          title: `Could not delete ${item.name}`,
+                          text: message,
+                          type: 'error',
+                          confirmButtonClass: "btn btn-info",
+                          buttonsStyling: false
+                        })
+                    }
+                );
+              },
+              (dismiss) => {
+                // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                if (dismiss === 'cancel') {
+
+                }
+              }
+            );
+  }
+
 }

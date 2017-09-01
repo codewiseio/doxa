@@ -1,13 +1,14 @@
 
 import ListViewController from '../../common/list.view.controller.js';
 export default class DashboardGroupsController extends ListViewController {
-  constructor(GroupService, AppDataService, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
+  constructor(GroupService, AppDataService, SweetAlert, $cookies, $state, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
 
     super();
     
     this.GroupService = GroupService;
     this.AppDataService = AppDataService;
+    this.SweetAlert = SweetAlert;
     this.$mdToast = $mdToast;
     this.$mdDialog = $mdDialog;
 
@@ -48,19 +49,6 @@ export default class DashboardGroupsController extends ListViewController {
 
   }
 
-  /**
-   * Opens a dialog to edit member.
-   * @param  {object} $item   The item to be edited
-   * @param  {event} $event   The event triggering the dialog to open
-   */
-  create(item, $event) {
-    item = {
-      contacts: [ { kind: 'email' }, { kind: 'telephone' }, { kind: 'address' }  ]
-    }
-    return this.edit(item,$event);
-  }
-
-
 
   /**
    * Opens a dialog to create a new group
@@ -71,77 +59,7 @@ export default class DashboardGroupsController extends ListViewController {
 
     if ( ! item ) item = { organization_id: this.AppDataService.organization.id };
 
-    return this.$mdDialog.show({
-          controller: 'DashboardGroupEditDialogController as $ctrl',
-          templateUrl: 'dashboard.group.edit.dialog.html',
-          locals: { "item": item },
-          clickOutsideToClose:true,
-          fullscreen: true,
-          parent: angular.element(document.body),
-          targetEvent: $event
-        })
-        .then(
-          (item) => {
-
-            // if and item was returned the action completed successfuly
-            if ( item ) {
-              console.log('Groups controller received edited item:')
-              console.log(item);
-
-              // add it to the beginning of list
-              this.items.unshift(item);
-
-              // notify the user
-              var toast = this.$mdToast.simple()
-                .textContent("Group Data Saved Successfuly" )
-                .position('bottom center')
-                .parent();
-              this.$mdToast.show(toast);
-            }
-        }, (error) => {
-            console.log('error');
-        });
-  }
-
-
-  delete(item, event) {
-      var confirm = this.$mdDialog.confirm()
-        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
-        .title(`Really delete ${item.name}?`)
-        .textContent('This is permanent.')
-        .ariaLabel('Really delete?')
-        .targetEvent(event)
-        .ok('Yes')
-        .cancel('No');
-
-      this.$mdDialog.show(confirm).then(
-        () => {
-          this._deleteItem(item);
-        }
-      );
-  }
-
-  _deleteItem(item) {
-    this.GroupService.delete(item.id).then(
-      () => {
-          this.$mdDialog.hide();
-
-          var toast = this.$mdToast.simple()
-              //.textContent(`Deleted ${item.entity.first_name} ${item.entity.last_name}`)
-              .textContent(`Deleted Successfully`)
-              .position('bottom center')
-              .parent();
-          this.$mdToast.show(toast);
-
-          $(`#group-${item.id}`).remove();
-          console.log($(`#group:${item.id}`));
-        }
-    );
-  }
-
-  cancel() {
-    console.log('Canceled');
-    this.$mdDialog.cancel();
+    this.edit( item, $event );
   }
 
   /**
@@ -150,10 +68,8 @@ export default class DashboardGroupsController extends ListViewController {
    * @param  {event} $event   The event triggering the dialog to open
    */
   edit(item, $event=null) {
-    $event.stopPropagation();
-    // $event.preventDefault();
-    
 
+    let newItem = item.id ? false : true;
 
     return this.$mdDialog.show({
           controller: 'DashboardGroupEditDialogController as $ctrl',
@@ -168,15 +84,12 @@ export default class DashboardGroupsController extends ListViewController {
           (item) => {
             // if and item was returned the action completed successfuly
             if ( item ) {
-              console.log('Group Controller Received edited item:')
-              console.log('item',item);
-              return false;
-              // add it to the beginning of list
-              // this.items.unshift(item);
+
+              if ( newItem) this.items.unshift(item);
 
               // notify the user
               var toast = this.$mdToast.simple()
-                .textContent(" Group Updated" )
+                .textContent("Saved" )
                 .position('bottom center')
                 .parent();
               this.$mdToast.show(toast);
@@ -187,44 +100,139 @@ export default class DashboardGroupsController extends ListViewController {
         });
   }
 
-  
 
-    /**
-    *Remove all or selected groups collectively
-    */
-    removeGroups(items,event){
-      var confirm = this.$mdDialog.confirm()
-        //.title(`Really delete ${item.entity.first_name} ${item.entity.last_name}?`)
-        .title(`Really delete all selected groups ?`)
-        .textContent('This is permanent.')
-        .ariaLabel('Really delete?')
-        .targetEvent(event)
-        .ok('Yes')
-        .cancel('No');
+  /**
+   * Delete a group
+   * @param  {[type]} item  [description]
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
+  delete(item, event) {
 
-      this.$mdDialog.show(confirm).then(
-        () => {
-          this.GroupService.removeGroups(items,this.organization.id).then(
-            (response) => {
-              console.log('response',response)
-                this.items = response.data;
-                var toast = this.$mdToast.simple()
-                  .textContent('Deleted Successfully')
-                  .position('bottom left')
-                  .parent();
-                  this.$mdToast.show(toast);
-            },
-            (err) => {
-              var toast = this.$mdToast.simple()
-              .textContent('error')
-              .position('bottom left')
-              .parent();
-              this.$mdToast.show(toast);
+    this.SweetAlert.swal({
+            title: `Really delete ${item.name}?`,
+            text: 'You will not be able to undo this action!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'No, keep',
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger",
+            buttonsStyling: false
+        }).then(
+          () => {
+            // perform the delete operation
+            this.GroupService.delete(item.id).then(
+                (response) => {
+                    // remove the item from the list
+                    var idx = this.items.indexOf(item);
+                    this.items.splice(idx, 1);
+
+                    // display a message to the user
+                    this.SweetAlert.swal({
+                      title: 'Deleted!',
+                      text: `${item.name} has been deleted.`,
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
+                    })
+                },
+                (error) => {
+                    var message = error.data.message;
+                    this.SweetAlert.swal({
+                      title: `Could not delete ${item.name}`,
+                      text: message,
+                      type: 'error',
+                      confirmButtonClass: "btn btn-info",
+                      buttonsStyling: false
+                    })
+                }
+            );
+          },
+          (dismiss) => {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+
             }
-          ); 
-        }
-      );
+          }
+        );
+  }
+
+
+  cancel() {
+    console.log('Canceled');
+    this.$mdDialog.cancel();
+  }
+
+  
+  /**
+   * Delete a member from from the organization with confirm.
+   * @param  {Object} item   Member to delete
+   * @param  {Object} event  The trigger event
+   */
+  deleteMultiple(items, event) {
+
+    let nItems = items.length;
+    let ids = items.map( function(item){ return item.id } );
+
+    // only deleting 1 member?
+    if ( nItems == 1 ) {
+      return this.delete(items[0], event);
     }
+
+
+    this.SweetAlert.swal({
+            title: `Really delete these ${nItems} groups?`,
+            text: 'You will not be able to undo this action!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'No, keep',
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger",
+            buttonsStyling: false
+        }).then(
+          () => {
+            // perform the delete operation
+            this.GroupService.deleteMultiple(ids).then(
+                (response) => {
+                    // remove the item from the list
+                    items.forEach( (item) => {
+                        var idx = this.items.indexOf(item);
+                        this.items.splice(idx, 1);
+                    });
+
+                    // display a message to the user
+                    this.SweetAlert.swal({
+                      title: 'Deleted!',
+                      text: `${nItems} groups have been deleted.`,
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
+                    })
+                },
+                (error) => {
+                    var message = error.data.message;
+                    this.SweetAlert.swal({
+                      title: `Could not delete these groups.`,
+                      text: message,
+                      type: 'error',
+                      confirmButtonClass: "btn btn-info",
+                      buttonsStyling: false
+                    })
+                }
+            );
+          },
+          (dismiss) => {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+
+            }
+          }
+        );
+
+  }
+  
 
     refreshResults() {
 

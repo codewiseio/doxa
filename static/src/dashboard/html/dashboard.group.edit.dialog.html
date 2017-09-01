@@ -1,31 +1,6 @@
 <md-dialog aria-label="Edit group" class="edit-group">
-  <form>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-          <div class="profile-graphic abstract-profile-graphic" flex="none">
-            <span ng-show="$ctrl.item.name">{{ $ctrl.item.name | InitialFilter }}
-            </span>
-          </div>
-          <h2>
-            <span ng-hide="$ctrl.item.id">
-              New group
-            </span>
-            <span ng-show="$ctrl.item.id">
-              {{ $ctrl.item.name}}
-            </span>
-
-          </h2>
-        <span flex="" class="flex"></span>
-
-        <md-button class="md-icon-button" aria-label="Close" md-dialog-close ng-click="$ctrl.cancel()"><md-icon>close</md-icon></md-button>
-
-      </div>
-    </md-toolbar>
-
+  <form ng-submit="$ctrl.save()">
     <md-dialog-content flex>
-
-        <form>
-
         
           <div layout="column">           
               
@@ -52,27 +27,26 @@
 
           </div>
 
-        </form>
     </md-dialog-content>
 
 
     <md-dialog-actions layout="row" class="layout-row">
       
 
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.remove()">
+<!--       <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.remove()">
       <span class="ng-scope" ng-show="$ctrl.item.id">
        Delete Group
       </span>
       </button>
-
+ -->
       <span flex="" class="flex"></span>
 
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope">
-       Cancel
-      </span></button>
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.save()"><span class="ng-scope">
-        Save
-      </span></button>
+      <button class="swal2-confirm btn btn-danger md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope"> Cancel </span> </button>
+      
+      <button class="swal2-cancel btn btn-success md-ink-ripple" type="submit"><span class="ng-scope"> Save </span></button>
+
+
+      <span flex="" class="flex"></span>
     </md-dialog-actions>
   </form>
 </md-dialog>

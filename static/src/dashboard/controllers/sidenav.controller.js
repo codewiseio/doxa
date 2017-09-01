@@ -1,9 +1,9 @@
 class SidenavController {
-    constructor($mdSidenav) {
+    constructor($state) {
       'ngInject';
 
-        this.$mdSidenav = $mdSidenav;
-      
+        this.$state = $state;
+
         this.menuItems = [
             {
                 label: 'Dashboard',
@@ -37,13 +37,16 @@ class SidenavController {
                 state: 'dashboard.events()'
             }
         ];
-
-    }
-
-    closeSidenav() {
-        this.$mdSidenav('dashboard-sidenav').close();
     }
   
+    /**
+     * Check if a menu item is currently active by comparing to the current state
+     * @param  {Object} Menu item to check 
+     * @return {String} Returns 'active' if true, empty string if false
+     */
+    isActive(item) {
+        return this.$state.current.name == item.state.replace(/\(.*\)/, '') ? 'active' : '';
+    }
     
 }
 

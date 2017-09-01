@@ -35,6 +35,44 @@
     }
 }
 
+.card-toolbar {
+    text-align: right;
+}
+.card-toolbar .search-wrapper {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 300px;
+    max-width: 100%;
+}
+
+/** NEW FORMATTING **/
+.sidebar .sidebar-wrapper, .off-canvas-sidebar .sidebar-wrapper {
+    height: auto;
+    max-height: 100%;
+    overflow-x: hidden!important;
+    overflow-y: hidden!important;
+}
+
+
+.btn.btn-fab-fixed {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+}
+
+
+.swal2-modal form {
+    text-align: left;
+}
+
+/**
+.main-panel {
+    max-height: auto;
+    height: auto;
+}**/
+
+
 
 /**
  * Customize form field styles
@@ -42,7 +80,6 @@
 
 .date-picker {
     padding-right : 18px;
-    height        : 58px !important;
     margin-top    : 0px !important;
 
     label {
@@ -227,7 +264,8 @@ md-dialog.member md-dialog-content div.action-icons {
 
 
 md-dialog md-input-container {
-    margin-bottom: 0px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 md-dialog .md-errors-spacer {
@@ -248,7 +286,11 @@ contact-input .action-icons {
 
 
 md-input-container.md-grey-theme:not(.md-input-invalid).md-input-has-value label {
-    color: rgba(0,0,0,0.54);
+ color: rgba(0,0,0,0.54);
+}
+
+md-select-value, .md-select-placeholder {
+    font-weight: normal;
 }
 
 
@@ -334,14 +376,29 @@ md-toolbar + md-dialog-content {
 md-dialog md-input-container {
     margin-top: 18px;
 }
+
+@media screen and (min-width: 600px) {
+    .input-wrapper {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
 md-dialog md-input-container.date-picker {
     margin-top: 18px!important;
 }
 
 md-dialog md-dialog-content {
-    margin-top: 64px;
-    padding: 0px 16px;
-    margin-bottom: 32px;
+    padding: 16px 16px;
+}
+
+md-dialog-actions {
+    padding-bottom: 18px;
+}
+
+md-dialog-actions button.btn {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 
@@ -355,3 +412,11 @@ md-toolbar .profile-graphic + h2 {
     font-color: grey;
 }
 
+
+.btn-icon {
+    padding: 6px;
+}
+
+.btn-icon .material-icons {
+    font-size: 24px;
+}

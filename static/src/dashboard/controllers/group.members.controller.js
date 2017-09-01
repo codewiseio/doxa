@@ -1,10 +1,11 @@
 import ListViewController from '../../common/list.view.controller.js';
 export default class DashboardGroupMembersController extends ListViewController {
-  constructor(GroupService, AppDataService, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http, $scope) {
+  constructor(GroupService, AppDataService, SweetAlert, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http, $scope) {
     'ngInject';
     super();
     this.GroupService = GroupService;
     this.AppDataService = AppDataService;
+    this.SweetAlert = SweetAlert;
     this.$mdDialog = $mdDialog;
     this.$mdToast = $mdToast;
     this.$state = $state;
@@ -96,7 +97,7 @@ export default class DashboardGroupMembersController extends ListViewController 
   /**
    * Display a dialog to add a member to the group
    */
-  addMember() {
+  new() {
 
      var $http = this.$http;
      var o = this.AppDataService.organization;
@@ -115,6 +116,7 @@ export default class DashboardGroupMembersController extends ListViewController 
         if ( item ) {
           // add member to the list
           this.items.unshift(item);
+          console.log(item);
 
           // display notice
           var toast = this.$mdToast.simple()
@@ -134,7 +136,9 @@ export default class DashboardGroupMembersController extends ListViewController 
   /**
    * Display a dialog to add a member to the group
    */
-  editMember(member, event) {
+  edit(member, event) {
+
+    console.log(member);
 
     this.$mdDialog.show({
         controller: 'DashboardGroupEditMemberController as $ctrl',
@@ -156,62 +160,73 @@ export default class DashboardGroupMembersController extends ListViewController 
     )
   }
 
-  removeMember(item, $event) {
-     // Appending dialog to document.body to cover sidenav in docs app
-      var confirm = this.$mdDialog.confirm({ multiple: true, locals: {item: item } })
-            .title(`Really remove this member?`)
-            .textContent(`${item.person.first_name} ${item.person.last_name}`)
-            .ariaLabel('Really remove this member?')
-            .targetEvent($event)
-            .ok(`Yes, remove ${item.person.first_name}`)
-            .cancel('No, keep in group')
-            .multiple(true);
+/**
+   * Delete group member
+   * @param  {[type]} item  [description]
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
+  delete(item, event) {
+    let objectStr = `${item.person.first_name} ${item.person.last_name}`;
+    let params = {
+        objectStr: objectStr,
+        title: `Really remove ${objectStr}?`,
+        confirmText: `${objectStr} has been removed.`,
+        failText: `Could not delete ${item.name}`,
+        service: this.GroupService
+    };
 
-      this.$mdDialog.show(confirm).then(
-          // user confirmed delete
+    alert(params);
+
+    // this.promptAndDelete(item, params);
+    
+
+    this.SweetAlert.swal({
+            title: `Really remove ${item.person.first_name} ${item.person.last_name}?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'No, keep',
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger",
+            buttonsStyling: false
+        }).then(
           () => {
-
-            console.log('Confirm ');
-            console.log(this.item);
-
+            // perform the delete operation
             this.GroupService.removeMember(item).then(
-                    (response) => {
-                      console.log('Remove successful');
-                      console.log(response.data);
+                (response) => {
+                    // remove the item from the list
+                    var idx = this.items.indexOf(item);
+                    this.items.splice(idx, 1);
 
-                      // notify the user
-                      var toast = this.$mdToast.simple()
-                        .textContent(`${item.person.first_name} removed from group`)
-                        .position('bottom center')
-                        .parent();
-
-                      this.$mdToast.show(toast);
-                     $(`#member-${item.id}`).remove();
-
-                    },
-                    (error) => {
-
-                      message = error.data.message;
-
-                      // notify the user operation failed
-                      var toast = this.$mdToast.simple()
-                        .textContent(message)
-                        .position('bottom center')
-                        .parent();
-
-                      this.$mdToast.show(toast);
-
-                      console.log('Error removing group.');
-                      console.log(error);
-                    }
-                );
-
+                    // display a message to the user
+                    this.SweetAlert.swal({
+                      title: 'Removed!',
+                      text: `${item.person.first_name} ${item.person.last_name} has been removed.`,
+                      type: 'success',
+                      confirmButtonClass: "btn btn-success",
+                      buttonsStyling: false
+                    })
+                },
+                (error) => {
+                    var message = error.data.message;
+                    this.SweetAlert.swal({
+                      title: `Could not delete ${item.name}`,
+                      text: message,
+                      type: 'error',
+                      confirmButtonClass: "btn btn-info",
+                      buttonsStyling: false
+                    })
+                }
+            );
           },
-          // user canceled delete
-          () => {
-            console.log('Cancelled delete item.');
+          (dismiss) => {
+            // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+            if (dismiss === 'cancel') {
+
+            }
           }
-      );
+        );
   }
 
 

@@ -1,87 +1,77 @@
-<!-- form-profile.html -->
- <div layout="row" style="padding: 0px 16px">
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-12">
+      <div class="card">
+          <div class="card-header card-header-icon" data-background-color="rose">
+              <i class="material-icons">group</i>
+          </div>
+<!--           <h4 class="card-title">Members of {{$ctrl.organization.name}} </h4>
 
-      <div flex="none" class="list-item-select">
-        <span>              
-            <md-checkbox ng-checked="$ctrl.allItemsSelected" ng-click="$ctrl.toggleAll()"></md-checkbox>
-          </span>
-      </div>
+ -->
+          <div class="card-toolbar">
 
-      <div flex>
-          <md-input-container flex-gt-xs="33" style="margin: 0px 16px;" class="hidden-label">
-            <input name="search" type="text" placeholder="Search" style="width: 300px; max-width: 100%;"
-                     ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()"/>
-          </md-input-container>
-      </div>
+             <md-button class="md-icon-button" ng-click="$ctrl.deleteMultiple($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button>
 
-      <div>
-        <md-button class="md-icon-button" ng-click="$ctrl.removeGroups($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button></div>
-        <md-menu md-position-mode="target-right bottom">
-
-          <md-button aria-label="Sort" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-            <md-icon md-menu-origin="">sort</md-icon>
-          </md-button>
-
-          <md-menu-content width="4" layout="column">
-            
-            <md-menu-item>
-              <md-button ng-click="$ctrl.sortBy('name')">
-                  <div layout="row" flex="">
-                    <p flex="">Name</p>
+            <div class="search-wrapper">
+                  <div class="form-group form-search is-empty;">
+                  <input type="text" class="form-control" placeholder="Search"
+                  ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()">
                   </div>
-              </md-button>
-            </md-menu-item>
-
-          </md-menu-content>
-        </md-menu>
-
-    </div>
-
-<!--<div flex-xs="" flex-gt-xs="50" layout="column">-->
-  <main class="organization-groups list-view-page" layout="column">
-  
-     <md-list class="members-list" layout="column" flex>
-
-
-        <md-list-item ng-repeat="item in $ctrl.items" layout="row" flex data-item-id="{{item.id}}" id="group-{{item.id}}">
-          
-          <div flex="none" class="list-item-select">
-            <span>              
-                <md-checkbox ng-checked="$ctrl.isItemSelected(item)" ng-click="$ctrl.toggleItem(item)"></md-checkbox>
-              </span>
-          </div>
-          <!-- First initial icon -->
-          <div flex="none" class="abstract-first-initial">
-            <span>{{item.name | InitialFilter }}</span>
+            </div>
           </div>
 
-          <md-button class="item-row md-button" flex="100" layout="row"  ui-sref="dashboard.group({id:item.id})">
-            <!-- Second initial icon -->
-            <div class="abstract-graphic-id" flex="none">
-              <span>{{item.name | InitialFilter }}</span>
-            </div>
+          <div class="card-content">
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th class="text-center">
+                                  <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="$ctrl.allItemsSelected" ng-click="$ctrl.toggleAll()">
+                                    </label>
+                                </div>
+                              </th>
+                              <th ng-click="$ctrl.sortBy('name')">Name</th>
+                              <th class="text-right">Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in $ctrl.items" data-item-id="{{item.id}}" id="member-{{item.id}}">
+                              <td>
+                                
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-checked="$ctrl.isItemSelected(item)" ng-click="$ctrl.toggleItem(item)">
+                                    </label>
+                                </div>
+
+                              </td>
+                              <td><a ui-sref="dashboard.group({id:item.id})">{{item.name}}</a></td>
+                              <td class="td-actions text-right">
+
+                                  <button type="button" rel="tooltip" class="btn btn-success" data-original-title="" title="" ng-click="$ctrl.edit(item,$event);">
+                                      <i class="material-icons">edit</i>
+                                  <div class="ripple-container"></div></button>
+
+                                  <button type="button" rel="tooltip" class="btn btn-danger" 
+                                          data-original-title="" title=""
+                                          ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>  
+</div>
+
+<button class="btn btn-primary btn-round btn-fab btn-fab-fixed" aria-label="new"  ng-click="$ctrl.new()">
+  <i class="material-icons">add</i>
+  <div class="ripple-container"></div>
+</button>
 
 
-            <!-- Full display name -->
-            <div class="display-name" flex>
-              <span>{{item.name}}</span>
-            </div>
-
-
-            <div class="item-actions" flex="none">
-              <md-button class="md-icon-button" ng-click="$ctrl.edit(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>edit</md-icon></md-button>
-              <md-button class="md-icon-button" ng-click="$ctrl.delete(item, $event);$event.stopPropagation();$event.preventDefault();"><md-icon>delete</md-icon></md-button>
-            </div>
-          </md-button>
-
-
-        </md-list-item>
-
-
-      </md-list>
-
-  </main>
-       
-<md-button class="md-fab md-primary md-fab-br md-whiteframe-12dp ." aria-label="add"  ng-click="$ctrl.new()">
-  <md-icon>add</md-icon>
-</md-button>

@@ -1,21 +1,15 @@
 <md-dialog aria-label="Add members to {{$ctrl.group.name}}" class="add-group-member">
-  <form ng-cloak>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>{{$ctrl.item.person.first_name}} {{$ctrl.item.person.last_name}}</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
-          <md-icon>close</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
+  <form ng-submit="$ctrl.save()">
+
 
     <md-dialog-content>
       <div class="md-dialog-content">
 
-        <div style="height: 30px"></div>
 
-        <form>
+          <h2 style="margin: 0px 0px 18px; text-align: center;">
+            {{$ctrl.item.person.first_name}} {{$ctrl.item.person.last_name}}
+          </h2>
+
 
             <div layout="column" layout-gt-xs="row">
 
@@ -37,20 +31,21 @@
 
             </div>
 
-        </form>
-
-
       </div>
     </md-dialog-content>
 
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button ng-click="$ctrl.cancel()">
-       Cancel 
-      </md-button>
-      <md-button ng-click="$ctrl.save()">
-       Ok 
-      </md-button>
+    <md-dialog-actions layout="row" class="layout-row">
+      
+      <span flex="" class="flex"></span>
+
+      <button class="swal2-confirm btn btn-danger md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope"> Cancel </span> </button>
+      
+      <button class="swal2-cancel btn btn-success md-ink-ripple" type="submit"><span class="ng-scope"> Save </span></button>
+
+
+      <span flex="" class="flex"></span>
+
+
     </md-dialog-actions>
   </form>
 </md-dialog>

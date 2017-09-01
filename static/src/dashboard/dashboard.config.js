@@ -1,7 +1,25 @@
-//@require "./html/*.html"
-require('../assets/css/default.less');
-require('../assets/css/dashboard.less');
-require('../common/html/form.appbar.html');
+@require "./html/*.html"
+
+// require('../assets/css/default.less');
+// require('../assets/css/dashboard.less');
+// require('../common/html/form.appbar.html');
+
+require("../assets/css/material-dashboard.css");
+require("../assets/css/jquery.dropdown.css");
+// require("../assets/js/bootstrap.min.js");
+
+// require("../assets/js/jquery-3.1.1.min.js");
+// require("../assets/js/jquery.tagsinput.js");
+// 
+require("../assets/js/doxa.js");
+require("../assets/js/bootstrap-notify.js");
+require("../assets/js/material.min.js");
+require("../assets/js/material-dashboard.js");
+
+require("../assets/js/jquery.select-bootstrap.js");
+require("../assets/js/bootstrap-datetimepicker.js");
+require("../assets/js/jquery.dropdown.js");
+
 
 export default function DashboardConfig($stateProvider, $mdThemingProvider) {
   'ngInject';

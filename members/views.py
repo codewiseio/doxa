@@ -129,58 +129,6 @@ class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-
-
-
-
-        
-
-
-
-
-# class MembersListView(generics.ListAPIView):    
-#     serializer_class = MemberSerializer
-#     lookup_url_kwarg = "owner"
-#     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-#     def get_queryset(self):
-#         owner = self.kwargs.get('owner')
-#         members = Member.objects.filter(owner=owner)
-#         return members
-
-#     def list(self, *args, **kwargs):
-#         queryset = self.filter_queryset(self.get_queryset())
-#         serializer = MemberSerializer(queryset, many=True)
-        
-#         members = serializer.data
-#         members = self.get_entity_data(members)
-
-#         return Response(members, status=status.HTTP_201_CREATED)
-
-#     def get_entity_data(self, members):
-
-#         monikers = []
-#         for member in members:
-#             entity_moniker = member.get('entity')
-#             entity_id = entity_moniker.split(':')[1];
-            
-#             person = Person.objects.get(id=entity_id)
-#             serializer = PersonSerializer(person)
-#             member['entity'] = serializer.data
-
-#         return members
-
-
-    
-
-
-
-    
-
-
-
-
-
 class MembersItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer
     queryset = Member.objects

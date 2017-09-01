@@ -25,6 +25,12 @@ export default class GroupService {
    delete(id) {
       return this.$http.delete(`/api/v1/groups/${id}/`);
    }
+
+   //Remove groups
+   deleteMultiple(ids) {
+    // pass ids to the api
+    return this.$http.post(`/api/v1/groups/remove/`, { ids: ids } );
+   }
    
    /**
     * Retrieve the group
@@ -109,20 +115,6 @@ export default class GroupService {
    }
 
 
-   //Remove groups
-   removeGroups(groups,id) {
-    console.log('Removing groups');
-    console.log(groups);
 
-    // get ids from groups array
-    var ids = [];
-    groups.forEach( function(item) {
-      ids.push(item.id);
-    });
-    console.log('ids',ids)
-
-    // pass ids to the api
-    return this.$http.post(`/api/v1/groups/remove/`, { ids: ids,org: id } );
-   }
 }
 

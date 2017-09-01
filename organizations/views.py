@@ -179,7 +179,8 @@ class OrganizationMembersListView(generics.ListCreateAPIView):
         if 'person' in data:
             person = Person.objects.create(**data['person'])
             data['person_id'] = person.id
-            data['role'] = "Administrator"
+            if not data.get('role'): 
+                data['role'] = "Member"
             data.pop('person')
             member = OrganizationMember.objects.create(**data)
             serializer = OrganizationMemberSerializer(member)

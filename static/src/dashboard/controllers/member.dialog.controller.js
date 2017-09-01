@@ -1,6 +1,5 @@
 import personTitleOptions from '../../assets/json/formOptions/person.title.json';
-import memberRoleOptions from '../../assets/json/formOptions/organization.member.role.json';
-
+import organizationMemberRoleOptions from '../../assets/json/formOptions/organization.member.role.json';
 
 
 export default class DashboardMemberDialogController {
@@ -15,16 +14,14 @@ export default class DashboardMemberDialogController {
     this.$mdDialog = $mdDialog;
     
     this.personTitleOptions = personTitleOptions;
-    this.memberRoleOptions = memberRoleOptions;
-    
-    this.context = "dashboard.member";
+    this.organizationMemberRoleOptions = organizationMemberRoleOptions;
+
+    this.context = "dashboard.member.edit";
+
     this.item = locals.item;
 
     if ( ! this.item ) this.item = { person: {} };
     if ( ! this.item.person  ) this.item.person =  {};
-
-    console.log('Dialog');
-    console.log(this.item);
   }
   
   /**
@@ -41,7 +38,6 @@ export default class DashboardMemberDialogController {
    */
   save() {
 
-    console.log('Saving is going on');
     console.log(this.item);
 
     return this.DashboardMemberService.save(this.item).then(

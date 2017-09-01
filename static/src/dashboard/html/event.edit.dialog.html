@@ -1,31 +1,8 @@
 <md-dialog aria-label="Edit group" class="edit-group">
-  <form>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-          <div class="profile-graphic abstract-profile-graphic" flex="none">
-            <span ng-show="$ctrl.item.name">{{ $ctrl.item.name | InitialFilter }}
-            </span>
-          </div>
-          <h2>
-            <span ng-hide="$ctrl.item.id">
-              New event
-            </span>
-            <span ng-show="$ctrl.item.id">
-              {{ $ctrl.item.name}}
-            </span>
+  <form ng-submit="$ctrl.save()">
 
-          </h2>
-        <span flex="" class="flex"></span>
-
-        <md-button class="md-icon-button" aria-label="Close" md-dialog-close ng-click="$ctrl.cancel()"><md-icon>close</md-icon></md-button>
-
-
-      </div>
-    </md-toolbar>
 
     <md-dialog-content flex>
-
-        <form>
 
         
         <div layout="column">           
@@ -47,16 +24,16 @@
             </md-input-container><br>
 
 
-            <div layout="row" height="58px">
+            <div layout="row">
 
-              <md-input-container  flex-gt-xs="33" class="date-picker">
+              <md-input-container   class="date-picker"  flex-gt-xs="33">
                 <label>Start Date</label>
                 <md-datepicker required ng-model="$ctrl.item.start_date" md-current-view="year"></md-datepicker>
 
               </md-input-container>
         
 
-              <md-input-container>
+              <md-input-container  flex-gt-xs="33">
                 <input mdc-datetime-picker required date="false" time="true" type="text" id="time" short-time="true"
                        show-todays-date
                        placeholder="Time"
@@ -66,20 +43,20 @@
                        ng-model="$ctrl.item.start_time">
               </md-input-container>
 
-              <md-input-container  flex>
+              <md-input-container  flex-gt-xs="33">
                   <md-button ng-hide="$ctrl.ShowEndDateDialog" ng-click="$ctrl.ShowEndDateDialog = true;">+ End time </md-button>
               </md-input-container>
 
             </div><br>
 
             <div layout="row" ng-show="$ctrl.ShowEndDateDialog">
-              <md-input-container  flex-gt-xs="33" class="date-picker">
+              <md-input-container  class="date-picker"  flex-gt-xs="33">
                 <label>End Date</label>
                 <md-datepicker ng-model="$ctrl.item.end_date" md-current-view="year"></md-datepicker>
               </md-input-container>
 
 
-              <md-input-container>
+              <md-input-container  flex-gt-xs="33">
                 <input mdc-datetime-picker date="false" time="true" type="text" id="time" short-time="true"
                        show-todays-date
                        placeholder="Time"
@@ -90,7 +67,7 @@
               </md-input-container>
 
 
-              <md-input-container flex>
+              <md-input-containers  flex-gt-xs="33">
                   <md-button ng-click="$ctrl.removeEndDate();">Remove</md-button>
               </md-input-container>
 
@@ -99,27 +76,21 @@
 
         </div>
 
-        </form>
     </md-dialog-content>
 
 
     <md-dialog-actions layout="row" class="layout-row">
       
+      <span flex="" class="flex"></span>
 
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.remove()">
-      <span class="ng-scope" ng-show="$ctrl.item.id">
-       Delete Event
-      </span>
-      </button>
+      <button class="swal2-confirm btn btn-danger md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope"> Cancel </span> </button>
+      
+      <button class="swal2-cancel btn btn-success md-ink-ripple" type="submit"><span class="ng-scope"> Save </span></button>
+
 
       <span flex="" class="flex"></span>
 
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"><span class="ng-scope">
-       Cancel
-      </span></button>
-      <button class="md-button md-ink-ripple" type="button" ng-click="$ctrl.save($ctrl.item.id)"><span class="ng-scope">
-        Save
-      </span></button>
+
     </md-dialog-actions>
   </form>
 </md-dialog>

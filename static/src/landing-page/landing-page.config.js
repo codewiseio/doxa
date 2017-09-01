@@ -1,5 +1,5 @@
 //@require "./html/*.html"
-require('../assets/css/landing-page.less');
+// require('../assets/css/landing-page.less');
 
 export default function LandingPageConfig($stateProvider) {
   'ngInject';

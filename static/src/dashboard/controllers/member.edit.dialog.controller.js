@@ -1,3 +1,5 @@
+import organizationMemberRoleOptions from '../../assets/json/formOptions/organization.member.role.json';
+
 export default class MemberEditDialogController {
   
   constructor(EventService, $mdDialog,  $mdToast, $state, locals) {
@@ -8,14 +10,19 @@ export default class MemberEditDialogController {
     this.$mdToast = $mdToast;
     this.$state = $state;
     
-    this.context = "dashboard.event.edit";
+    this.context = "dashboard.member.edit";
     this.item = locals.item;
+
+    console.log('Locals');
+    console.log(locals);
+
+    this.organizationMemberRoleOptions = organizationMemberRoleOptions;
 
     if ( ! this.item ) this.item = {  };
   }
   
   /**
-   * Close the dialog without making changes.
+   * Close the dialog without making changes
    */
   cancel() {
     this.$mdDialog.cancel();
