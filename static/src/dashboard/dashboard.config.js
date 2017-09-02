@@ -193,7 +193,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
      *  Set the dashboard them colors
      * */
     $mdThemingProvider.theme('default')
-      .primaryPalette('purple', {'default': '300'})
+      .primaryPalette('purple', {'default': '500'})
       .accentPalette('amber');
 
     // $mdThemingProvider.theme('grey')
