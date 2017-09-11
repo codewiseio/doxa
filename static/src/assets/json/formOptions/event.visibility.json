@@ -1,0 +1,5 @@
+[
+    { "value": 0, "label" : "Hidden" },
+    { "value": 1, "label" : "Church only" },
+   	{ "value": 2, "label" : "Whole world"}
+]

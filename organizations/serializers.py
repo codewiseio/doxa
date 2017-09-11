@@ -10,7 +10,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
 
-        fields = ('id','title','description','size','owner')
+        fields = ('id','name','description','size','owner','email','telephone','address','municipality','region','postcode','country')
         read_only_fields = ['id']
 
 class OrganizationMemberSerializer(serializers.ModelSerializer):
@@ -21,5 +21,5 @@ class OrganizationMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizationMember
 
-        fields = ('id','organization','person','role','join_date','added_by')
+        fields = ('id','organization','person','role','involvement','join_date','added_by')
         read_only_fields = ['id']

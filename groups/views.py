@@ -12,6 +12,7 @@ from django.db.models import Q
 
 from people.models import Person
 import json
+from datetime import datetime
 
 class GroupViewSet(viewsets.ModelViewSet):
 
@@ -136,6 +137,20 @@ class GroupMembersView(generics.ListCreateAPIView):
                 print('Searching with query.');
                 searchString = filters.get('search')
                 queryset = queryset.filter(Q(person__first_name__icontains=searchString) | Q(person__last_name__icontains=searchString))
+
+            if filters.get('age'):
+                print('Filter by age.');
+                age = filters.get('age').split('-');
+                
+                current = datetime.now().date()
+                max_date = datetime(current.year - int(age[0]), current.month, current.day)
+                min_date = datetime(current.year - int(age[1]), current.month, current.day)
+                
+                queryset = queryset.filter(person__birthday__gte=min_date.date(),person__birthday__lte=max_date.date())
+
+            if filters.get('gender'):
+                queryset = queryset.filter(person__gender=filters.get('gender'))
+
 
         # handle sorting
         sortOrder = self.request.GET.get('sortOrder')

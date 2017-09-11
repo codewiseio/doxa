@@ -55,7 +55,7 @@ export default class EventsController extends ListViewController {
    */
   new(item=null, $event=null) {
 
-    if ( ! item ) item = { organization_id: this.AppDataService.organization.id };
+    if ( ! item ) item = { organization_id: this.AppDataService.organization.id, 'visibility':1 };
 
     this.edit(item, $event);
   }

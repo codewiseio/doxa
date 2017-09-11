@@ -16,6 +16,7 @@ from django.db.models import Q
 
 from doxa.exceptions import StorageException
 from django.conf import settings
+from datetime import datetime
 import json
 
 class OrganizationViewSet(viewsets.ModelViewSet):
@@ -141,6 +142,22 @@ class OrganizationMembersListView(generics.ListCreateAPIView):
                 searchString = filters.get('search')
                 queryset = queryset.filter(Q(person__first_name__icontains=searchString) | Q(person__last_name__icontains=searchString))
 
+            if filters.get('age'):
+                print('Filter by age.');
+                age = filters.get('age').split('-');
+                
+                current = datetime.now().date()
+                max_date = datetime(current.year - int(age[0]), current.month, current.day)
+                min_date = datetime(current.year - int(age[1]), current.month, current.day)
+                
+                queryset = queryset.filter(person__birthday__gte=min_date.date(),person__birthday__lte=max_date.date())
+
+            if filters.get('gender'):
+                queryset = queryset.filter(person__gender=filters.get('gender'))
+
+
+
+
         # handle sorting
         sortOrder = self.request.GET.get('sortOrder')
         if sortOrder:
@@ -160,15 +177,6 @@ class OrganizationMembersListView(generics.ListCreateAPIView):
         return Response(members, status=status.HTTP_200_OK)
 
 
-    # def create(self, request, *args, **kwargs):
-    #     data = request.data
-    #     data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
-
-    #     serializer = self.get_serializer(data=data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         data = request.data

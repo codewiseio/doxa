@@ -25,12 +25,12 @@ import ngMessages from 'angular-messages';
 
 import 'jquery';
 import 'bootstrap-loader';
+import 'angular-bootstrap-datetimepicker';
 
 import './authentication';
 import './dashboard';
 import './landing-page';
 import './registration';
-import './organization';
 
 import './foo';
 
@@ -58,7 +58,6 @@ angular.module( "doxa", [
                 'doxa.directives',
                 'doxa.filters',
                 'doxa.foo',
-                'doxa.organization',
                 'ngMaterialDatePicker',
                 'SweetAlert',
                 // 'socialbase.sweetAlert',

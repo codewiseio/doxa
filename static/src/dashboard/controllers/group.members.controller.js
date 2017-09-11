@@ -1,4 +1,8 @@
 import ListViewController from '../../common/list.view.controller.js';
+import memberInvolvementOptions from '../../assets/json/formOptions/member.involvement.json';
+
+
+
 export default class DashboardGroupMembersController extends ListViewController {
   constructor(GroupService, AppDataService, SweetAlert, $cookies, $mdDialog, $mdToast, $state, $stateParams, $http, $scope) {
     'ngInject';
@@ -21,6 +25,10 @@ export default class DashboardGroupMembersController extends ListViewController 
     this.selectedItems = [];
     this.allItemsSelected = false;
     this.filter = {};
+
+    this.enum = {
+      'involvement' : AppDataService.enumerate(memberInvolvementOptions)
+    }
 
     this.initPage();
   }
@@ -54,45 +62,6 @@ export default class DashboardGroupMembersController extends ListViewController 
 
   }
 
-
-  buildMenu() {
-        this.contextMenu = {
-          controller: this,
-          menuItems: [
-            {
-                label: 'Remove Selected',
-                type: 'method',
-                icon: 'remove',
-                action: "$ctrl.contextMenu.controller.removeMembers()"
-            },
-            {
-                type: 'divider',
-            },
-            {
-                label: 'Name',
-                type: 'method',
-                icon: '',
-                action: "$ctrl.contextMenu.controller.sortyBy('name')"
-            },
-            {
-                label: 'Role',
-                type: 'method',
-                icon: '',
-                action: "$ctrl.contextMenu.controller.sortBy('role')"
-            },
-            {
-                label: 'Join Date',
-                type: 'method',
-                icon: '',
-                action: "$ctrl.contextMenu.controller.sortBy('join_date')"
-            },
-          ]
-        };
-
-
-
-        this.AppDataService.contextMenu = this.contextMenu;
-  }
 
   /**
    * Display a dialog to add a member to the group

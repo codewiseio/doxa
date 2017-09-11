@@ -1,0 +1,6 @@
+[
+    { "value": -1, "label" : "Declined" },
+    { "value": 0, "label" : "Invited" },
+   	{ "value": 1, "label" : "Interested"},
+   	{ "value": 2, "label" : "Going"}
+]

@@ -17,14 +17,14 @@
                     <div layout="column" layout-gt-xs="row">
                         <md-input-container flex-gt-xs="66">
                           <label>Church or Organization Name</label>
-                          <input required name="title" ng-model="$ctrl.formData.title" type="text" />
+                          <input required name="name" ng-model="$ctrl.formData.name" type="text" />
                         </md-input-container>
                         
                         <md-input-container flex-gt-xs="auto">
                             <label>Size</label>
                             <md-select required name="size" ng-model="$ctrl.formData.size">
                             <md-option ng-repeat="item in $ctrl.organizationSizeOptions" value="{{item.value}}">
-                              {{item.display}}
+                              {{item.label}}
                             </md-option>
                             </md-select>
                         </md-input-container>

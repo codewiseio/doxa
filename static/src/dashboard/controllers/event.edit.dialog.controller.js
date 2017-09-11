@@ -1,3 +1,6 @@
+import eventVisibilityOptions from '../../assets/json/formOptions/event.visibility.json';
+
+
 export default class EventEditDialogController {
   
   constructor(EventService, $mdDialog, $mdToast, $state, $filter, locals) {
@@ -8,6 +11,7 @@ export default class EventEditDialogController {
     this.$mdToast = $mdToast;
     this.$state = $state;
     this.$filter = $filter;
+    this.build_options();
     
     this.context = "dashboard.event.edit";
     this.item = locals.item;
@@ -17,7 +21,7 @@ export default class EventEditDialogController {
     this.displayEndTime = false;
     this.event_name = true;
 
-    if ( ! this.item ) this.item = {  };
+    if ( ! this.item ) this.item = { 'visibility': 1 };
 
 
     if(!locals.item.end_date){
@@ -26,6 +30,12 @@ export default class EventEditDialogController {
       this.ShowEndDateDialog = true;
     }
   
+  }
+
+  build_options() {
+    this.options = {
+      'visibility':eventVisibilityOptions
+    }
   }
   
   removeEndDate(){

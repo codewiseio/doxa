@@ -1,4 +1,7 @@
 export default class ListViewController {
+  constructor() {
+    this.filter = {};
+  }
 
   /**
    * Sort the list by the given field name

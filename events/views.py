@@ -2,8 +2,12 @@ from django.shortcuts import render
 from rest_framework import status, generics
 from rest_framework.response import Response
 
-from events.models import Event
-from events.serializers import EventSerializer
+from events.models import Event, Guest
+from events.serializers import EventSerializer, GuestSerializer
+from people.serializers import PersonSerializer
+
+from organizations.models import OrganizationMember
+from organizations.serializers import OrganizationMemberSerializer
 
 from django.db.models import Q
 from rest_framework.decorators import  api_view
@@ -184,3 +188,89 @@ class EventItemView(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+class GuestListView(generics.ListAPIView):
+    serializer_class = GuestSerializer
+    lookup_url_kwarg = "event"
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+
+        event = Event.objects.get(pk=pk);
+        queryset = Guest.objects.filter(event=event.id)
+
+        sortOrder = self.request.data.get('sortOrder', 'person__first_name')
+        if sortOrder:
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
+
+    def list(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = GuestSerializer(queryset, many=True)
+        items = serializer.data
+        return Response(items, status=status.HTTP_200_OK)
+
+class GuestItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response( serializer.data )
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class GuestInviteView(generics.ListCreateAPIView):
+    serializer_class = OrganizationMemberSerializer
+    lookup_url_kwarg = "organization"
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+
+        event = Event.objects.get(pk=pk);
+
+        # exclude already invited guests
+        guests = Guest.objects.filter(event=pk)
+        people = []
+        for guest in guests:
+            people.append( guest.person )
+
+        queryset = OrganizationMember.objects.filter(organization=event.organization).exclude(person__in=people)
+
+        sortOrder = self.request.data.get('sortOrder', 'person__first_name')
+        if sortOrder:
+            queryset = queryset.order_by(sortOrder)
+
+        return queryset
+
+    def list(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+
+
+        serializer = OrganizationMemberSerializer(queryset, many=True)
+        items = serializer.data
+        return Response(items, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        event = self.kwargs.get('pk')
+        people = request.data.get('people')
+        guest_status = 2
+ 
+        for id in people:
+            guest = Guest(event_id=event,person_id=id,status=guest_status)
+            guest.save()
+
+        word = 'person' if len(people) == 1 else 'people'
+        response = {
+            "message": "Invited {} {}".format(len(people), word )
+        }
+
+        return Response(response, status=status.HTTP_201_CREATED)

@@ -14,11 +14,10 @@
             <div layout="column" layout-gt-xs="row">
 
                 <md-input-container flex-gt-xs="50">
-                <label>Role</label>
-                  <md-select required name="type" ng-model="$ctrl.item.role">
-                    <md-option value=""></md-option>
-                    <md-option ng-repeat="item in $ctrl.groupMemberRoleOptions" value="{{item}}">
-                      {{item}}
+                <label>Involvement</label>
+                  <md-select required name="type" ng-model="$ctrl.item.involvement">
+                    <md-option ng-repeat="item in $ctrl.options.memberInvolvement" value="{{item.value}}">
+                      {{item.label}}
                     </md-option>
                   </md-select>
                 </md-input-container>

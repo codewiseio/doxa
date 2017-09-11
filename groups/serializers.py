@@ -24,6 +24,6 @@ class GroupMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupMember
 
-        fields = ('id','group','person','role','join_date','added_by')
+        fields = ('id','group','person','role','involvement','join_date','added_by')
         read_only_fields = ['id']
 

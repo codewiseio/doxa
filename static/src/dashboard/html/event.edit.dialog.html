@@ -1,4 +1,4 @@
-<md-dialog aria-label="Edit group" class="edit-group">
+<md-dialog aria-label="Edit event" class="edit-event edit-dialog">
   <form ng-submit="$ctrl.save()">
 
 
@@ -18,10 +18,22 @@
               <textarea ng-model="$ctrl.item.description" md-maxlength="400" rows="1" md-select-on-focus></textarea>
             </md-input-container>
 
-            <md-input-container>
-              <label>Location</label>
-              <input name="location" ng-model="$ctrl.item.location" type="text" />
-            </md-input-container><br>
+            <div layout="row">
+
+              <md-input-container  flex-gt-xs="70">
+                <label>Location</label>
+                <input name="location" ng-model="$ctrl.item.location" type="text" />
+              </md-input-container>
+
+                <md-input-container flex-gt-xs="30">
+                <label>Visibility</label>
+                  <md-select required name="type" ng-model="$ctrl.item.visibility">
+                    <md-option ng-repeat="item in $ctrl.options.visibility" value="{{item.value}}">
+                      {{item.label}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+            </div>
 
 
             <div layout="row">
@@ -34,12 +46,12 @@
         
 
               <md-input-container  flex-gt-xs="33">
-                <input mdc-datetime-picker required date="false" time="true" type="text" id="time" short-time="true"
+                <input mdc-datetime-picker date="false" time="true" type="text" id="time" 
+                       short-time="true"
                        show-todays-date
                        placeholder="Time"
                        min-date="minDate"
                        format="hh:mm"
-                       ng-change="vm.saveChange()"
                        ng-model="$ctrl.item.start_time">
               </md-input-container>
 
@@ -47,7 +59,7 @@
                   <md-button ng-hide="$ctrl.ShowEndDateDialog" ng-click="$ctrl.ShowEndDateDialog = true;">+ End time </md-button>
               </md-input-container>
 
-            </div><br>
+            </div>
 
             <div layout="row" ng-show="$ctrl.ShowEndDateDialog">
               <md-input-container  class="date-picker"  flex-gt-xs="33">

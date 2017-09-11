@@ -1,5 +1,3 @@
-<!-- form-profile.html -->
-
 <div class="container-fluid">
 <div class="row">
   <div class="col-md-12">
@@ -7,25 +5,38 @@
           <div class="card-header card-header-icon" data-background-color="rose">
               <i class="material-icons">face</i>
           </div>
-<!--           <h4 class="card-title">Members of {{$ctrl.organization.name}} </h4>
+          <div class="card-toolbar" layout="row">
+            <!-- Filters -->
+            <md-input-container>
+              <md-select name="filter_gender" ng-model="$ctrl.filter.gender" placeholder="Gender" style="width: 150px" ng-change="$ctrl.refreshResults()">
+                <md-option></md-option>
+                <md-option value="f">Female</md-option>
+                <md-option value="m">Male</md-option>
+              </md-select>
+            </md-input-container>
 
- -->
-          <div class="card-toolbar">
-<!-- 
-          <button type="button" rel="tooltip" class="btn btn-danger btn-icon" 
-                                          data-original-title="" title=""
-                                           ng-click="$ctrl.removeMembers($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length">
-                                      <i class="material-icons">delete</i>
-                                  </button> -->
+            <md-input-container style="margin-left: 18px;">
+              <md-select name="filter_age" ng-model="$ctrl.filter.age" placeholder="Age" style="width: 150px" ng-change="$ctrl.refreshResults()">
+                <md-option></md-option>
+                <md-option value="0-12">Kids</md-option>
+                <md-option value="13-19">Youth</md-option>
+                <md-option value="20-150">Adults</md-option>
+              </md-select>
+            </md-input-container>
 
-             <md-button class="md-icon-button" ng-click="$ctrl.deleteMultiple($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length"><md-icon>delete</md-icon></md-button>
+            <span class="flex"></span>
+
+               <md-button class="md-icon-button" ng-click="$ctrl.deleteMultiple($ctrl.selectedItems)" ng-show="!!$ctrl.selectedItems.length" style="margin: 14px 0px;"><md-icon>delete</md-icon></md-button>
+
+
 
             <div class="search-wrapper">
-                  <div class="form-group form-search is-empty;">
-                  <input type="text" class="form-control" placeholder="Search"
-                  ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()">
-                  </div>
+              <div class="form-group form-search is-empty;">
+              <input type="text" class="form-control" placeholder="Search"
+              ng-model="$ctrl.filter.search" ng-model-options="{ debounce: 500 }" ng-change="$ctrl.refreshResults()">
+              </div>
             </div>
+
           </div>
 
           <div class="card-content">
@@ -41,7 +52,7 @@
                                 </div>
                               </th>
                               <th ng-click="$ctrl.sortBy('person__first_name')">Name</th>
-                              <th ng-click="$ctrl.sortBy('role')">Role</th>
+                              <th ng-click="$ctrl.sortBy('involvement')">Involvement</th>
                               <th ng-click="$ctrl.sortBy('join_date')">Since</th>
                               <th class="text-right">Actions</th>
                           </tr>
@@ -58,7 +69,7 @@
 
                               </td>
                               <td>{{item.person.first_name}} {{item.person.last_name}}</td>
-                              <td>{{item.role}}</td>
+                              <td>{{$ctrl.enum.involvement[item.involvement]}}</td>
                               <td>{{item.join_date | relativeDate }}</td>
                               <td class="td-actions text-right">
    

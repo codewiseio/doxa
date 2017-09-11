@@ -21,30 +21,42 @@ class Organization(models.Model, CreatedModifiedMixin):
         (SIZE_251ORMORE, '251 people or more')
     )
     
-    prepopulated_fields = {"slug": ("title")}
+    prepopulated_fields = {"slug": ("name")}
     
-    title       = models.CharField(max_length=255,null=False)
+    name       = models.CharField(max_length=255,null=False)
     slug        = models.SlugField(max_length=255,allow_unicode=True,blank=True)
     description = models.TextField(blank=True,null=True)
     size        = models.PositiveSmallIntegerField(choices=SIZE_CHOICES,blank=True,null=True)
     
+    email = models.CharField(max_length=64,null=True,blank=True)
+    telephone = models.CharField(max_length=64,null=True,blank=True)
+
+
+    address      = models.CharField(max_length=255,null=True,blank=True)
+    municipality = models.CharField(max_length=64,null=True,blank=True)
+    region       = models.CharField(max_length=64,null=True,blank=True)
+    postcode     = models.CharField(max_length=16,null=True,blank=True)
+    country      =  models.CharField(max_length=64,null=True,blank=True)
+
+    
     owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
     def save(self, *args, **kwargs):
-           self.slug = slugify(self.title)
+           self.slug = slugify(self.name)
            super().save(*args, **kwargs)
            
     def __unicode__(self):
-        return self.title
+        return self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
 class OrganizationMember(models.Model, CreatedModifiedMixin):
     organization    = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=False, null=False)
     person          = models.ForeignKey(Person, on_delete=models.CASCADE, blank=False, null=False)
     role            = models.CharField(max_length=16,null=False,blank=True,default='member')
     join_date       = models.DateTimeField(blank=True,null=True,auto_now_add=True)
+    involvement     = models.IntegerField(null=False,blank=False,default=1)
     added_by        = models.ForeignKey(Person, on_delete=models.SET_NULL, blank=True, null=True, related_name='OrganizationMembers_added')
 
 class OrganizationProfile(models.Model, CreatedModifiedMixin):

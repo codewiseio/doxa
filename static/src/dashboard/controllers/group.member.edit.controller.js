@@ -1,4 +1,4 @@
-import groupMemberRoleOptions from '../../assets/json/formOptions/group.member.role.json';
+import memberInvolvement from '../../assets/json/formOptions/member.involvement.json';
 
 
 export default class DashboardGroupEditMemberController {
@@ -11,7 +11,11 @@ export default class DashboardGroupEditMemberController {
     this.$mdToast = $mdToast;
     this.$http = $http;
 
-    this.groupMemberRoleOptions = groupMemberRoleOptions;
+    this.options = {
+      memberInvolvement: memberInvolvement
+    };
+
+    console.log(this.options);
     
     this.context = "dashboard.group.members.edit";
     this.errors = [];

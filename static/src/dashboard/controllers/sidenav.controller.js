@@ -12,13 +12,6 @@ class SidenavController {
                 state:"dashboard.home()"
             },
             {
-                label: 'Organization',
-                type: 'link',
-                icon: 'domain',
-                href: '/dashboard/organization',
-                state:"dashboard.organization()"
-            },
-            {
                 label: 'Members',
                 type: 'link',
                 icon: 'face',

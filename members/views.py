@@ -82,6 +82,11 @@ class MembersListView(generics.ListCreateAPIView):
         serializer =  OrganizationMemberSerializer(orgmembers_data,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+
+
+
+
 class MemberItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MemberSerializer
     queryset = Member.objects

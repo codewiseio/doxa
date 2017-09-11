@@ -41,6 +41,11 @@ export default class DashboardMemberService {
           params: params
         }
       );
+      // return this.$http.get(`/api/v1/members/${moniker}:${id}`,
+      //   {
+      //     params: params
+      //   }
+      // );
    }
 
    /**
@@ -55,8 +60,7 @@ export default class DashboardMemberService {
       console.log("DATA IS : ")
       console.log(data)
       if ( data.id ) {
-         console.log("id" + data.id);
-         return this.$http.patch(`/api/v1/members/${data.person.id}/`, data );
+         return this.$http.patch(`/api/v1/members/${data.id}/`, data );
       }
       else {
          return this.$http.post(`/api/v1/members/`, data );

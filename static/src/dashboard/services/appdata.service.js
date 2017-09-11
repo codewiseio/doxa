@@ -7,6 +7,15 @@ export default class AppDataService {
       this._bindings = { 'get':[], 'set':[] };
    }
 
+   enumerate(list) {
+      var returnList = {}
+      list.forEach( function(item) {
+         returnList[item.value] = item.label;
+      });
+      return returnList;
+   }
+
+
    // set(key,value) {
    // 		this.trigger('set',this[key],value);
    // 		return this[key] = value;

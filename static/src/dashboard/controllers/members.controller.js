@@ -1,5 +1,7 @@
 
 import ListViewController from '../../common/list.view.controller.js';
+import memberInvolvementOptions from '../../assets/json/formOptions/member.involvement.json';
+
 
 export default class DashboardMembersController extends ListViewController {
   constructor(AppDataService, DashboardMemberService, SweetAlert, $cookies, $state, $scope, $stateParams, $mdDialog, $mdToast) {
@@ -27,7 +29,10 @@ export default class DashboardMembersController extends ListViewController {
     this.selectedItems = [];
     this.allItemsSelected = false;
 
-    console.log(this.$scope);
+    this.enum = {
+      'involvement' : AppDataService.enumerate(memberInvolvementOptions)
+    }
+
 
     var $this = this;
     this.$scope.$watch('$ctrl.selectedItems', function (newValue, oldValue, scope) {

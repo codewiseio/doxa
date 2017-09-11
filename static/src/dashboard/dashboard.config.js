@@ -88,48 +88,6 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           }
         }
       })
-      .state('dashboard.groups', {
-        url: '/groups',
-        title: 'Groups',
-        views : {
-          'appbar': {
-            templateUrl: 'dashboard.appbar.html',
-            controller: 'DashboardAppbarController as $ctrl',
-          },
-          '': {
-            templateUrl: 'dashboard.groups.html',
-            controller: 'DashboardGroupsController as $ctrl',
-          }
-        },
-      })
-      .state('dashboard.newGroup', {
-        url: '/group',
-        title: 'New Group',
-        views : {
-          'appbar': {
-            templateUrl: 'form.appbar.html',
-            controller: 'DashboardAppbarController as $ctrl',
-          },
-          '': {
-            templateUrl: 'dashboard.group.edit.html',
-            controller: 'DashboardGroupController as $ctrl',
-          }
-        }
-      })
-      .state('dashboard.editGroup', {
-        url: '/group/:id/edit',
-        title: 'Group',
-        views : {
-          'appbar': {
-            templateUrl: 'form.appbar.html',
-            controller: 'DashboardAppbarController as $ctrl',
-          },
-          '': {
-            templateUrl: 'dashboard.group.edit.html',
-            controller: 'DashboardGroupController as $ctrl',
-          }
-        }
-      })
       .state('dashboard.group', {
         url: '/group/:id',
         title: 'Group',
@@ -143,6 +101,20 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
             controller: 'DashboardGroupController as $ctrl',
           }
         }
+      })
+      .state('dashboard.groups', {
+        url: '/groups',
+        title: 'Groups',
+        views : {
+          'appbar': {
+            templateUrl: 'dashboard.appbar.html',
+            controller: 'DashboardAppbarController as $ctrl',
+          },
+          '': {
+            templateUrl: 'dashboard.groups.html',
+            controller: 'DashboardGroupsController as $ctrl',
+          }
+        },
       })
       .state('dashboard.groupMembers', {
         url: '/group/:id/members',
@@ -158,6 +130,20 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           }
         }
       })
+      .state('dashboard.event', {
+          url: '/event/:id',
+          title: 'Event',
+          views : {
+            'appbar': {
+              templateUrl: 'dashboard.appbar.html',
+              controller: 'DashboardAppbarController as $ctrl',
+            },
+            '': {
+              templateUrl: 'event.html',
+              controller: 'EventController as $ctrl',
+            }
+          }
+      })
       .state('dashboard.events', {
           url: '/events',
           title: 'Events',
@@ -171,21 +157,22 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
               controller: 'EventsController as $ctrl',
             }
           }
-      })
-      .state('dashboard.event', {
-          url: '/event/:id',
-          title: 'Event',
-          views : {
-            'appbar': {
-              templateUrl: 'dashboard.appbar.html',
-              controller: 'DashboardAppbarController as $ctrl',
-            },
-            '': {
-              templateUrl: 'dashboard.event.view.html',
-              controller: 'EventController as $ctrl',
-            }
-          }
-      })
+      });
+      // .state('dashboard.event', {
+      //   url: '/event/:id/members',
+      //   title: 'Event Members',
+      //   views : {
+      //     'appbar': {
+      //       templateUrl: 'dashboard.appbar.html',
+      //       controller: 'DashboardAppbarController as $ctrl',
+      //     },
+      //     '': {
+      //       templateUrl: 'event.members.html',
+      //       controller: 'EventMembersController as $ctrl',
+      //     }
+      //   }
+      // });
+
 
       ;
 

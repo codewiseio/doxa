@@ -60,7 +60,7 @@ export default class EventController {constructor(EventService, AppDataService, 
 
     return this.$mdDialog.show({
           controller: 'EventEditDialogController as $ctrl',
-          templateUrl: 'event.edit.dialog.html',
+          templateUrl: 'event.invite.dialog.html',
           locals: { "item": this.item },
           clickOutsideToClose:true,
           fullscreen: true,
@@ -87,6 +87,58 @@ export default class EventController {constructor(EventService, AppDataService, 
         }, (error) => {
             console.log('error');
         });
+  }
+
+  /**
+   * Invite members to the event
+   * @param  {event} $event 
+   */
+  invite($event) {
+    return this.$mdDialog.show({
+              controller: 'EventGuestInviteController as $ctrl',
+              templateUrl: 'event.guest.invite.dialog.html',
+              locals: { "event": this.item },
+              clickOutsideToClose:true,
+              fullscreen: true,
+              parent: angular.element(document.body),
+              targetEvent: $event
+            })
+            .then(
+              (response) => {
+                // notify the user
+                var toast = this.$mdToast.simple()
+                  .textContent(response.data.message)
+                  .position('bottom left')
+                  .parent();
+                this.$mdToast.show(toast);
+
+            }, (error) => {
+                console.log('error');
+            });
+  }
+
+  guestList($event) {
+    return this.$mdDialog.show({
+              controller: 'EventGuestListController as $ctrl',
+              templateUrl: 'event.guest.list.dialog.html',
+              locals: { "event": this.item },
+              clickOutsideToClose:true,
+              fullscreen: true,
+              parent: angular.element(document.body),
+              targetEvent: $event
+            })
+            .then(
+              (response) => {
+                // notify the user
+                var toast = this.$mdToast.simple()
+                  .textContent(response.data.message)
+                  .position('bottom left')
+                  .parent();
+                this.$mdToast.show(toast);
+
+            }, (error) => {
+                console.log('error');
+            });
   }
   
 

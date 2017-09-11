@@ -1,6 +1,4 @@
-import personTitleOptions from '../../assets/json/formOptions/person.title.json';
-import organizationMemberRoleOptions from '../../assets/json/formOptions/organization.member.role.json';
-
+import memberInvolvementOptions from '../../assets/json/formOptions/member.involvement.json';
 
 export default class DashboardMemberDialogController {
   
@@ -13,8 +11,7 @@ export default class DashboardMemberDialogController {
     this.$rootScope = $rootScope;
     this.$mdDialog = $mdDialog;
     
-    this.personTitleOptions = personTitleOptions;
-    this.organizationMemberRoleOptions = organizationMemberRoleOptions;
+    this.memberInvolvementOptions = memberInvolvementOptions;
 
     this.context = "dashboard.member.edit";
 

@@ -1,4 +1,5 @@
 [
-    "Member",
-    "Administrator"
+    "User",
+    "Administrator",
+    "Super Administrator"
 ]

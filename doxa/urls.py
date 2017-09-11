@@ -11,7 +11,7 @@ from registration.views import RegisterView
 
 from organizations.views import OrganizationViewSet, OrganizationMembersListView, OrganizationMemberItemView
 from groups.views import GroupViewSet, GroupListView, GroupItemView, GroupMembersView,GroupMemberItemView
-from events.views import EventListView, EventItemView
+from events.views import EventListView, EventItemView, GuestInviteView, GuestItemView, GuestListView
 import json
 
 
@@ -33,21 +33,29 @@ urlpatterns = [
 
 
     url(r'^api/v1/organizations/(?P<organization>\d+)/members/$', OrganizationMembersListView.as_view(), name="organizationMembers" ),
-    
 
-    url(r'^api/v1/groups/$', GroupListView.as_view(), name="groups"),
-    url(r'^api/v1/getgroups/(?P<organization>\d+)/$', GroupListView.as_view(), name="group"),
+
+    # url(r'^api/v1/groups/$', GroupListView.as_view(), name="groups"),
+    # url(r'^api/v1/getgroups/(?P<organization>\d+)/$', GroupListView.as_view(), name="group"),
     
+    url(r'^api/v1/groups/organization:(?P<organization>\d+)/$', GroupListView.as_view(), name="group"),
     url(r'^api/v1/groups/(?P<pk>\d+)/$', GroupItemView.as_view(), name="group"),
     url(r'^api/v1/groups/(?P<group>\d+)/members/$', GroupMembersView.as_view(), name="groupMembers" ),
     url(r'^api/v1/groups/(?P<group>\d+)/members/remove/$', GroupMembersView.delete, name="removeMembers" ),
     url(r'^api/v1/groups/(?P<group>\d+)/member/(?P<member_id>\d+)/$', GroupMemberItemView.as_view(), name="groupMember" ),
-    url(r'^api/v1/groups/remove/$', GroupListView.delete, name="group"),
+    url(r'^api/v1/group/remove/$', GroupListView.delete, name="group"),
 
     url(r'^api/v1/events/$', EventListView.as_view(), name="events"),
     url(r'^api/v1/events/organization/(?P<organization>\d+)/$', EventListView.as_view(), name="events"),
     url(r'^api/v1/events/(?P<pk>\d+)/$',EventItemView.as_view(), name="event"),
     url(r'^api/v1/events/remove/$', EventListView.delete, name="events"),
+
+    url(r'^api/v1/events/(?P<pk>\d+)/guests/$',GuestListView.as_view(), name="guests"),
+    url(r'^api/v1/events/(?P<pk>\d+)/guests/eligible/$',GuestInviteView.as_view(), name="eligible"),
+    url(r'^api/v1/events/(?P<pk>\d+)/guests/invite/$',GuestInviteView.as_view(), name="invite"),
+
+    url(r'^api/v1/guests/(?P<pk>\d+)/$', GuestItemView.as_view(), name="guest"),
+
     
     url(r'^api/v1/members/$', OrganizationMembersListView.as_view(), name="members" ),
     url(r'^api/v1/members/(?P<pk>\d+)/$', OrganizationMemberItemView.as_view(), name='member'),

@@ -108,6 +108,8 @@ class RegisterView(views.APIView):
         
         data['owner'] = user.id
         serializer = OrganizationSerializer(data=data)
+
+        print( data )
                 
         # validate supplied data
         if serializer.is_valid():

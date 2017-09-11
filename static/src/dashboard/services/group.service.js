@@ -1,77 +1,30 @@
-export default class GroupService {
+import CrudService from '../../lib/crud.service.js';
+
+export default class GroupService extends CrudService {
 
    constructor($http, $cookies) {
       'ngInject';
+      super();
+
       this.$http = $http;
+      this._plural = 'groups';
+      this._single = 'group';
    }
 
-   /**
-    * sort events
-    * @param  {int} id and filter_name
-    * @return {Promise}
-    */
-   sort(id,filter_name){
-      return this.$http.get(`/api/v1/sortGroups/org/${id}/filter/${filter_name}/`,        
-        {
-        }
-      );
-   }
 
-   /**
-    * Delete the group
-    * @param  {Int} id Record ID
-    * @return {Promise} 
-    */
-   delete(id) {
-      return this.$http.delete(`/api/v1/groups/${id}/`);
-   }
-
-   //Remove groups
-   deleteMultiple(ids) {
-    // pass ids to the api
-    return this.$http.post(`/api/v1/groups/remove/`, { ids: ids } );
-   }
-   
-   /**
-    * Retrieve the group
-    * @param  {int} id Record ID
-    * @return {Promise}
-    */
-   get(id, params={} ) {
-      return this.$http.get(`/api/v1/groups/${id}/`,
-        {
-          params: params
-        }
-      );
-   }
-   
    /**
     * List groups
     * @param  {int} id
     * @return {Promise}
     */
    list( id,params={} ) {
-      return this.$http.get(`/api/v1/getgroups/${id}/`,        
+      return this.$http.get(`/api/v1/${this._plural}/organization:${id}/`,        
         {
           params: params
         }
       );
    }
    
-   /**
-    * Save record
-    * @param  {obj} data Object to save to database
-    * @return {Promise}
-    */
-   save(data) {
-      if ( data.id ) {
-         return this.$http.patch(`/api/v1/groups/${data.id}/`, data );
-      }
-      else {
-         return this.$http.post(`/api/v1/groups/`, data );
-      }
-   }
-
    /**
     * Get Members
     * @param  {obj} data Object to save to database
@@ -90,8 +43,6 @@ export default class GroupService {
    }
 
    updateMember(member) {
-      console.log("member")
-      console.log(member)
       return this.$http.patch(`/api/v1/groups/${member.group}/member/${member.id}/`, member);
    }
 
@@ -100,9 +51,6 @@ export default class GroupService {
    }
 
    removeMembers(members) {
-    console.log('Removing members');
-    console.log(members);
-
     // get ids from members array
     var ids = [];
     members.forEach( function(item) {

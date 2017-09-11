@@ -73,7 +73,7 @@
             <div class="input-wrapper" flex-gt-xs="33" >
               <md-input-container>
               <label>Last</label>
-              <input required name="title" ng-model="$ctrl.item.person.last_name" type="text" />
+              <input required name="last_name" ng-model="$ctrl.item.person.last_name" type="text" />
               </md-input-container>
             </div> 
 
@@ -85,7 +85,6 @@
               <md-input-container>
                 <label>Gender</label>
                  <md-select ng-model="$ctrl.item.person.gender" placeholder="Gender">
-                  <md-option value=""></md-option>
                   <md-option value="f">Female</md-option>
                   <md-option value="m">Male</md-option>
                 </md-select>
@@ -103,25 +102,29 @@
 
 
         <div layout="column" layout-gt-xs="row">   
-
             <div class="input-wrapper" flex-gt-xs="40" >
+
               <md-input-container>
-                <label>Role</label>
-                <md-select required name="type" ng-model="$ctrl.item.role">
-                  <md-option value=""></md-option>
-                  <md-option ng-repeat="item in $ctrl.organizationMemberRoleOptions" value="{{item}}">
-                    {{item}}
+                <label>Involvement</label>
+                <md-select required name="type" ng-model="$ctrl.item.involvement">
+
+                  <md-option ng-repeat="item in $ctrl.memberInvolvementOptions" value="{{item.value}}">
+                    {{item.label}}
                   </md-option>
                 </md-select>
-              </md-input-container>   
-            </div> 
+              </md-input-container>
+
+            </div>
 
             <div class="input-wrapper" flex-gt-xs="40" >
+
               <md-input-container class="date-picker">
                 <label>Member since</label>
                 <md-datepicker ng-model="$ctrl.item.join_date" md-current-view="year"></md-datepicker>
               </md-input-container>
-            </div> 
+
+
+            </div>
 
         </div>
 
