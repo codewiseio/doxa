@@ -1,5 +1,4 @@
 //@require "./html/*.html"
-// require('../assets/css/landing-page.less');
 
 export default function LandingPageConfig($stateProvider) {
   'ngInject';
@@ -9,13 +8,9 @@ export default function LandingPageConfig($stateProvider) {
       .state('landing', {
         url: '/',
         controller: 'LandingPageController as $ctrl',
-        templateUrl: 'landing-page.index.html',
-        abstract: true
-      })
-      .state('landing.home', {
-        url: '',
-        templateUrl: 'landing-page.home.html'
+        templateUrl: 'landing-page.index.html'
       });
+
 }
 
 

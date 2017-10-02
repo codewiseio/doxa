@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     'people',
     'members',
     'groups',
-    'events'
+    'events',
+    'search',
+    'tasks'
 ]
 
 AUTH_USER_MODEL = 'authentication.User'

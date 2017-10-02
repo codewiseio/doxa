@@ -1,16 +1,6 @@
 @require "./html/*.html"
 
-// require('../assets/css/default.less');
-// require('../assets/css/dashboard.less');
-// require('../common/html/form.appbar.html');
 
-require("../assets/css/material-dashboard.css");
-require("../assets/css/jquery.dropdown.css");
-// require("../assets/js/bootstrap.min.js");
-
-// require("../assets/js/jquery-3.1.1.min.js");
-// require("../assets/js/jquery.tagsinput.js");
-// 
 require("../assets/js/doxa.js");
 require("../assets/js/bootstrap-notify.js");
 require("../assets/js/material.min.js");
@@ -70,7 +60,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           },
           '': {
             templateUrl: 'dashboard.members.html',
-            controller: 'DashboardMembersController as $ctrl',
+            controller: 'MembersController as $ctrl',
           }
         }
       })
@@ -98,7 +88,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           },
           '': {
             templateUrl: 'dashboard.group.view.html',
-            controller: 'DashboardGroupController as $ctrl',
+            controller: 'GroupController as $ctrl',
           }
         }
       })
@@ -112,7 +102,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           },
           '': {
             templateUrl: 'dashboard.groups.html',
-            controller: 'DashboardGroupsController as $ctrl',
+            controller: 'GroupsController as $ctrl',
           }
         },
       })
@@ -126,7 +116,7 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           },
           '': {
             templateUrl: 'dashboard.group.members.html',
-            controller: 'DashboardGroupMembersController as $ctrl',
+            controller: 'GroupMembersController as $ctrl',
           }
         }
       })
@@ -148,15 +138,21 @@ export default function DashboardConfig($stateProvider, $mdThemingProvider) {
           url: '/events',
           title: 'Events',
           views : {
-            'appbar': {
-              templateUrl: 'dashboard.appbar.html',
-              controller: 'DashboardAppbarController as $ctrl',
-            },
             '': {
               templateUrl: 'dashboard.events.html',
               controller: 'EventsController as $ctrl',
             }
           }
+      })
+      .state('dashboard.tasks', {
+        url: '/tasks',
+        title: 'Tasks',
+        views: {
+            '': {
+              templateUrl: 'tasks.html',
+              controller: 'TasksController as $ctrl',
+            }
+        }
       });
       // .state('dashboard.event', {
       //   url: '/event/:id/members',

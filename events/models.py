@@ -5,7 +5,7 @@ from people.models import Person
 from core.models import CreatedModifiedMixin
 
 # Create your models here.
-class Event(models.Model, CreatedModifiedMixin):
+class Event(CreatedModifiedMixin):
     group           = models.ForeignKey(Group,  on_delete=models.CASCADE, blank=True, null=True)
     organization    = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=False, null=False)
 
@@ -21,7 +21,10 @@ class Event(models.Model, CreatedModifiedMixin):
 
     visibility      = models.IntegerField(blank=True,null=False,default=1)
 
-class Guest(models.Model, CreatedModifiedMixin):
+    class Meta:
+        abstract = False
+
+class Guest(CreatedModifiedMixin):
     event 			= models.ForeignKey(Event,  on_delete=models.CASCADE, blank=False, null=False)
     person			= models.ForeignKey(Person, on_delete=models.CASCADE, blank=True, null=True)
     status			= models.IntegerField(blank=True, null=False, default=1)
@@ -29,7 +32,8 @@ class Guest(models.Model, CreatedModifiedMixin):
 
     response_time   = models.DateTimeField(auto_now=False,blank=True,null=True)
 
-
+    class Meta:
+        abstract = False
 
 
 

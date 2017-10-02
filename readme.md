@@ -7,6 +7,15 @@ Clone the project from gitlab.com
 
 Create a settings_local.py file in the "doxa" subfolder. Modify any necessary settings here.
 
+Create Virtualenv
+
+virtualenv -p python3 venv
+
+Install Modules
+
+pip install -r requirements.txt
+
+
 Install Node JS/NPM
 
     http://blog.teamtreehouse.com/install-node-js-npm-windows
@@ -20,9 +29,13 @@ Install node_modules
     cd static
     npm install
 
+
+
 Run development server for testing
 
     python manage.py runserver
+
+
 
 
 Requirements PYTHON ^3.5.2

@@ -1,9 +1,11 @@
 from django.db import models
-from core.models import Entity, CreatedModifiedMixin
+from core.models import CreatedModifiedMixin
 from authentication.models import User
+from django.conf import settings
+
 
 # Create your models here.
-class Person (models.Model, CreatedModifiedMixin):
+class Person (CreatedModifiedMixin):
     title = models.CharField(max_length=16,null=True,blank=True)
 
     first_name = models.CharField(max_length=32,null=False,blank=False)
@@ -34,4 +36,5 @@ class Person (models.Model, CreatedModifiedMixin):
     def __str__(self):
         return '<{} {}>'.format(self.first_name, self.last_name)
 
-   
+    class Meta:
+        abstract = False

@@ -28,6 +28,12 @@ class SidenavController {
                 type: 'link',
                 icon: 'event',
                 state: 'dashboard.events()'
+            },
+            {
+                label: 'Tasks',
+                type: 'link',
+                icon: 'checkbox',
+                state: 'dashboard.tasks()'
             }
         ];
     }

@@ -3,7 +3,18 @@
 
 export default class CrudService {
 
-	/**
+
+    /**
+     * Create records
+     * @param  Object item The item to be created
+     * @return Promise
+     */
+    create(item) {
+       return this.$http.post(`/api/v1/${this._plural}/`, item );
+    }
+
+
+	 /**
     * Delete a record
     * @param  {Int} id Record ID
     * @return {Promise} 
@@ -47,19 +58,31 @@ export default class CrudService {
         }
       );
    }
+
+
    
    /**
     * Create or update a record
-    * @param  Object data Object data
-    * @return Promise Record data
+    * @param  Object item The item to be created
+    * @return Promise
     */
-   save(data) {
-      if ( data.id ) {
-         return this.$http.patch(`/api/v1/${this._plural}/${data.id}/`, data );
+   save(item) {
+      if ( item.id ) {
+        return this.update(item);
       }
       else {
-         return this.$http.post(`/api/v1/${this._plural}/`, data );
+         return this.create(item);
       }
+   }
+
+
+   /**
+    * Update a record
+    * @param  Object item The item to be updated
+    * @return Promise
+    */
+   update(item) {
+        return this.$http.patch(`/api/v1/${this._plural}/${item.id}/`, item );
    }
 
 }

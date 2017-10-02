@@ -2,10 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
+from django.utils import timezone
 from core.models import CreatedModifiedMixin
 from people.models import Person
 
-class Organization(models.Model, CreatedModifiedMixin):
+class Organization(CreatedModifiedMixin):
     SIZE_NONE = 0
     SIZE_2TO10 = 1
     SIZE_11TO50 = 2
@@ -51,19 +52,28 @@ class Organization(models.Model, CreatedModifiedMixin):
     def __str__(self):
         return self.name
 
-class OrganizationMember(models.Model, CreatedModifiedMixin):
+    class Meta:
+        abstract = False
+
+class OrganizationMember(CreatedModifiedMixin):
     organization    = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=False, null=False)
     person          = models.ForeignKey(Person, on_delete=models.CASCADE, blank=False, null=False)
     role            = models.CharField(max_length=16,null=False,blank=True,default='member')
-    join_date       = models.DateTimeField(blank=True,null=True,auto_now_add=True)
+    join_date       = models.DateTimeField(blank=True,null=True,auto_now_add=False, default=timezone.now)
     involvement     = models.IntegerField(null=False,blank=False,default=1)
     added_by        = models.ForeignKey(Person, on_delete=models.SET_NULL, blank=True, null=True, related_name='OrganizationMembers_added')
 
-class OrganizationProfile(models.Model, CreatedModifiedMixin):
+    class Meta:
+        abstract = False
+
+class OrganizationProfile(CreatedModifiedMixin):
     organization    = models.ForeignKey(Organization, on_delete=models.CASCADE)
     # field_group     = models.CharField(max_length=64,null=False,blank=False)
     field           = models.CharField(max_length=64,null=False,blank=False)
     value           = models.TextField(null=True,blank=True)
+
+    class Meta:
+        abstract = False
 
 
 

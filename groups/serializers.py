@@ -16,6 +16,11 @@ class GroupSerializer(serializers.ModelSerializer):
         print( self.request );
         serializer.save()
 
+    def to_representation(self,value):
+        rep = super().to_representation(value)
+        rep['__entity__'] = 'group';
+        return rep    
+
 class GroupMemberSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     person = PersonSerializer()

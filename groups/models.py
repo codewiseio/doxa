@@ -2,6 +2,7 @@ from django.db import models
 
 from organizations.models import Organization;
 from people.models import Person
+from core.models import CreatedModifiedMixin
 
 # Create your models here.
 class Group (models.Model ):
@@ -22,7 +23,10 @@ class Group (models.Model ):
     def __str__(self):
         return '<group:' + self.name + '>'
 
-class GroupMember( models.Model  ):
+    class Meta:
+        abstract = False
+
+class GroupMember(models.Model ):
 
     group           = models.ForeignKey(Group,  on_delete=models.CASCADE, blank=False, null=False)
     person          = models.ForeignKey(Person, on_delete=models.CASCADE, blank=False, null=False)
@@ -32,6 +36,7 @@ class GroupMember( models.Model  ):
     added_by        = models.ForeignKey(Person, on_delete=models.SET_NULL, blank=True, null=True, related_name='GroupMembers_added')
 
 
-
+    class Meta:
+        abstract = False
 
     

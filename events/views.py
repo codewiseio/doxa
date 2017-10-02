@@ -21,8 +21,8 @@ class EventListView(generics.ListCreateAPIView):
     lookup_url_kwarg = "organization"
 
     def get_queryset(self):
-        organization = self.kwargs.get('organization')
-        queryset = Event.objects.filter(organization=organization)
+        # organization = self.kwargs.get('organization')
+        queryset = Event.objects
 
         # filter results
         filters = self.request.GET.get('filter')
@@ -37,10 +37,14 @@ class EventListView(generics.ListCreateAPIView):
             filters['search'] = query
 
         if filters:
+
             if filters.get('search'):
                 print('Searching with query.');
                 searchString = filters.get('search')
                 queryset = queryset.filter(name__icontains=searchString)
+            filter_organization = filters.get('organization')
+            if filter_organization:
+                queryset = queryset.filter(organization=filter_organization)
 
         # handle sorting
         sortOrder = self.request.GET.get('sortOrder')

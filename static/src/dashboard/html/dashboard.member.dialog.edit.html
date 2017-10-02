@@ -3,57 +3,6 @@
 
 
     <md-dialog-content flex>
-
-<!--       <div class="row">
-        <div class="col-sm-4">
-          <div class="form-group label-floating is-empty">
-            <label class="control-label">First</label>
-            <input type="email" class="form-control">
-          </div>
-        </div>
-
-         <div class="col-sm-4">
-          <div class="form-group label-floating is-empty">
-            <label class="control-label">Middle</label>
-            <input type="email" class="form-control">
-            <span class="material-input"></span>
-          </div>
-        </div>
-
-         <div class="col-sm-4">
-          <div class="form-group label-floating is-empty">
-            <label class="control-label">Last</label>
-            <input type="email" class="form-control">
-            <span class="material-input"></span>
-          </div>
-        </div>
-      </div> -->
-
-<!--       <div class="row">
-        <div class="col-sm-4">
-            <md-input-container>
-              <label>First</label>
-              <input required name="first_name" ng-model="$ctrl.item.person.first_name" type="text" />
-            </md-input-container>
-        </div>
-
-         <div class="col-sm-4">
-            <md-input-container>
-              <label>Middle</label>
-              <input name="middle_name" ng-model="$ctrl.item.person.middle_name" type="text" />
-            </md-input-container>
-        </div>
-
-         <div class="col-sm-4">
-            <md-input-container>
-              <label>Last</label>
-              <input required name="title" ng-model="$ctrl.item.person.last_name" type="text" />
-            </md-input-container>
-        </div>
-      </div>
- -->
-
-
         <div layout="column" layout-gt-xs="row">   
 
             <div class="input-wrapper" flex-gt-xs="33" >
@@ -108,7 +57,7 @@
                 <label>Involvement</label>
                 <md-select required name="type" ng-model="$ctrl.item.involvement">
 
-                  <md-option ng-repeat="item in $ctrl.memberInvolvementOptions" value="{{item.value}}">
+                  <md-option ng-repeat="item in $ctrl.options.memberInvolvement" value="{{item.value}}">
                     {{item.label}}
                   </md-option>
                 </md-select>

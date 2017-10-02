@@ -1,15 +1,15 @@
 
-import ListViewController from '../../common/list.view.controller.js';
+import ListViewController from '../../lib/list.view.controller.js';
 import memberInvolvementOptions from '../../assets/json/formOptions/member.involvement.json';
 
 
-export default class DashboardMembersController extends ListViewController {
-  constructor(AppDataService, DashboardMemberService, SweetAlert, $cookies, $state, $scope, $stateParams, $mdDialog, $mdToast) {
+export default class MembersController extends ListViewController {
+  constructor(AppDataService, MemberService, SweetAlert, $cookies, $state, $scope, $stateParams, $mdDialog, $mdToast) {
     'ngInject';
 
     super();
 
-    this.DashboardMemberService = DashboardMemberService;
+    this.MemberService = MemberService;
     this.SweetAlert = SweetAlert;
     this.$mdToast = $mdToast;
     this.$mdDialog = $mdDialog;
@@ -56,87 +56,66 @@ export default class DashboardMembersController extends ListViewController {
     this.refreshResults();
   }
 
-  /**
-   * Refresh the displayed results
-   * @return {[type]} [description]
-   */
-  refreshResults() {
-    console.log('refreshing');
+    /**
+     * Refresh the displayed results
+     * @return {[type]} [description]
+     */
+    refreshResults() {
+      console.log('refreshing');
 
-    var params = this.getFilterParams();
+      var params = this.getFilterParams();
 
-    // Retrieve record data
-    this.DashboardMemberService.list( this.organization.id, params ).then(
-        (response) => {
-          console.log('retrieved members: ',response.data)
-          this.items = response.data;
-        },
-        (err) => {
-          var toast = this.$mdToast.simple()
-            .textContent(error.data.message)
-            .position('bottom center')
-            .parent();
+      // Retrieve record data
+      this.MemberService.list( this.organization.id, params ).then(
+          (response) => {
+            console.log('retrieved members: ',response.data)
+            this.items = response.data;
+          },
+          (err) => {
+            var toast = this.$mdToast.simple()
+              .textContent(error.data.message)
+              .position('bottom center')
+              .parent();
 
-          this.$mdToast.show(toast);
-        }
-    );   
-  }
+            this.$mdToast.show(toast);
+          }
+      );   
+    }
       
 
-  /**
-   * Opens a dialog to edit member.
-   * @param  {object} $item   The item to be edited
-   * @param  {event} $event   The event triggering the dialog to open
-   */
-  new(item=null, $event=null) {
+    /**
+     * Opens a dialog to edit member.
+     * @param  {object} $item   The item to be edited
+     * @param  {event} $event   The event triggering the dialog to open
+     */
+    new(item=null, $event=null) {
 
-    if ( ! item ) item = { 
-      person: {}, 
-      organization_id: this.AppDataService.organization.id, 
-      role: 'Member' 
-    };
+      if ( ! item ) item = { 
+        person: {}, 
+        organization_id: this.AppDataService.organization.id, 
+        role: 1
+      };
 
-    this.edit(item, $event);
-  }
+      this.edit(item, $event);
+    }
 
-  /**
-   * Opens a dialog to edit member.
-   * @param  {object} $item   The item to be edited
-   * @param  {event} $event   The event triggering the dialog to open
-   */
-  edit(item, $event=null) {
 
-    // fetch html
-    console.log('Editing');
-    console.log(item);
-
-    let newItem = item.id ? false : true;
-    
-    
-    // display dialog
-    this.$mdDialog.show({
-          controller: 'DashboardMemberDialogController as $ctrl',
+    /**
+     * Opens a dialog to edit item
+     * @param  {object} $item   The item to be edited
+     * @param  {event} $event   The event triggering the dialog to open
+     */
+    edit(item, $event=null) {
+      return this.editItem(item, 
+        {
+          controller: 'MemberEditDialogController as $ctrl',
           templateUrl: 'dashboard.member.dialog.edit.html',
-          locals: { "item": item },
-          clickOutsideToClose:true,
-          fullscreen: true,
-          parent: angular.element(document.body),
-          targetEvent: $event,
+          targetEvent: $event
+        },
+      );
+    }
 
-        })
-        .then(
-          (item) => {
 
-            // if and item was returned the action completed successfuly
-            if ( item ) {
-              // add it to the beginning of list
-              if ( newItem) this.items.unshift(item);
-            }
-        }, (error) => {
-            console.log('error');
-        });
-
-  }
 
   /**
    * Delete a member from from the organization with confirm.
@@ -158,7 +137,7 @@ export default class DashboardMembersController extends ListViewController {
         }).then(
           () => {
             // perform the delete operation
-            this.DashboardMemberService.delete(item.person.id).then(
+            this.MemberService.delete(item.id).then(
                 (response) => {
                     // remove the item from the list
                     var idx = this.items.indexOf(item);
@@ -224,7 +203,7 @@ export default class DashboardMembersController extends ListViewController {
         }).then(
           () => {
             // perform the delete operation
-            this.DashboardMemberService.deleteMultiple(ids).then(
+            this.MemberService.deleteMultiple(ids).then(
                 (response) => {
                     // remove the item from the list
                     items.forEach( function(item) {

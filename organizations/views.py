@@ -33,45 +33,7 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         queryset = Organization.objects.all()
         organization = get_object_or_404(queryset, pk=pk)
         serializer = OrganizationSerializer(organization)
-        moniker = 'organization:{}'.format(organization.id)
-        
-        # determine the context
-        context = request.GET.get('context',None)
-        print('Retrieving organization')
-        print(context)
-
         item = serializer.data
-        item['contacts'] = {}
-
-
-        # if we are editing the organization from the dashboard
-        if context == 'dashboard.organization.edit':
-            # get primary contact details
-            
-            # contacts = ContactManager.get_primary_contacts(moniker);
-
-            contacts = Contact.objects.filter(owner=moniker, primary=True) 
-            item['contacts'] = [ {}, {}, {}]
-            contact_map = {'email':0, 'telephone':1, 'postaddress':2}
-            
-            for contact in contacts:
-                index = contact_map.get(contact.kind)
-                item['contacts'][index] = contact.serialize()
-
-        # if we are viewing the organizatoin profile
-        elif context == "organization.profile":
-            item['profile'] = {
-                'pastor': 'John Doe',
-                'bannerPhoto': '{}/default/organization-banner-photo.jpg'.format(settings.USER_FILES),
-                'profilePhoto': '{}/default/organization-profile-photo.png'.format(settings.USER_FILES)
-            }
-
-
-
-            # profile = Profile.objects.filter(entity=moniker)
-
-
-
         return Response(item)
     
     @transaction.atomic
@@ -91,29 +53,13 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             self.object = serializer.save()
             
-            # update contact information
-            self._update_contact_info(request.data.get('contacts'), partial)
-            
             return Response(serializer.data, status=success_status_code)
         
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
-    def _update_contact_info(self, contacts, partial=False):
-        serialized_data = []
-        errors = []
-        
-        try:
-            for item in contacts:
-                serialized_data.append( ContactManager.save( item ) )
-        except StorageException as err:
-                errors.merge( err.args[1] )
-                
-        if ( len(errors) > 0 ):
-            raise StorageException( 'Could not update contact information', errors );
-        else:
-            return serialized_data;
+
             
 #####Sort members as per filter######
 class OrganizationMembersListView(generics.ListCreateAPIView): 
@@ -180,18 +126,18 @@ class OrganizationMembersListView(generics.ListCreateAPIView):
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         data = request.data
-        print(data)
-        data['added_by_id'] = Person.objects.filter(user=request.user.id)[:1][0].id
-        
+
         # if a person data was sent, create a new person object
         if 'person' in data:
             person = Person.objects.create(**data['person'])
             data['person_id'] = person.id
-            if not data.get('role'): 
-                data['role'] = "Member"
             data.pop('person')
-            member = OrganizationMember.objects.create(**data)
-            serializer = OrganizationMemberSerializer(member)
+
+        if not data.get('role'): 
+            data['role'] = 1
+            
+        member = OrganizationMember.objects.create(**data)
+        serializer = OrganizationMemberSerializer(member)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -214,7 +160,6 @@ class OrganizationMemberItemView(generics.RetrieveUpdateDestroyAPIView):
 
         data = request.data
         data.pop('added_by')
-        print(data)
 
         # get the member object
         member = OrganizationMember.objects.get(pk=pk)
@@ -232,13 +177,14 @@ class OrganizationMemberItemView(generics.RetrieveUpdateDestroyAPIView):
 
     @transaction.atomic
     def delete(self, request,pk, *args, **kwargs):
-        person = Person.objects.get(id=pk)
-        member = OrganizationMember.objects.get(person_id=person.id)
+        member = OrganizationMember.objects.get(pk=pk)
+        person = Person.objects.get(id=member.person_id)
+        
         serializer = OrganizationMemberSerializer(member)
-        if person.user == None:
-            person.delete()
-        else:
-            return Response({'message':'This person can not be deleted'}, status=status.HTTP_400_BAD_REQUEST )
+
+        if person.user == None and OrganizationMember.objects.filter(person_id=person.id):
+            person.delete();
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 

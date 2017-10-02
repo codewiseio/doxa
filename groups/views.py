@@ -24,8 +24,8 @@ class GroupListView(generics.ListCreateAPIView):
     serializer_class = GroupSerializer
 
     def get_queryset(self):
-        organization = self.kwargs.get('organization')
-        queryset = Group.objects.filter(organization=organization)
+        # organization = self.kwargs.get('organization')
+        queryset = Group.objects
 
         # filter results
         filters = self.request.GET.get('filter')
@@ -44,6 +44,9 @@ class GroupListView(generics.ListCreateAPIView):
                 print('Searching with query.');
                 searchString = filters.get('search')
                 queryset = queryset.filter(name__icontains=searchString)
+            filter_organization = filters.get('organization')
+            if filter_organization:
+                queryset = queryset.filter(organization=filter_organization)
 
         # handle sorting
         sortOrder = self.request.GET.get('sortOrder')
@@ -83,14 +86,14 @@ class GroupListView(generics.ListCreateAPIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @api_view(['POST'])
-    def delete(request , *args, **kwargs):
-        ids = request.data["ids"]
-        organization_id = request.data["org"]
-        groups = Group.objects.filter(organization_id = organization_id).filter(id__in=ids).delete()
-        groups_data = Group.objects.filter(organization_id = organization_id)
-        serializer =  GroupSerializer(groups_data,many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # @api_view(['POST'])
+    # def delete(request , *args, **kwargs):
+    #     ids = request.data["ids"]
+    #     organization_id = request.data["org"]
+    #     groups = Group.objects.filter(organization_id = organization_id).filter(id__in=ids).delete()
+    #     groups_data = Group.objects.filter(organization_id = organization_id)
+    #     serializer =  GroupSerializer(groups_data,many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 class GroupItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()

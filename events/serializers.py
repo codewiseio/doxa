@@ -17,6 +17,11 @@ class EventSerializer(serializers.ModelSerializer):
         print( self.request );
         serializer.save()
 
+    def to_representation(self,value):
+        rep = super().to_representation(value)
+        rep['__entity__'] = 'event';
+        return rep
+
 class GuestSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     person = PersonSerializer()

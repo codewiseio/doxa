@@ -13,7 +13,7 @@ from django.db import models
 import inspect
 
 
-class Contact(models.Model, CreatedModifiedMixin):    
+class Contact(models.Model):    
     
     owner = models.CharField(max_length=64,null=True,blank=True) 
     
@@ -64,3 +64,5 @@ class Contact(models.Model, CreatedModifiedMixin):
     def __str__(self):
         return "<Contact: {} {}>".format(self.owner, self.kind)
     
+    class Meta:
+        abstract = False
