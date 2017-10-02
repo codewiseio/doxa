@@ -48,7 +48,7 @@ class TasksListView(generics.ListCreateAPIView):
 
         # filter on group
         if filters.get('group'):
-            queryset = queryset.filter(event=filters.get('group'))
+            queryset = queryset.filter(group=filters.get('group'))
 
         # filter archived/not archived
         filter_archived = filters.get('archived')
