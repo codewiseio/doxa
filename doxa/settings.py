@@ -172,4 +172,6 @@ USER_FILES = '/static/files'
 # APPEND_SLASH = False
 FILE_UPLOAD_DIR = 'static/files/upload';
 
-#from .settings_local import *
+import os.path
+if os.path.exists('doxa/settings_local.py'):
+    from .settings_local import *

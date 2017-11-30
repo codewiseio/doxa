@@ -44,15 +44,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         (ACTIVE, 'Active')
     )
     
-    email = models.EmailField(unique=True)
+    email        = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False,help_text="Designates whether user can log into the backend.")
-    is_active = models.BooleanField(default=True,help_text="Designates whether user is active or not")
-    status = models.SmallIntegerField(choices=STATUS_CHOICES,blank=False,null=False,default=0)
-    last_login = models.DateTimeField(blank=True,null=True)
+    is_active   = models.BooleanField(default=True,help_text="Designates whether user is active or not")
+    status      = models.SmallIntegerField(choices=STATUS_CHOICES,blank=False,null=False,default=0)
+    last_login  = models.DateTimeField(blank=True,null=True)
     
-    created = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    created_by = models.ForeignKey('User', on_delete=models.PROTECT, blank=True, null=True, related_name="created_user")
-    modified = models.DateTimeField(auto_now=True,blank=True,null=True)
+    created     = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    created_by  = models.ForeignKey('User', on_delete=models.PROTECT, blank=True, null=True, related_name="created_user")
+    modified    = models.DateTimeField(auto_now=True,blank=True,null=True)
     modified_by = models.ForeignKey('User', on_delete=models.PROTECT, blank=True, null=True, related_name="modified_user")    
 
     USERNAME_FIELD = 'email'

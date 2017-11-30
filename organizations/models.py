@@ -32,14 +32,12 @@ class Organization(CreatedModifiedMixin):
     email = models.CharField(max_length=64,null=True,blank=True)
     telephone = models.CharField(max_length=64,null=True,blank=True)
 
-
     address      = models.CharField(max_length=255,null=True,blank=True)
     municipality = models.CharField(max_length=64,null=True,blank=True)
     region       = models.CharField(max_length=64,null=True,blank=True)
     postcode     = models.CharField(max_length=16,null=True,blank=True)
     country      =  models.CharField(max_length=64,null=True,blank=True)
 
-    
     owner       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     
     def save(self, *args, **kwargs):

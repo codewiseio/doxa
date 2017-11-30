@@ -66,12 +66,17 @@ class UserView(generics.RetrieveUpdateDestroyAPIView):
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
+        """ Update user data. Ensure password is encrypted. """
 
+        # if a password was supplied
         if request.data.get('password') :
             user = User.objects.get(pk=kwargs['pk'])
+            # encrypt the password
             user.set_password( request.data.get('password') )
+            # remove the password from the request data 
             request.data.pop('password');
 
+        # perform update
         serializer = self.get_serializer(user,data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save();
@@ -125,9 +130,6 @@ class LoginView(views.APIView):
                     'status': 'Unauthorized',
                     'message': 'This user has been disabled.'
                 }, status=status.HTTP_401_UNAUTHORIZED)
-
-
-
 
         else:
             print ('Email/password combination invalid')
