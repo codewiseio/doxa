@@ -54,4 +54,21 @@ Webpack must be run for any changes to "static" files to be reflected
 Point your web browser to http://localhost:8000/
 
 
+DEPLOYMENT
+
+git clone git@gitlab.com:codewiseio/doxa.git doxa
+
+cd doxa
+
+virtualenv -p python3 venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+
+
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+
 
