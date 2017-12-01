@@ -38,6 +38,7 @@ require("./assets/css/jquery.dropdown.css");
 require('./assets/css/default.less');
 
 import './lib/sweetalert';
+import './assets/js/perfect-scrollbar.jquery.min.js';
 
 /* Application Components*/
 import AppDataService from './services/appdata.service';

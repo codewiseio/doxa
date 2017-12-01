@@ -4,7 +4,7 @@ import organizationSizeOptions from '../assets/json/formOptions/organization.siz
 
 
 export default class OrganizationEditDialogController extends EditDialogController {
-  constructor(OrganizationService, AppDataService, $mdDialog, $mdToast, $http) {
+  constructor(OrganizationService, AppDataService, $mdDialog, $mdToast, $http, locals) {
     'ngInject';
     super(OrganizationService, $mdDialog, $mdToast, locals);
 
