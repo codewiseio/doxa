@@ -1,13 +1,13 @@
-static/bower_components/*
 angular/app/node_modules/*
 */node_modules/*
-core/__pycache__/*
-doxa/__pycache__/*
+*/__pycache__/*
+*/__pycache__/*
 __pycache__/
 */*.pyc
 *.pyc
-doxa/settings_local.py
+*/settings_local.py
 .idea/*
+venv/*
 
 
 # Elastic Beanstalk Files
@@ -15,5 +15,4 @@ doxa/settings_local.py
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-venv/*
 
