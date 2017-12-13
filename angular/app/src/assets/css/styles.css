@@ -1,0 +1,62 @@
+
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~bootstrap/dist/css/bootstrap.css";
+
+mat-toolbar .site-title a,
+mat-toolbar .site-title a:hover,
+mat-toolbar .site-title a:visited
+ {
+	color: white;
+	text-decoration: none;
+}
+
+
+.spacer {
+	flex: 1 1 auto;
+}
+
+body {
+	margin: 0px;
+}
+
+
+.sm-centered-card {
+	margin: 18px auto;
+	width: 500px;
+	max-width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+	.sm-centered-card  {
+		margin-left: 18px;
+		margin-right: 18px;
+		width: auto;
+		max-width: auto;
+		flex: 1;
+	}
+}
+
+.mat-form-field.spacious {
+	margin-bottom: 1em;
+}
+
+mat-icon.toggle-display-password {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	cursor: pointer;
+	color: grey;
+}
+
+ul.plain-list {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+mat-progress-bar.valign-bottom {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}

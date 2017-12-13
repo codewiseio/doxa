@@ -1,5 +1,0 @@
-[
-    { "value": 0, "label" : "User" },
-   	{ "value": 1, "label" : "Administrator"},
-   	{ "value": 2, "label" : "Super Administrator"}
-]
