@@ -58,6 +58,7 @@ You can over-ride the Django settings py creating a `settings_local.py` file the
 
 ## Deployment
 
+sudo -u postgres psql
 
 
 
